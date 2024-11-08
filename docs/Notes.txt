@@ -1,0 +1,10 @@
+NOTE: NTFS uses UTF16 for filenames not UTF8 like POSIX filesystems. filepath() defaults to wstring instead of string,
+c_str changes behaviour on string and wstring. Returns normal const char* on string and wchar_t on wstring. filepath() on NTFS is wstring() by default.
+std::println doesn't support wstring or wchar_t. Will require explicit use of .string().
+
+Note: When changing version, change version inside:
+	trash/common/globals.hxx
+	docs/manual/man/*
+	docs/manual/help/*
+	manifest
+	update docs/CHANGELOG.txt

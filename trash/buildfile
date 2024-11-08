@@ -1,0 +1,17 @@
+libs =
+import libs += libsqlite3%lib{sqlite3}
+
+#exe{trash}: {hxx ixx txx cxx}{**} $libs #testscript
+
+if($cc.target.class == 'windows')
+{
+	info "detected: $cc.target.class"
+	exe{trash}: {hxx ixx txx cxx}{** -***/platform/aci/posix/**} $libs
+}
+else
+{
+	info "detected: $cc.target.class"
+	exe{trash}: {hxx ixx txx cxx}{** -***/platform/aci/windows/**} $libs
+}
+
+cxx.poptions =+ "-I$out_root" "-I$src_root"

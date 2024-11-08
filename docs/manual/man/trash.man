@@ -1,0 +1,67 @@
+.nh
+.TH TRASH 1 "0.9.0" TRASH "User Manuals"
+.SH \fBNAME\fR
+trash
+.SH \fBSYNOPSIS\fR
+\fBtrash\fP [\fIcommand\fP] [\fIoptions\fP] [\fIarguments\fP]
+.br
+\fBtrash\fP [\fIcommand\fP] [\fIarguments\fP] [\fIoptions\fP]
+.br
+\fBtrash\fP [\fIcommand\fP] [\fIoptions\fP]
+.br
+\fBtrash\fP [\fIcommand\fP] [\fIarguments\fP]
+.br
+\fBtrash\fP [\fIoptions\fP]
+.br
+.SH \fBDESCRIPTION\fR
+.PP
+\fB$ trash\fP \fI--help, -h\fP
+.br
+Gives you basic usage information for the program.
+.br
+When paired with a command it will change the output of basic usage.
+
+For example these two will have different usage outputs:
+.br 
+\fB$ trash\fP \fIdelete --help\fP
+.br
+\fB$ trash\fP \fI--help\fP
+
+\fB$ trash\fP \fI--version\fR
+.br
+Gives you the version of the trash program
+.SH \fBPRIMARY COMMANDS\fR
+\fBdelete   | d\fR
+.br
+\fBlist     | l\fR
+.br
+\fBrestore  | r\fR
+.br
+\fBerase    | e\fR
+.br
+\fBvalidate | v\fR
+.SH \fBENVIRONMENT\fR
+\fB$TRASH_DIR\fR
+.br
+The directory where the trash/ folder will be located. Defaults to \fI$HOME/.trash/\fP\&. The directory filename before the last delimiter will be used as the root of the trash directory name.
+.PP
+E.G:
+\fIexport TRASH_DIR=/home/user/.local/shared/.trashAlt/\fP\&, will make .trashAlt/ become the trash directory name.
+.PP
+\fIWARNING\fP: Be sure to add a forward slash delimiter \fI'/'\fP at the end to signify a directory, otherwise it will concatenate would-be inner directory names and treat it as the actual inner trash directory. In other words, in the above example \fI'shared/'\fP which is a parent directory would become the root trash directory instead of \fI'.trashAlt'\fP.
+.SH \fBMANUAL ENTRIES\fR
+trash
+.br
+trash-delete
+.br
+trash-list
+.br
+trash-restore
+.br
+trash-erase
+.br
+trash-validate
+.SH AUTHOR
+Written by Isfand Mirza.
+.SH COPYRIGHT
+Copyright © 2024-2024, Isfand Mirza.

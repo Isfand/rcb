@@ -1,0 +1,64 @@
+.nh
+.TH TRASH 1 "0.9.0" TRASH "User Manuals"
+.SH \fBNAME\fR
+trash-validate
+.SH \fBSYNOPSIS\fR
+\fBtrash validate\fP [\fIoptions\fP]
+.SH DESCRIPTION
+\fB--help, -h\fP
+.br
+.RS
+Prints basic usage of trash validate.
+.RE
+.br
+\fB--verbose, -v\fP
+.br
+.RS
+Provides verbose information to console.
+.RE
+.br
+\fB--force, -f\fP
+.br
+.RS
+Forces action(s) without user prompts
+.RE
+.br
+\fB--silent, -s\fP
+.br
+.RS
+Silences output to console
+.RE
+.br
+\fB--all, -a\fP
+.br
+.RS
+Executes all validations.
+.RE
+.br
+\fB--file, -F\fP
+.br
+.RS
+Removes dangling file(s) inside file/ with no corresponding record inside data/
+.RE
+.br
+\fB--data, -D\fP
+.br
+.RS
+Removes dangling record(s) inside wipe/ with no corresponding file inside file/
+.RE
+.br
+\fB--wipe, -W\fP
+.br
+.RS
+Removes dangling file(s) left inside wipe/
+.RE
+\fB--fill-directorysize\fP
+.br
+.RS
+Evaluates size:NULL of filetype:directory of record(s) inside data/
+.RE
+.br
+.SH AUTHOR
+Written by Isfand Mirza.
+.SH COPYRIGHT
+Copyright © 2024-2024, Isfand Mirza.
