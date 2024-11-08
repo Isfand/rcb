@@ -1,0 +1,102 @@
+.nh
+.TH TRASH 1 "0.9.0" TRASH "User Manuals"
+.SH \fBNAME\fR
+trash-erase
+.SH \fBSYNOPSIS\fR
+\fBtrash erase\fP [\fIoptions\fP] [\fIarguments\fP]
+.br
+\fBtrash erase\fP [\fIarguments\fP] [\fIoptions\fP]
+.br
+\fBtrash erase\fP [\fIoptions\fP]
+.br
+\fBtrash erase\fP [\fIarguments\fP]
+.br
+.SH \fBDESCRIPTION\fR
+.PP
+\fBtrash erase \<id\>
+.br
+.RS
+Erase file(s) by record id.
+.RE
+.br
+\fB--help, -h\fP 
+.br
+.RS
+Prints basic usage of trash erase.
+.RE
+.br
+\fB--all, -a\fP
+.br
+.RS
+Permanently remove all files.
+.RE
+.br
+\fB--past \<n\>(unit)\fP
+.br
+.RS
+Erase file(s) by relative past time with units: t,s,m,h,d,w,mo,y,c,k,ae.
+
+\fBExample:\fP
+.br
+\fB$ trash erase\fP \fI--past 10m\fP
+
+Will erase all files that were deleted 10 minutes ago.
+
+\fBTime Reference Table\fP
+
+| Unit          | shorthand |
+.br
+| ------------- | --------- |
+.br
+| Posixtime     | t         |
+.br
+| Second(s)     | s         |
+.br
+| Minute(s)     | m         |
+.br
+| Hour(s)       | h         |
+.br
+| Day(s)        | d         |
+.br
+| Week(s)       | w         |
+.br
+| Month(s)      | mo        |
+.br
+| Year(s)       | y         |
+.br
+| Decade(s)     | dec       |
+.br
+| Century(s)    | c         |
+.br
+| Millennium(s) | k         |
+.br
+| Aeon(s)       | ae        |
+.br
+.RE
+.br
+
+\fB--previous\fP
+.br
+.RS
+Erase file(s) by highest execution. Execution is the order in which files were deleted together under the same process.
+.RE
+.br
+\fB--silent, -s\fP
+.br
+.RS
+Silences output to console
+.RE
+.br
+\fB--sql \<s\>\fP
+.br
+.RS
+\fIWARNING UNSAFE:\fP Insert sql statement directly for erase. Must return ID.
+
+\fBExample:\fP
+.br
+\fB$ trash erase\fP \fI--sql \(dqSELECT id FROM trash WHERE file=\[aq]filename\[aq]\(dq\fP
+.RE
+.SH AUTHOR
+Written by Isfand Mirza.
+.SH COPYRIGHT
+Copyright © 2024-2024, Isfand Mirza.

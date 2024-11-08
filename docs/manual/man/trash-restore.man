@@ -1,0 +1,108 @@
+.nh
+.TH TRASH 1 "0.9.0" TRASH "User Manuals"
+.SH \fBNAME\fR
+trash-restore
+.SH \fBSYNOPSIS\fR
+\fBtrash restore\fP [\fIoptions\fP] [\fIarguments\fP]
+.br
+\fBtrash restore\fP [\fIarguments\fP] [\fIoptions\fP]
+.br
+\fBtrash restore\fP [\fIoptions\fP]
+.br
+\fBtrash restore\fP [\fIarguments\fP]
+.br
+.SH \fBDESCRIPTION\fR
+.PP
+\fBtrash restore \<id\>
+.br
+.RS
+Restore file(s) by record id.
+.RE
+.br
+\fB--help, -h\fP 
+.br
+.RS
+Prints basic usage of trash restore.
+.RE
+.br
+\fB--verbose, -v\fP 
+.br
+.RS
+Provides verbose information to console.
+.RE
+.br
+\fB--all, -a\fP
+.br
+.RS
+Restore every file in record.
+.RE
+.br
+\fB--past \<n\>(unit)\fP
+.br
+.RS
+Restore file(s) by relative past time with units: t,s,m,h,d,w,mo,y,c,k,ae.
+
+\fBExample:\fP
+.br
+\fB$ trash restore\fP \fI--past 10m\fP
+
+Will restore all files that were deleted 10 minutes ago.
+
+\fBTime Reference Table\fP
+
+| Unit          | shorthand |
+.br
+| ------------- | --------- |
+.br
+| Posixtime     | t         |
+.br
+| Second(s)     | s         |
+.br
+| Minute(s)     | m         |
+.br
+| Hour(s)       | h         |
+.br
+| Day(s)        | d         |
+.br
+| Week(s)       | w         |
+.br
+| Month(s)      | mo        |
+.br
+| Year(s)       | y         |
+.br
+| Decade(s)     | dec       |
+.br
+| Century(s)    | c         |
+.br
+| Millennium(s) | k         |
+.br
+| Aeon(s)       | ae        |
+.br
+.RE
+.br
+
+\fB--previous\fP
+.br
+.RS
+Restore file(s) by highest execution. Execution is the order in which files were deleted together under the same process.
+.RE
+.br
+\fB--silent, -s\fP
+.br
+.RS
+Silences output to console
+.RE
+.br
+\fB--sql \<s\>\fP
+.br
+.RS
+\fIWARNING UNSAFE:\fP Insert sql statement directly for restore. Must return ID.
+
+\fBExample:\fP
+.br
+\fB$ trash restore\fP \fI--sql \(dqSELECT id FROM trash WHERE file=\[aq]filename\[aq]\(dq\fP
+.RE
+.SH AUTHOR
+Written by Isfand Mirza.
+.SH COPYRIGHT
+Copyright © 2024-2024, Isfand Mirza.

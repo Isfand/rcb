@@ -1,0 +1,55 @@
+.nh
+.TH TRASH 1 "0.9.0" TRASH "User Manuals"
+.SH \fBNAME\fR
+trash-delete
+.SH \fBSYNOPSIS\fR
+\fBtrash delete\fP [\fIoptions\fP] [\fIarguments\fP]
+.br
+\fBtrash delete\fP [\fIarguments\fP] [\fIoptions\fP]
+.br
+\fBtrash delete\fP [\fIoptions\fP]
+.br
+\fBtrash delete\fP [\fIarguments\fP]
+.br
+.SH \fBDESCRIPTION\fR
+.PP
+\fBdelete \<filename\>\fP
+.br
+.RS
+Delete file(s) by filename
+.RE
+.br
+\fB--\fP
+.br
+.RS
+Options end after this point.
+.RE
+.br
+\fB--help, -h\fP
+.br
+.RS
+Prints basic usage of trash delete.
+.RE
+.br
+\fB--verbose, -v\fP
+.br
+.RS
+Provides verbose information to console.
+.RE
+.br
+\fB--silent, -s\fP
+.br
+.RS
+Silences output to console
+.RE
+.br
+\fB--no-directorysize\fP
+.br
+.RS
+Don\(aqt save size for filetype of directory.
+.RE
+.br
+.SH AUTHOR
+Written by Isfand Mirza.
+.SH COPYRIGHT
+Copyright © 2024-2024, Isfand Mirza.

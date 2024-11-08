@@ -1,0 +1,13 @@
+: 1
+name: trash
+version: 0.9.0
+language: c++
+summary: trash C++ executable
+license: other: Eclipse Public License 2.0
+description-file: README.md
+url: https://github.com/Isfand/trash/
+#email: you@example.com
+#build-error-email: you@example.com
+depends: * build2 >= 0.16.0
+depends: * bpkg >= 0.16.0
+depends: libsqlite3 ^3.45.3+1
