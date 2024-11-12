@@ -31,11 +31,12 @@ void Delete::file(std::vector<std::string>& args)
 {
 	for(std::string& file : args)
 	{
-		if(Verity(std::filesystem::directory_entry(file)).exists)
-		{
-			//NOTE: canonical follows symlinks, weakly_canonical does not and it also removes trailing slashes.
-			const std::filesystem::path systemFilePath { std::filesystem::weakly_canonical(std::filesystem::absolute(file).lexically_normal()) };
+		//UPDATE: weakly canonical can throw exception if a symlink chains to many symlinks. Replacing with custom solution.
+		//CHANGED: systemFilePath should be in for loop top-level scope that way Verity can check symlink_status() properly. 
+		const std::filesystem::path systemFilePath { remove_trailing_slash(std::filesystem::absolute(file).lexically_normal()) };
 
+		if(Verity(std::filesystem::directory_entry(systemFilePath)).exists)
+		{
 			std::string mutFilename { systemFilePath.filename().string() };
 			std::filesystem::directory_entry trashEntry { singleton->getWorkingTrashFileDir() + systemFilePath.filename().string() };
 
@@ -160,9 +161,8 @@ void Delete::file(std::vector<std::string>& args)
 		}
 		else
 		{
-			//Note: For some reason it keeps the trailing slash here. Maybe weakly_canonical only removes it if the file exists?
 			if(!m_dOpt.silentOption)
-				std::println("path doesn't exist: {0}", std::filesystem::weakly_canonical(std::filesystem::absolute(file).lexically_normal()).string());
+				std::println("path doesn't exist: {0}", systemFilePath.string());
 		}
 	}
 }
