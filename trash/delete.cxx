@@ -311,7 +311,6 @@ std::string Delete::incrementExecutionID()
 	return highestExecution;
 }
 
-//Unused
 bool Delete::has_trailing_slash(const std::filesystem::path& path)
 {
 	std::string path_str = path.string();
@@ -319,7 +318,6 @@ bool Delete::has_trailing_slash(const std::filesystem::path& path)
 	return !path_str.empty() && (path_str.back() == '/' || path_str.back() == '\\');
 }
 
-//Unused
 std::filesystem::path Delete::remove_trailing_slash(const std::filesystem::path& path)
 {
 	// If the path has a trailing slash, return the parent path
