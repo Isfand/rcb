@@ -1,4 +1,12 @@
 ----------------------------------------------------------------------
+ VERSION 0.9.0 (13-11-2024)
+----------------------------------------------------------------------
+
+Decorated log and release notes: https://github.com/Isfand/trash/releases/tag/v0.9.1
+
+- BUGFIX: Fixed "Too many levels of symbolic links" issue in Delete caused by symlink_status() in Verity and weakly_canonical()
+
+----------------------------------------------------------------------
  VERSION 0.9.0 (08-11-2024)
 ----------------------------------------------------------------------
 
