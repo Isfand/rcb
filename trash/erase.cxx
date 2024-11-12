@@ -45,7 +45,7 @@ void Erase::file(std::vector<std::string>& args)
 		catch (std::runtime_error& e) 
 		{
 			//REVISE: 
-			/* NOTE: Exception likely happens due to a permissions issue as remove_all recursively removes files, NOT directories, individually.
+			/* NOTE: Exception likely occurs due to a permissions issue as remove_all recursively removes files, NOT directories, individually.
 			It will only remove a directory when it's empty, otherwise it will continue to remove all contents inside.
 			E.G If a directory has another directory that has root ownership with contents inside, they cannot be removed. 
 			This is because the program is executed by a user that is missing the required permissions for the nested directory, but has permissions to remove contents in the 
