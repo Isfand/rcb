@@ -5,7 +5,8 @@
 Decorated log and release notes: https://github.com/Isfand/trash/releases/tag/v0.9.1
 
 - BUGFIX: Fixed "Too many levels of symbolic links" issue in Delete caused by symlink_status() in Verity and weakly_canonical()
-- BUGFIX: Fixed Delete::has_trailing_slash() by using platform specific macros for directory delimiter.
+- BUGFIX: Fixed delete's trailing slash issue in Delete::has_trailing_slash() by using platform specific macros for directory delimiter.
+- BUGFIX: Fixed validate --wipe continuation when an exception was thrown in Validate::wipe() by adding a try catch and continue.  
 
 ----------------------------------------------------------------------
  VERSION 0.9.0 (08-11-2024)
