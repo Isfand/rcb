@@ -313,9 +313,16 @@ std::string Delete::incrementExecutionID()
 
 bool Delete::has_trailing_slash(const std::filesystem::path& path)
 {
+	//TEMPORARY: Move to ACI
+	#if defined(__unix__) || defined(__APPLE__)
+		char delimiter = '/';
+	#elif defined(_WIN32) && !defined(__CYGWIN__)
+		char delimiter = '\\';
+	#endif
+
 	std::string path_str = path.string();
 	// Check if the last character is a forward slash or backslash for ntfs.
-	return !path_str.empty() && (path_str.back() == '/' || path_str.back() == '\\');
+	return !path_str.empty() && (path_str.back() == delimiter);
 }
 
 std::filesystem::path Delete::remove_trailing_slash(const std::filesystem::path& path)
