@@ -206,7 +206,7 @@ void Validate::fillDirectorySize()
 
 	std::vector<std::string> nullDirectoriesQuery { Database().selectDataB("SELECT file from trash WHERE filetype='directory' AND size='NULL';") };
 	
-	//Append file/ path to each filename
+	//prepend file/ path to each filename
 	std::transform(nullDirectoriesQuery.begin(), 
 				   nullDirectoriesQuery.end(), 
 				   nullDirectoriesQuery.begin(), 
