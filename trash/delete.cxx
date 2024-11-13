@@ -313,7 +313,7 @@ std::string Delete::incrementExecutionID()
 
 bool Delete::has_trailing_slash(const std::filesystem::path& path)
 {
-	//TEMPORARY: Move to ACI
+	//OLD:
 	//#if defined(__unix__) || defined(__APPLE__)
 	//	char delimiter = '/';
 	//#elif defined(_WIN32) && !defined(__CYGWIN__)
