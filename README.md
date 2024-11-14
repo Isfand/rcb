@@ -72,8 +72,6 @@ trash validate --all | -a, Validate all
 The directory where the trash/ folder will be located. Defaults to '$HOME/.trash/'. The directory filename before the last delimiter will be used as the root of the trash directory name.
 E.G 'export TRASH_DIR=/home/user/.local/shared/.trashAlt/', will make .trashAlt/ become the trash directory name.
 
-*WARNING*: Be sure to add a forward slash delimiter '/' at the end to signify a directory, otherwise it will concatenate would-be inner directory names and treat it as the actual inner trash directory. In other words, in the above example 'shared' which is a parent directory would become the root trash directory instead of '.trashAlt'.
-
 ---
 
 If you find the program useful then consider [donating](https://www.paypal.com/donate/?hosted_button_id=ZP93X3GYEJBA4)
