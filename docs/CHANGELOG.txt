@@ -7,6 +7,7 @@ Decorated log and release notes: https://github.com/Isfand/trash/releases/tag/v0
 - REVISION: Changed Env directories to std::filesystem::path from std::string.
 - REVISION: Now using std::filesystem::path::preferred_separator instead of user code macros to determine platform directory delimiter.
 - CORRECTION: Singleton::getWorkingTrashDir() now returns m_workingTrashDir instead of m_workingTrashDataDir.
+- ADDED: Linux mingw cross-compilation targeting windows is now included in config-init.sh
 
 ----------------------------------------------------------------------
  VERSION 0.9.1 (13-11-2024)
