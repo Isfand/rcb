@@ -18,13 +18,13 @@ namespace trash{
 
 Env::Env()
 {
-	envVar();
-	envDir();
-	envConf();
+	var();
+	dir();
+	conf();
 	setSharedEnv();
 }
 
-void Env::envVar()
+void Env::var()
 {
 	//FUTURE:
 	//TODO. Optimize this code to use init if statement. Ideally all connected.
@@ -43,14 +43,15 @@ void Env::envVar()
 	m_workingUsername = (std::string(std::getenv(USER)));
 		
 	if(std::getenv("TRASH_DIR") == NULL) // Prevent segmentation fault
-		m_workingTrashDir = (std::string(std::getenv(HOME)) + "/." + g_progName + "/");
+		m_workingTrashDir = (std::string(std::getenv(HOME)) + std::filesystem::path::preferred_separator + "." + g_progName + std::filesystem::path::preferred_separator);
 	else
 		m_workingTrashDir = (std::string(std::getenv("TRASH_DIR")));
 	//WARNING: windows uses backslash \ instead of forward slash / for directories. Both are compatable. But mixing can be an issue.
+	//UPDATE: Switched to using std::filesystem::path::preferred_separator instead of hardcoded slash '/'
 
 }
 
-void Env::envDir()
+void Env::dir()
 {
 	// TODO. Create a config to set dir and internal names that way it can work for any deviated implementation
 	// Trash internal dir names
@@ -92,7 +93,7 @@ void Env::envDir()
 	}
 }
 
-void Env::envConf()
+void Env::conf()
 {
 	// Implement when needed
 }
