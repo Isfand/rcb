@@ -12,13 +12,13 @@ namespace trash{
    
 void Database::createDB()
 {
-	sqlite3_open((singleton->getWorkingTrashDataDir() + m_dataBaseName).c_str(), &m_db);
+	sqlite3_open((singleton->getWorkingTrashDataDir() / m_dataBaseName).string().c_str(), &m_db);
 	sqlite3_close(m_db);
 }
 
 void Database::createTable()
 {
-	sqlite3_open((singleton->getWorkingTrashDataDir() + m_dataBaseName).c_str(), &m_db);
+	sqlite3_open((singleton->getWorkingTrashDataDir() / m_dataBaseName).string().c_str(), &m_db);
 
 	std::string defaultSQLTable = std::format("CREATE TABLE IF NOT EXISTS \"{0}\" (\n"
 											  "\t\"{1}\" INTEGER PRIMARY KEY AUTOINCREMENT,\n"
@@ -67,7 +67,7 @@ void Database::insertData(const std::array<std::string, 7>& fileDetails)
 {
 	char* errorMsg{};
 
-	sqlite3_open((singleton->getWorkingTrashDataDir() + m_dataBaseName).c_str(), &m_db);
+	sqlite3_open((singleton->getWorkingTrashDataDir() / m_dataBaseName).string().c_str(), &m_db);
 
 	//TODO. Add g_progname as interpolation for 'trash'
 	std::string recordData = std::format("INSERT INTO {} ("
@@ -120,7 +120,7 @@ std::string Database::selectData(const std::string& sql)
 	std::string st{};
 
 	// Open the database
-	rc = sqlite3_open((singleton->getWorkingTrashDataDir() + m_dataBaseName).c_str(), &m_db);
+	rc = sqlite3_open((singleton->getWorkingTrashDataDir() / m_dataBaseName).string().c_str(), &m_db);
 	if (rc != SQLITE_OK) 
 	{
 		// fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(m_db));
@@ -176,7 +176,7 @@ std::string Database::selectDataA(const std::string& sql)
 	std::string st{};
 
 	// Open the database
-	rc = sqlite3_open((singleton->getWorkingTrashDataDir() + m_dataBaseName).c_str(), &m_db);
+	rc = sqlite3_open((singleton->getWorkingTrashDataDir() / m_dataBaseName).string().c_str(), &m_db);
 	if (rc != SQLITE_OK) 
 	{
 		// fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(m_db));
@@ -240,7 +240,7 @@ std::vector<std::string> Database::selectDataB(const std::string& sql)
 	int rc;
 
 	// Open the database
-	rc = sqlite3_open((singleton->getWorkingTrashDataDir() + m_dataBaseName).c_str(), &m_db);
+	rc = sqlite3_open((singleton->getWorkingTrashDataDir() / m_dataBaseName).string().c_str(), &m_db);
 	if (rc != SQLITE_OK) 
 	{
 		//fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(m_db));
@@ -293,7 +293,7 @@ int Database::executeSQL(const std::string &sql)
 	int rc;
 
 	// Open SQLite database (it will create a database file if it doesn't exist)
-	rc = sqlite3_open((singleton->getWorkingTrashDataDir() + m_dataBaseName).c_str(), &m_db);
+	rc = sqlite3_open((singleton->getWorkingTrashDataDir() / m_dataBaseName).string().c_str(), &m_db);
 	if (rc != SQLITE_OK) 
 	{
 		//std::cerr << "Can't open database: " << sqlite3_errmsg(m_db) << std::endl;

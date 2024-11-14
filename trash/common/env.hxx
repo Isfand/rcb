@@ -1,4 +1,5 @@
 #pragma once
+#include <filesystem>
 #ifndef ENV_HXX
 #define ENV_HXX
 
@@ -15,13 +16,13 @@ public:
 	
 private:
 
-	std::string m_workingTrashDir{};
-	std::string m_workingTrashFileDir{};
-	std::string m_workingTrashDataDir{};
-	std::string m_workingTrashWipeDir{};
-	std::string m_workingTrashWordDir{}; 
+	std::filesystem::path m_workingTrashDir{};
+	std::filesystem::path m_workingTrashFileDir{};
+	std::filesystem::path m_workingTrashDataDir{};
+	std::filesystem::path m_workingTrashWipeDir{};
+	std::filesystem::path m_workingTrashWordDir{}; 
+	std::filesystem::path m_workingConfDir{};
 	std::string m_workingUsername{};
-	std::string m_workingConfDir{};
 	
 	void var();
 	void dir();

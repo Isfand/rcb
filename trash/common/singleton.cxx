@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <filesystem>
+
 #include "singleton.hxx"
 
 namespace trash{
@@ -46,23 +48,23 @@ Singleton::~Singleton()
 //{
 //	return m_forceOption;
 //}
-const std::string Singleton::getWorkingTrashDir() const
+const std::filesystem::path Singleton::getWorkingTrashDir() const
 {
-	return m_workingTrashDataDir;
+	return m_workingTrashDir;
 }
-const std::string Singleton::getWorkingTrashFileDir() const
+const std::filesystem::path Singleton::getWorkingTrashFileDir() const
 {
 	return m_workingTrashFileDir;
 }
-const std::string Singleton::getWorkingTrashDataDir() const
+const std::filesystem::path Singleton::getWorkingTrashDataDir() const
 {
 	return m_workingTrashDataDir;
 }
-const std::string Singleton::getWorkingTrashWipeDir() const
+const std::filesystem::path Singleton::getWorkingTrashWipeDir() const
 {
 	return m_workingTrashWipeDir;
 }
-const std::string Singleton::getWorkingTrashWordDir() const
+const std::filesystem::path Singleton::getWorkingTrashWordDir() const
 {
 	return m_workingTrashWordDir;
 }
@@ -81,23 +83,23 @@ const std::string Singleton::getWorkingUsername() const
 //{
 //	std::call_once(s_setForceOptionFlag, [&](){ m_forceOption = forceOption;});
 //}
-void Singleton::setWorkingTrashDir(std::string workingTrashDir)
+void Singleton::setWorkingTrashDir(std::filesystem::path workingTrashDir)
 {
 	std::call_once(s_setWorkingTrashDirFlag, [&](){ m_workingTrashDir = workingTrashDir;});
 }
-void Singleton::setWorkingTrashFileDir(std::string workingTrashFileDir)
+void Singleton::setWorkingTrashFileDir(std::filesystem::path workingTrashFileDir)
 {
 	std::call_once(s_setWorkingTrashFileDirFlag, [&](){ m_workingTrashFileDir = workingTrashFileDir;});
 }
-void Singleton::setWorkingTrashDataDir(std::string workingTrashDataDir)
+void Singleton::setWorkingTrashDataDir(std::filesystem::path workingTrashDataDir)
 {
 	std::call_once(s_setWorkingTrashDataDirFlag, [&](){ m_workingTrashDataDir = workingTrashDataDir;});
 }
-void Singleton::setWorkingTrashWipeDir(std::string workingTrashWipeDir)
+void Singleton::setWorkingTrashWipeDir(std::filesystem::path workingTrashWipeDir)
 {
 	std::call_once(s_setWorkingTrashWipeDirFlag, [&](){ m_workingTrashWipeDir = workingTrashWipeDir;});
 }
-void Singleton::setWorkingTrashWordDir(std::string workingTrashWordDir)
+void Singleton::setWorkingTrashWordDir(std::filesystem::path workingTrashWordDir)
 {
 	std::call_once(s_setWorkingTrashWordDirFlag, [&](){ m_workingTrashWordDir = workingTrashWordDir;});
 }

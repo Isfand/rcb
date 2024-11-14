@@ -138,7 +138,7 @@ void List::size()
 
 	for(auto& validFile : m_validFiles)
 	{
-		aci::Stat stat { (singleton->getWorkingTrashFileDir() + validFile).c_str() };
+		aci::Stat stat { (singleton->getWorkingTrashFileDir() / validFile).string().c_str() };
 		entries.push_back(std::make_tuple(validFile, stat.st_ino(), stat.st_dev()));
 	}
 
