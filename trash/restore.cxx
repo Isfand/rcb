@@ -46,10 +46,10 @@ void Restore::file(std::vector<std::string>& args)
 				continue;
 			}
 
-			if(aci::Stat(singleton->getWorkingTrashDir().c_str()).st_dev() == aci::Stat(originalPath.parent_path().string().c_str()).st_dev())
+			if(aci::Stat(singleton->getWorkingTrashDir().string().c_str()).st_dev() == aci::Stat(originalPath.parent_path().string().c_str()).st_dev())
 			{
 				//TODO. Place inside try catch and skip the current arg with continue:
-				std::filesystem::rename(singleton->getWorkingTrashFileDir() + trashFile, originalPath);
+				std::filesystem::rename(singleton->getWorkingTrashFileDir() / trashFile, originalPath);
 
 				if(m_rOpt.verboseOption)
 					std::println("Path is:{0}", originalPath.string().c_str());
@@ -61,7 +61,7 @@ void Restore::file(std::vector<std::string>& args)
 			else
 			{
 				//TODO. Place inside try catch and skip the current arg with continue:
-				externRename((singleton->getWorkingTrashFileDir() + trashFile), originalPath);
+				externRename((singleton->getWorkingTrashFileDir() / trashFile), originalPath);
 
 				if(m_rOpt.verboseOption)
 					std::println("Path is:{0}", originalPath.string());
@@ -136,12 +136,12 @@ void Restore::sqlInjection()
 //Checks if trashFile Exists inside of /trash/file/<name>
 bool Restore::checkTrashFile(const std::string& trashFile)
 {
-	std::filesystem::path filePath { singleton->getWorkingTrashFileDir() + trashFile };
+	std::filesystem::path filePath { singleton->getWorkingTrashFileDir() / trashFile };
 
 	bool result = Verity(std::filesystem::directory_entry(filePath)).exists ? true : false;
 
 	if(!result && !m_rOpt.silentOption)
-		std::println("Failed to restore file: \"{0}\"\nfile to restore is missing in \"{1}\"", trashFile, singleton->getWorkingTrashFileDir());
+		std::println("Failed to restore file: \"{0}\"\nfile to restore is missing in \"{1}\"", trashFile, singleton->getWorkingTrashFileDir().string());
 
 	//TODO; Needs semantic correction
 	return result;

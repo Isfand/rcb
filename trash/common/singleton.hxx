@@ -4,6 +4,7 @@
 
 #include <string>
 #include <mutex>
+#include <filesystem>
 
 namespace trash{
 
@@ -24,22 +25,22 @@ public:
 	//const bool        getVerboseOption()       const;
 	//const bool        getForceOption()         const;
 
-	const std::string getWorkingTrashDir()     const;
-	const std::string getWorkingTrashFileDir() const;
-	const std::string getWorkingTrashDataDir() const;
-	const std::string getWorkingTrashWipeDir() const;
-	const std::string getWorkingTrashWordDir() const;
+	const std::filesystem::path getWorkingTrashDir()     const;
+	const std::filesystem::path getWorkingTrashFileDir() const;
+	const std::filesystem::path getWorkingTrashDataDir() const;
+	const std::filesystem::path getWorkingTrashWipeDir() const;
+	const std::filesystem::path getWorkingTrashWordDir() const;
 	const std::string getWorkingUsername()     const;
 
 	//Mutators
 	//void setVerboseOption      (bool verboseOption);
 	//void setForceOption        (bool forceOption);
 
-	void setWorkingTrashDir    (std::string workingTrashDir);
-	void setWorkingTrashFileDir(std::string workingTrashFileDir);
-	void setWorkingTrashDataDir(std::string workingTrashDataDir);
-	void setWorkingTrashWipeDir(std::string workingTrashWipeDir);
-	void setWorkingTrashWordDir(std::string workingTrashWordDir);
+	void setWorkingTrashDir    (std::filesystem::path workingTrashDir);
+	void setWorkingTrashFileDir(std::filesystem::path workingTrashFileDir);
+	void setWorkingTrashDataDir(std::filesystem::path workingTrashDataDir);
+	void setWorkingTrashWipeDir(std::filesystem::path workingTrashWipeDir);
+	void setWorkingTrashWordDir(std::filesystem::path workingTrashWordDir);
 	void setWorkingUsername    (std::string workingTrashUsername);
 
 	//Assign
@@ -66,11 +67,11 @@ private:
 	//bool m_verboseOption{};
 	//bool m_forceOption{};
 	
-	std::string m_workingTrashDir{};
-	std::string m_workingTrashFileDir{};
-	std::string m_workingTrashDataDir{};
-	std::string m_workingTrashWipeDir{};
-	std::string m_workingTrashWordDir{}; 
+	std::filesystem::path m_workingTrashDir{};
+	std::filesystem::path m_workingTrashFileDir{};
+	std::filesystem::path m_workingTrashDataDir{};
+	std::filesystem::path m_workingTrashWipeDir{};
+	std::filesystem::path m_workingTrashWordDir{}; 
 	std::string m_workingUsername{};
 };
 

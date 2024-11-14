@@ -82,8 +82,8 @@ void Validate::file()
 			for(const auto& file : danglingFiles)
 			{
 				//WARNING: If a file with the same name exists in wipe/ it will be overwritten. file/ only contains unique names but files in wipe/ are not checked.
-				std::filesystem::rename(singleton->getWorkingTrashFileDir() + file, singleton->getWorkingTrashWipeDir() + file);          
-				std::filesystem::remove_all(singleton->getWorkingTrashWipeDir() + file);
+				std::filesystem::rename(singleton->getWorkingTrashFileDir() / file, singleton->getWorkingTrashWipeDir() / file);          
+				std::filesystem::remove_all(singleton->getWorkingTrashWipeDir() / file);
 			}
 		}  
 	}
@@ -204,6 +204,7 @@ void Validate::fillDirectorySize()
 	//Stat all files and append them onto a long long
 	//Update the directory size in the database using executeSQL().
 
+	//REVISE: This should be vector of type std::filesystem::path
 	std::vector<std::string> nullDirectoriesQuery { Database().selectDataB("SELECT file from trash WHERE filetype='directory' AND size='NULL';") };
 	
 	//prepend file/ path to each filename
@@ -211,7 +212,7 @@ void Validate::fillDirectorySize()
 				   nullDirectoriesQuery.end(), 
 				   nullDirectoriesQuery.begin(), 
 				   [](std::string& f) 
-				   { return singleton->getWorkingTrashFileDir() + f; });
+				   { return singleton->getWorkingTrashFileDir().string() + f; });
 
 	for(auto& directoryPathString : nullDirectoriesQuery)
 	{

@@ -39,8 +39,8 @@ void Erase::file(std::vector<std::string>& args)
 
 		try 
 		{
-			std::filesystem::rename(singleton->getWorkingTrashFileDir() + trashFile, singleton->getWorkingTrashWipeDir() + trashFile);
-			std::filesystem::remove_all(singleton->getWorkingTrashWipeDir() + trashFile);
+			std::filesystem::rename(singleton->getWorkingTrashFileDir() / trashFile, singleton->getWorkingTrashWipeDir() / trashFile);
+			std::filesystem::remove_all(singleton->getWorkingTrashWipeDir() / trashFile);
 		}
 		catch (std::runtime_error& e) 
 		{

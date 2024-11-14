@@ -38,20 +38,20 @@ void Delete::file(std::vector<std::string>& args)
 		if(Verity(std::filesystem::directory_entry(systemFilePath)).exists)
 		{
 			std::string mutFilename { systemFilePath.filename().string() };
-			std::filesystem::directory_entry trashEntry { singleton->getWorkingTrashFileDir() + systemFilePath.filename().string() };
+			std::filesystem::directory_entry trashEntry { singleton->getWorkingTrashFileDir() / systemFilePath.filename() };
 
 			//Need to use systemFilePath for the full path. Relativity creates issues.
 			if (!canMvFileChk(std::filesystem::directory_entry(systemFilePath)))
 			{
 				if(!m_dOpt.silentOption)
-					std::println("process execution user {} is missing write/execute permissions for parent directory of {} ", singleton->getWorkingUsername(), file);
+					std::println("process execution user {} is missing write/execute permissions for parent directory of {} ", singleton->getWorkingUsername(), systemFilePath.string());
 				continue;
 			}
 
 			if(m_dOpt.verboseOption)
 			{
 				std::println("System filepath is: {0}", systemFilePath.string());
-				std::println("Searching path: {}", singleton->getWorkingTrashFileDir() + systemFilePath.filename().string());
+				std::println("Searching path: {}", (singleton->getWorkingTrashFileDir() / systemFilePath.filename()).string());
 			}
 
 			//To improve time. Reverse the logic of these two. if and else ifs. As the second is more common
@@ -59,7 +59,7 @@ void Delete::file(std::vector<std::string>& args)
 			{
 				// Print entry is a dupe
 				if(m_dOpt.verboseOption)
-					std::println("Existing entry found in {0} DIR: {1}", g_progName, singleton->getWorkingTrashFileDir());
+					std::println("Existing entry found in {0} DIR: {1}", g_progName, singleton->getWorkingTrashFileDir().string());
 
 				//Can make this into a else while instead of the else if below? Would have to swap the declaration and definitions inside
 				do
@@ -70,7 +70,7 @@ void Delete::file(std::vector<std::string>& args)
 							std::cerr << "delete failed. cannot rename file. unknown format: " << mutFilename << "\n";
 						continue;
 					}
-					trashEntry.assign(singleton->getWorkingTrashFileDir() + mutFilename);
+					trashEntry.assign(singleton->getWorkingTrashFileDir() / mutFilename);
 #ifndef NDEBUG
 					std::println("Checking new name in DIR: {}", trashEntry.path().string());
 #endif
@@ -81,7 +81,7 @@ void Delete::file(std::vector<std::string>& args)
 			{
 				//Print if unique
 				if(m_dOpt.verboseOption)
-					std::println("Creating new entry in {0} DIR: {1}", g_progName, singleton->getWorkingTrashFileDir());
+					std::println("Creating new entry in {0} DIR: {1}", g_progName, singleton->getWorkingTrashFileDir().string());
 			}
 			else
 			{
@@ -100,8 +100,8 @@ void Delete::file(std::vector<std::string>& args)
 				//Checks for read perms on directory, which is needed in order to iterate through it to save its size.
 				//Also checks for noDirSizeOption so the message doesn't print when using the option
 				if (!m_dOpt.noDirSizeOption && 
-					!canReadDirChk(std::filesystem::directory_entry(systemFilePath.string())) &&
-					Verity(std::filesystem::directory_entry(systemFilePath.string())).type ==
+					!canReadDirChk(std::filesystem::directory_entry(systemFilePath)) &&
+					Verity(std::filesystem::directory_entry(systemFilePath)).type ==
 					std::filesystem::file_type::directory) 
 				{
 					if(!m_dOpt.silentOption)
@@ -118,14 +118,14 @@ void Delete::file(std::vector<std::string>& args)
 				continue;
 			}
 //**********
-			if(aci::Stat(systemFilePath.string().c_str()).st_dev() == aci::Stat(singleton->getWorkingTrashDir().c_str()).st_dev())
+			if(aci::Stat(systemFilePath.string().c_str()).st_dev() == aci::Stat(singleton->getWorkingTrashDir().string().c_str()).st_dev())
 			{
 				if(m_dOpt.verboseOption)
 					std::println("local device detected");
 
 				try
 				{
-					std::filesystem::rename(systemFilePath, singleton->getWorkingTrashFileDir() + mutFilename);
+					std::filesystem::rename(systemFilePath, singleton->getWorkingTrashFileDir() / mutFilename);
 				}
 				catch(const std::runtime_error& e)
 				{
@@ -145,7 +145,7 @@ void Delete::file(std::vector<std::string>& args)
 				try
 				{
 					//Get device ID of getWorkingTrashDir and compare it to the file argument. If it's not the same. Then you are accessing an external device.
-					externRename(systemFilePath, (singleton->getWorkingTrashFileDir() + mutFilename));
+					externRename(systemFilePath, (singleton->getWorkingTrashFileDir() / mutFilename));
 				}
 				catch(const std::runtime_error& e)
 				{
@@ -322,7 +322,7 @@ bool Delete::has_trailing_slash(const std::filesystem::path& path)
 
 	std::string path_str = path.string();
 	// Check if the last character is a forward slash or backslash for ntfs.
-	return !path_str.empty() && (path_str.back() == std::filesystem::path::preferred_separator);
+	return !path_str.empty() && (path_str.back() == static_cast<char>(std::filesystem::path::preferred_separator));
 }
 
 std::filesystem::path Delete::remove_trailing_slash(const std::filesystem::path& path)
