@@ -23,9 +23,9 @@ private:
 	std::string m_workingUsername{};
 	std::string m_workingConfDir{};
 	
-	void envVar();
-	void envDir();
-	void envConf();
+	void var();
+	void dir();
+	void conf();
 	void setSharedEnv();
 	// void initEnv();
 };
