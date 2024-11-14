@@ -5,7 +5,7 @@
 #include "env.hxx"
 #include "globals.hxx"
 
-//TEMPORARY: Move to ACI.
+//TEMPORARY: USE ACI in future.
 #if defined(__unix__) || defined(__APPLE__)
 const char* HOME = "HOME";
 const char* USER = "USER";
