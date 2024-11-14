@@ -4,7 +4,9 @@
 
 Decorated log and release notes: https://github.com/Isfand/trash/releases/tag/v0.9.2
 
-
+- REVISION: Changed Env directories to std::filesystem::path from std::string.
+- REVISION: Now using std::filesystem::path::preferred_separator instead of user code macros to determine platform delimiter.
+- CORRECTION: Singleton::getWorkingTrashDir() now returns m_workingTrashDir instead of m_workingTrashDataDir.
 
 ----------------------------------------------------------------------
  VERSION 0.9.1 (13-11-2024)
