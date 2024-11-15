@@ -18,9 +18,26 @@ WIN32: **.\config-init.ps1**
 
 **bdep update -a**
 
-#Install not yet implemented. Follow the generated symlink. You can instead manually cp the generated executable binary to /usr/bin/ or /usr/local/bin/
+This should build all initialized build configurations. \
+To list all build configs, type: `bdep config list` \
+To clean all build configs and dependencies recursively, type: `bdep clean -a -r` \
+To update a specific config you can do: `bdep update @<config-name>` \
+To clean a specific config you can do: `bdep update @<config-name>`
 
-POSIX man pages can also be manually compressed and copied over to relevant paths.
+## **Install**
+
+### POSIX:
+cd into your release target build configuration directory. E.G: `cd ../trash-x64-posix-llvm-release`
+
+And type: \
+`b install config.cxx.loptions="-L/usr/local/lib -Wl,-rpath,/usr/local/lib" config.install.root="/usr/local/" config.install.sudo="sudo"`
+
+To uninstall just replace install with uninstall for the command above. 
+
+This should work on any posix compliant platform.
+
+### WIN32:
+WIP
 
 ## **basic usage:**
 *Note, '--help' option changes message when applied after a primary command:
