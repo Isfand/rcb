@@ -60,7 +60,7 @@ Contains files used for IPC (Inter-Process Communication).
 The following variables that can be globally accessed immutably and can only be set once while also having a single instance of access.
 
 <pre>
-workingTrashDir     | Defaults to $HOME/.trash/ or TRASH_DIR
+workingTrashDir     | Defaults to $HOME/.trash/ or use TRASH_DIR
 workingTrashFileDir | file/ location
 workingTrashDataDir | data/ location
 workingTrashWipeDir | wipe/ location
