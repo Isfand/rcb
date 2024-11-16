@@ -1,4 +1,14 @@
 ----------------------------------------------------------------------
+ VERSION 0.9.3 (16-11-2024)
+----------------------------------------------------------------------
+
+Decorated log and release notes: https://github.com/Isfand/trash/releases/tag/v0.9.3
+
+- CORRECTION: POSIX man pages now use the correct extension of "*.1" instead of "*.man".
+- UPDATE: Top-level buildfile now includes man1{} and new files inside doc{}.
+- UPDATE: Top-level README.md now includes install instructions for POSIX platforms and more build instructions.
+
+----------------------------------------------------------------------
  VERSION 0.9.2 (14-11-2024)
 ----------------------------------------------------------------------
 
@@ -7,7 +17,7 @@ Decorated log and release notes: https://github.com/Isfand/trash/releases/tag/v0
 - REVISION: Changed Env directories to std::filesystem::path from std::string.
 - REVISION: Now using std::filesystem::path::preferred_separator instead of user code macros to determine platform directory delimiter.
 - CORRECTION: Singleton::getWorkingTrashDir() now returns m_workingTrashDir instead of m_workingTrashDataDir.
-- ADDED: Linux mingw cross-compilation targeting windows is now included in config-init.sh.
+- ADDITION: Linux mingw cross-compilation targeting windows is now included in config-init.sh.
 - BUGFIX: TRASH_DIR no longer requires ending with a directory delimiter.
 
 ----------------------------------------------------------------------
