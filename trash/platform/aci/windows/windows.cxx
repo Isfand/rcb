@@ -17,18 +17,20 @@ namespace aci{
 
 Stat::Stat(const char* filePath)
 {
-	HANDLE handleFile = CreateFileA(
-		filePath,
-		GENERIC_READ,
-		FILE_SHARE_READ,
-		NULL,
-		OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL,
-		NULL
-	);
+	//HANDLE handleFile = CreateFileA(
+	//	filePath,
+	//	GENERIC_READ,
+	//	FILE_SHARE_READ,
+	//	NULL,
+	//	OPEN_EXISTING,
+	//	FILE_ATTRIBUTE_NORMAL,
+	//	NULL
+	//);
 
-	GetFileAttributesExA(filePath, GetFileExInfoStandard, &m_fileAttributeInfo);
-	GetFileInformationByHandle(handleFile, &m_fileHandleInfo);
+	//GetFileAttributesExA(filePath, GetFileExInfoStandard, &m_fileAttributeInfo);
+	//GetFileInformationByHandle(handleFile, &m_fileHandleInfo);
+
+	//Use _stat instead as it doesn't follow symbolic links by default on windows.
 }
 
 unsigned long long Stat::st_atim()    const
