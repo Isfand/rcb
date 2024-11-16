@@ -4,19 +4,20 @@ Tested on Linux & FreeBSD. Windows is WIP.
 
 ## **Pre-requisites:**
 *Requires the build2-toolchain to be pre-installed. See https://build2.org/install.xhtml \
-*Requires c++23 supporting compiler.
+*Requires c++23 supporting compiler. \
+*Optional: For building compilation database use latest [staged](https://stage.build2.org/0/) toolchain.
 
 ## **Build Instructions:**
 
-mkdir trash.d \
-cd trash.d \
-git clone https://github.com/Isfand/trash.git \
-cd trash/
+**`mkdir trash.d`** \
+**`cd trash.d`** \
+**`git clone https://github.com/Isfand/trash.git`** \
+**`cd trash`**
 
-POSIX: **./config-init.sh**\
-WIN32: **.\config-init.ps1**
+POSIX: **`./config-init.sh`**\
+WIN32: **`.\config-init.ps1`**
 
-**bdep update -a**
+**`bdep update -a`**
 
 This should build all initialized build configurations. \
 To list all build configs, type: `bdep config list` \
