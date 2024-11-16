@@ -21,8 +21,8 @@ WIN32: **.\config-init.ps1**
 This should build all initialized build configurations. \
 To list all build configs, type: `bdep config list` \
 To clean all build configs and dependencies recursively, type: `bdep clean -a -r` \
-To update a specific config you can do: `bdep update @<config-name>` \
-To clean a specific config you can do: `bdep update @<config-name>`
+To update a specific config: `bdep update @<config-name>` \
+To clean a specific config: `bdep update @<config-name>`
 
 ## **Install**
 
