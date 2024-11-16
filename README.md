@@ -35,7 +35,7 @@ And type: \
 
 To uninstall just replace install with uninstall for the command above. 
 
-This should work on any posix compliant platform.
+This should work on any POSIX compliant platform.
 
 ### WIN32:
 WIP
