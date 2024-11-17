@@ -40,7 +40,7 @@ This should work on any POSIX compliant platform.
 ### WIN32:
 WIP
 
-## **basic usage:**
+## **Basic usage:**
 *Note, '--help' option changes message when applied after a primary command:
 <pre>
 trash --version | 
