@@ -1,9 +1,12 @@
 Copyright / Contributor License Agreement
 
-Any code you submit will become part of the repository and be distributed under the repository's license.
-By submitting code to the project you agree that the code is your work and that you can give it to the project.
+Any work you submit will become part of the repository and be distributed under the repository's license.
+By submitting your work to the project you warrant that the contribution is your original work and that you can give it to the project.
 
-You also agree by submitting your code that you grant all transferrable rights to the code to the project lead
-maintainer, including for example re-licensing the code, modifying the code, and distributing it in source or
+Work is anything including, but not limited to:
+code, writing, graphics, audio or other materials submitted for inclusion in the project.
+
+You also warrant by submitting your contribution that you grant all transferable rights to the work to the project lead
+maintainer, including for example re-licensing the work, modifying the work, and distributing it in source or
 binary forms. Specifically, this includes a requirement that you assign copyright to the project lead maintainer. 
-For this reason, do not modify any copyright statements in files in any PRs.
+For this reason, do not modify any copyright statements in files in any pull request(s).
