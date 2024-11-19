@@ -10,3 +10,5 @@ Note: When changing version, change version inside:
 	update docs/CHANGELOG.txt
 
 Note: To install use 'b install config.cxx.loptions="-L/usr/local/lib -Wl,-rpath,/usr/local/lib" config.install.root="/usr/local/" config.install.sudo="sudo"'
+
+Note: To static link release config `bdep update @x64-posix-gcc-release.config config.bin.lib=static config.cxx="clang++ -O2 -DNDEBUG -static"`
