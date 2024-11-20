@@ -27,7 +27,7 @@ This should build all initialized build configurations. \
 To list all build configs, type: `bdep config list` \
 To clean all build configs and dependencies recursively, type: `bdep clean -a -r` \
 To update a specific config: `bdep update @<config-name>` \
-To clean a specific config: `bdep update @<config-name>`
+To clean a specific config: `bdep clean @<config-name>`
 
 ## **Install**
 
