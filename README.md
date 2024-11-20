@@ -1,8 +1,12 @@
-# **trash**
+# **Trash Manager**
 
-Tested on Linux & FreeBSD. Windows is WIP.
+Tested on Linux & FreeBSD. Windows is WIP. \
+See [docs/](docs/) for more information.
 
-## **Pre-requisites:**
+## **Pre-built binaries:**
+[Release](https://github.com/Isfand/trash/tags) binaries are provided for linux and FreeBSD.
+
+## **Build Pre-requisites:**
 *Requires the build2-toolchain to be pre-installed. See https://build2.org/install.xhtml \
 *Requires c++23 supporting compiler. \
 Optional: For building compilation database use latest [staged](https://stage.build2.org/0/) toolchain.
