@@ -69,7 +69,7 @@ workingUsername     | Environment variable $USER
 </pre>
 
 # Commands
-The primary commands should be parsed **independently**, every command should be parsed by their respective parsers that set options that are **local** to the commands, with the **exception** of having internal shared utilities, global environment for **directories**, **config** and the **user** who executed the program. The general idea is to have the program behave similar to a program like busybox.
+The primary commands should be parsed **independently**, every command should be parsed by their respective parsers that set options that are **local** to the commands, with the **exception** of having internal shared utilities, global environment for **directories**, **config** and the **user** who executed the program. The general idea is to make the program have usable utilities, like, for example, BusyBox.
 
 Parsing the arguments from the **main entry point** should involve **redirecting** the arguments depending on what **command** is entered. As you should only use one primary command per program execution.
 
