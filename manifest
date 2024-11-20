@@ -2,7 +2,7 @@
 name: trash
 version: 0.9.3
 language: c++
-summary: trash C++ executable
+summary: Trash Manager C++ executable
 license: Eclipse Public License 2.0
 description-file: README.md
 url: https://github.com/Isfand/trash/
