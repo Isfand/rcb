@@ -11,4 +11,4 @@ Note: When changing version, change version inside:
 
 Note: To install use 'b install config.cxx.loptions="-L/usr/local/lib -Wl,-rpath,/usr/local/lib" config.install.root="/usr/local/" config.install.sudo="sudo"'
 
-Note: To override release config to static link in a musl environment `bdep update @x64-posix-gcc-release.config config.bin.lib=static config.cxx="clang++ -O2 -DNDEBUG -static"`
+Note: To override release config to static link in a non-glibc environment `bdep update @x64-posix-gcc-release.config config.bin.lib=static config.cxx="clang++ -O2 -DNDEBUG -static"`
