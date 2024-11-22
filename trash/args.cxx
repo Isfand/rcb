@@ -253,7 +253,7 @@ void Args::run()
 	/* SETUP */
 	// Order of execution matters
 	Args::init();
-	Args::setSharedOptions();
+	// Args::setSharedOptions();
 	Env _; // Get/Set environment variables
 	Database().createTable(); // Create default table
 
