@@ -37,7 +37,7 @@ cd into your release target build configuration directory. E.G: `cd ../trash-x64
 And type: \
 `b install config.cxx.loptions="-L/usr/local/lib -Wl,-rpath,/usr/local/lib" config.install.root="/usr/local/" config.install.sudo="sudo"`
 
-To uninstall just replace install with uninstall for the command above. 
+To **uninstall** just replace `install` with `uninstall` for the command above. 
 
 This should work on any POSIX compliant platform.
 
