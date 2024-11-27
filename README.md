@@ -4,7 +4,7 @@ Tested on Linux & FreeBSD. Windows is WIP. \
 See [docs/](docs/) for more information.
 
 ## **Pre-built binaries:**
-[Release](https://github.com/Isfand/trash/tags) binaries are provided for linux and FreeBSD.
+[Release](https://github.com/Isfand/trash/tags) binaries are provided for Linux and FreeBSD.
 
 ## **Build Pre-requisites:**
 *Requires the build2-toolchain to be pre-installed. See https://build2.org/install.xhtml \
