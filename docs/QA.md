@@ -17,7 +17,7 @@ E.G Gnome has an expunged/ folder, which is not part of the spec and has no dire
 KDE on the other hand follows it more closely. In-fact they both had their own trash mechanisms originally before the XDG specification, which is why there are differences.
 
 1.4. The design intention is to be platform agnostic. XDG's specs generally assume linux.
-As it currently stands v1 is POSIX compliant, however there is no guarantee if a newer version in the future decides to change its behavior to something linux specific. Eventually this program will come to Windows too.
+As it currently stands v1 is POSIX compliant, however there is no guarantee if a newer version in the future decides to change its behavior to something linux specific. This program works on Windows too.
 
 
 ## 2. Why not use an existing trash cli program.
