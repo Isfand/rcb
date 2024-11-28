@@ -43,7 +43,7 @@ void Env::var()
 	m_workingUsername = (std::string(std::getenv(USER)));
 		
 	if(std::getenv("TRASH_DIR") == NULL) // Prevent segmentation fault
-		m_workingTrashDir = (std::filesystem::path(std::getenv("HOME")) / (std::string(".") + g_progName)).string();
+		m_workingTrashDir = (std::filesystem::path(std::getenv(HOME)) / (std::string(".") + g_progName)).string();
 	else
 		m_workingTrashDir = (std::string(std::getenv("TRASH_DIR")));
 	//WARNING: windows uses backslash \ instead of forward slash / for directories. Both are compatable. But mixing can be an issue.
