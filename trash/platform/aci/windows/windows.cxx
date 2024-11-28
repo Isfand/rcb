@@ -5,6 +5,8 @@
 #include <string>
 #include <memory>
 #include <print>
+#include <sstream>
+#include <iomanip>
 
 #include <windows.h>
 #include <sddl.h>
