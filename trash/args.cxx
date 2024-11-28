@@ -252,6 +252,7 @@ void Args::run()
 {
 	/* SETUP */
 	// Order of execution matters
+
 	Args::init();
 	// Args::setSharedOptions();
 	Env _; // Get/Set environment variables
