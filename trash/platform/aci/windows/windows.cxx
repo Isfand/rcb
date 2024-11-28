@@ -4,8 +4,6 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include <sstream>
-#include <iomanip>
 #include <print>
 
 #include <windows.h>
@@ -31,6 +29,9 @@ Stat::Stat(const char* filePath)
 	//GetFileInformationByHandle(handleFile, &m_fileHandleInfo);
 
 	//Use _stat instead as it doesn't follow symbolic links by default on windows.
+
+	if (_stat(filePath, &m_stat) == -1)
+		throw std::runtime_error("Error getting file information");
 }
 
 unsigned long long Stat::st_atim()    const
@@ -51,15 +52,20 @@ unsigned long long Stat::st_ctim()    const
 };
 unsigned long long Stat::st_dev() const
 {
-	return 0;
+	unsigned long long device = m_stat.st_dev;
+	return device;
 };
 unsigned long long Stat::st_dev_major() const
 {
-	return 0;
+	//No Major macro on windows.
+	unsigned long long majorNum = (m_stat.st_dev);
+	return majorNum;
 };
 unsigned long long Stat::st_dev_minor() const
 {
-	return 0;
+	//No Minor macro on windows.
+	unsigned long long minorNum = (m_stat.st_dev);
+	return minorNum;
 }
 unsigned long long Stat::st_gid()     const
 {
@@ -67,11 +73,11 @@ unsigned long long Stat::st_gid()     const
 };      
 unsigned long long Stat::st_ino()     const
 {
-	return 0;
+	return m_stat.st_ino;
 };      
 unsigned long long Stat::st_mode()    const
 {
-	return 0;
+	return m_stat.st_mode;
 };      
 unsigned long long Stat::st_mtim()    const
 {

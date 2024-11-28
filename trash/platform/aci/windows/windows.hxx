@@ -32,8 +32,10 @@ public:
 	unsigned long long st_size()      const;
 	unsigned long long st_uid()       const;
 private:
-	WIN32_FILE_ATTRIBUTE_DATA m_fileAttributeInfo; //stat
-	BY_HANDLE_FILE_INFORMATION m_fileHandleInfo; //device
+	//WIN32_FILE_ATTRIBUTE_DATA m_fileAttributeInfo; //stat
+	//BY_HANDLE_FILE_INFORMATION m_fileHandleInfo; //device
+
+	struct _stat m_stat;
 };
 
 class Chown
