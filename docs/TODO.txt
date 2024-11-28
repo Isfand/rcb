@@ -1,6 +1,6 @@
 ToDo:
 -ADD restore overwrite/rename with R/r O/o N/n. uppercase is ALL, lowercase is singular.
--ADD restore option to restore parent directories if they no longer exist if permissable.
+-ADD restore option to restore parent directories if they no longer exist if permissible.
 -Port to windows.
 -Implement --human-readable for list
 -Implement PID_LOCK in /word
