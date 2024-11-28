@@ -1,6 +1,6 @@
 # **Trash Manager**
 
-Tested on Linux & FreeBSD. Windows is WIP. \
+Tested on Linux, FreeBSD & Windows. \
 See [docs/](docs/) for more information.
 
 ## **Pre-built binaries:**
