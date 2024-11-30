@@ -1,5 +1,9 @@
 # **Trash Manager**
 
+## **Summary**
+
+This project is a cross-platform file trashing utility for the terminal that can reverse file deletion.
+
 Tested on Linux, FreeBSD & Windows. \
 See [docs/](docs/) for more information.
 
