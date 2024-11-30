@@ -31,6 +31,7 @@ Stat::Stat(const char* filePath)
 	//GetFileInformationByHandle(handleFile, &m_fileHandleInfo);
 
 	//Use _stat instead as it doesn't follow symbolic links by default on windows.
+	//Update: It does follow symlinks but only by checking if the target path exists. If not -1 is returned. Needs new implementation.
 
 	if (_stat(filePath, &m_stat) == -1)
 		throw std::runtime_error("Error getting file information");
