@@ -27,11 +27,11 @@ private:
 	std::string m_dataBaseName           {std::format("{}.sqlite3", g_progName)}; //{"trash.sqlite3"}; //Database filename
 
 	const char* m_fileIdColumn           {"id"};            //SQL auto increment
-	const char* m_fileNameColumn         {"file"};          //refers to what's inside of trash/file
-	const char* m_filePathColumn         {"path"};          //Absolute Path
+	const char* m_fileNameColumn         {"file"};          //Refers to filename to be inside of .trash/file/
+	const char* m_filePathColumn         {"path"};          //Complete filesystem path
 	const char* m_fileTimestampColumn    {"timestamp"};     //Unix Timestamp since epoch
 	const char* m_fileSizeColumn         {"size"};          //Bytes
-	const char* m_fileTypeColumn         {"filetype"};      //filesystem file type
+	const char* m_fileTypeColumn         {"filetype"};      //Filesystem file type
 	const char* m_fileUserColumn         {"user"};          //The user who executed the command
 	const char* m_fileExecutionIDColumn  {"execution"};     //Execution id of all files deleted in the same run
 };
