@@ -2,7 +2,7 @@
 name: trash
 version: 0.9.3
 language: c++
-project: Trash Manager
+project: Trash_Manager
 summary: File trashing utility for the terminal
 license: Eclipse Public License 2.0
 description-file: README.md
