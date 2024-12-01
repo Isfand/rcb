@@ -70,12 +70,6 @@ void Env::dir()
 	   !std::filesystem::exists(m_workingTrashWipeDir) ||
 	   !std::filesystem::exists(m_workingTrashWordDir))
 	{
-		// Reduce to one line. If possible.
-		//std::filesystem::create_directories(m_workingTrashFileDir);
-		//std::filesystem::create_directories(m_workingTrashDataDir);
-		//std::filesystem::create_directories(m_workingTrashWipeDir);
-		//std::filesystem::create_directories(m_workingTrashWordDir);
-
 		for (const auto& dir : {m_workingTrashFileDir, 
 								m_workingTrashDataDir, 
 								m_workingTrashWipeDir, 
@@ -103,12 +97,5 @@ void Env::setSharedEnv()
 	singleton->setWorkingUsername    (m_workingUsername);
 	//Add conf env
 }
-
-// void Env::initEnv()
-// {
-//     envVar();
-//     envDir();
-//     envConf();
-// }
 
 } // namespace trash
