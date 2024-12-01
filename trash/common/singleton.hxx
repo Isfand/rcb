@@ -30,7 +30,7 @@ public:
 	const std::filesystem::path getWorkingTrashDataDir() const;
 	const std::filesystem::path getWorkingTrashWipeDir() const;
 	const std::filesystem::path getWorkingTrashWordDir() const;
-	const std::string getWorkingUsername()     const;
+	const std::string getWorkingUsername()               const;
 
 	//Mutators
 	//void setVerboseOption      (bool verboseOption);
