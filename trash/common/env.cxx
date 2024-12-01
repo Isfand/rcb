@@ -28,8 +28,6 @@ void Env::var()
 {
 	//FUTURE:
 	//TODO. Optimize this code to use init if statement. Ideally all connected.
-	//TODO. use pw_homedir instead of getenv as it is faster without lookup and it's intention is to be platform agnostic.
-	//TODO. Instead use platform/aci.hxx for the UID and pwnam to get USER.
 	
 	if(std::getenv(HOME) == NULL)
 	{
@@ -46,9 +44,6 @@ void Env::var()
 		m_workingTrashDir = (std::filesystem::path(std::getenv(HOME)) / (std::string(".") + g_progName)).string();
 	else
 		m_workingTrashDir = (std::string(std::getenv("TRASH_DIR")));
-	//WARNING: windows uses backslash \ instead of forward slash / for directories. Both are compatable. But mixing can be an issue.
-	//UPDATE: Switched to using std::filesystem::path::preferred_separator instead of hardcoded slash '/'
-
 }
 
 void Env::dir()
