@@ -24,7 +24,7 @@ As it currently stands v1 is POSIX compliant, however there is no guarantee if a
 2.1. I made this program for my own use cases as nothing suitable at the time existed. I found it useful and shared it.
 
 trash-cli is non-native with a requirement on python and follows the XDG trash specification. Closest alternatives would have been 'trashy' or 'gtrash', but they have their own issues. 
-E.G mac support:\
+E.G mac or windows support:\
 https://github.com/oberblastmeister/trashy \
 https://github.com/umlx5h/gtrash
 
