@@ -4,11 +4,13 @@ version: 0.9.3
 type: exe
 language: c++
 summary: File trashing utility for the terminal
+topics: trash-manager, trashing, trashcan, recycling-bin
 license: Eclipse Public License 2.0
 description-file: README.md
 url: https://github.com/Isfand/trash
 #email: you@example.com
 #build-error-email: you@example.com
+requires: c++23
 depends: * build2 >= 0.16.0
 depends: * bpkg >= 0.16.0
 depends: libsqlite3 ^3.45.3+1
