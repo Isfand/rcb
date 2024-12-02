@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+#include <sys/stat.h> //Needed for mingw
 #include <windows.h>
 
 namespace aci{
