@@ -8,7 +8,7 @@ namespace trash{
 
 //Project
 inline const char* g_progName{"trash"};
-inline const char* g_progVersion{"0.9.3"};
+inline const char* g_progVersion{"0.9.4"};
 
 //Singleton
 inline Singleton* singleton = Singleton::instance();
