@@ -41,15 +41,15 @@ Stat::Stat(const char* filePath)
 unsigned long long Stat::st_atim()    const
 {
 	return 0;
-};      
+};
 unsigned long long Stat::st_blksize() const
 {
 	return 0;
-};      
+};
 unsigned long long Stat::st_blocks()  const
 {
 	return 0;
-};      
+};
 unsigned long long Stat::st_ctim()    const
 {
 	return 0;
@@ -74,31 +74,31 @@ unsigned long long Stat::st_dev_minor() const
 unsigned long long Stat::st_gid()     const
 {
 	return 0;
-};      
+};
 unsigned long long Stat::st_ino()     const
 {
 	return m_stat.st_ino;
-};      
+};
 unsigned long long Stat::st_mode()    const
 {
 	return m_stat.st_mode;
-};      
+};
 unsigned long long Stat::st_mtim()    const
 {
 	return 0;
-};      
+};
 unsigned long long Stat::st_nlink()   const
 {
 	return 0;
-};      
+};
 unsigned long long Stat::st_rdev()    const
 {
 	return 0;
-};      
+};
 unsigned long long Stat::st_size()    const
 {
 	return 0;
-};      
+};
 unsigned long long Stat::st_uid()     const
 {
 	return 0;
