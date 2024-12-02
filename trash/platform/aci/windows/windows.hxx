@@ -15,7 +15,7 @@ namespace aci{
 class Stat
 {
 public:
-	Stat(const char* str);
+	Stat(const char* filePath);
 
 	unsigned long long st_atim()      const;
 	unsigned long long st_blksize()   const;
