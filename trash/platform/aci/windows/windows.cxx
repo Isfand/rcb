@@ -8,6 +8,7 @@
 #include <sstream>
 #include <iomanip>
 
+#include <sys/stat.h> //Needed for mingw
 #include <windows.h>
 #include <sddl.h>
 
