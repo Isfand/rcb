@@ -1,0 +1,7 @@
+: 1
+name: trash
+version: 0.9.4
+type: exe
+language: c++
+summary: File trashing utility for the terminal
+license: Eclipse Public License 2.0
