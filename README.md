@@ -8,7 +8,7 @@ Tested on Linux, FreeBSD & Windows. \
 See [docs/](docs/) for more information.
 
 ## **Pre-built binaries:**
-[Release](https://github.com/Isfand/trash/tags) binaries are provided for Linux and FreeBSD.
+[Release](https://github.com/Isfand/trash/tags) binaries are provided for Linux, FreeBSD & Windows.
 
 ## **Build Pre-requisites:**
 *Requires the build2-toolchain to be pre-installed. See https://build2.org/install.xhtml \
