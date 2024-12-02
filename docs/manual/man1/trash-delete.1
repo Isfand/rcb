@@ -12,6 +12,8 @@ trash-delete
 \fBtrash delete\fP [\fIarguments\fP]
 .br
 .SH \fBDESCRIPTION\fR
+The delete command allows for file deletion. Upon use it will save essential details into .trash/data/trash.sqlite3 about the file before moving it into the .trash/file/ directory. If an existing file entry is found with the same filename it will automatically increment it with a number to prevent filename collisions before moving.
+.SH \fBDELETE OPTIONS\fR
 .PP
 \fBdelete \<filename\>\fP
 .br
