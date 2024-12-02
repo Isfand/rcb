@@ -6,7 +6,8 @@ Decorated log and release notes: https://github.com/Isfand/trash/releases/tag/v?
 
 - CORRECTION: Second-level project buildfile now excludes platform specific directories the build2 intended way.
 - CORRECTION: env.cxx now uses the correct HOME variable instead of "HOME" literal.
-- UPDATE: Program now works on Windows.
+- UPDATE: Program now works on Windows, but cannot delete broken symlinks.
+- UPDATE: Added new descriptions into man pages.
 
 ----------------------------------------------------------------------
  VERSION 0.9.3 (16-11-2024)
