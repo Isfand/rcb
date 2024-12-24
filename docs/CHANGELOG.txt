@@ -4,6 +4,8 @@
 
 Decorated log and release notes: https://github.com/Isfand/trash/releases/tag/v?.?.?
 
+- UPDATE: Created tools/ directory
+
 ----------------------------------------------------------------------
  VERSION 0.9.4 (02-12-2024)
 ----------------------------------------------------------------------
