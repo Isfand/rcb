@@ -200,5 +200,5 @@ Prevent printing anything with auto default(s).\
 Do not ask the user for input. Perform the action(s) requested.
 
 ---
-#### Copyright © 2024-2024, Isfand Mirza
+#### Copyright © 2024-2025, Isfand Mirza
 ---
