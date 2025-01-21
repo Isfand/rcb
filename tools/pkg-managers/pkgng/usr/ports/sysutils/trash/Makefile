@@ -7,18 +7,26 @@ MASTER_SITES=   https://github.com/Isfand/trash
 COMMENT=        File trashing utility for the terminal
 
 LICENSE=        Eclipse Public License 2.0
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=           build2
+USES=           compiler:C++23-lang
 
 # Set build2-specific arguments
-BUILD_DEPENDS=  build2:devel/build2 \
-				sqlite3:databases/sqlite3
+BUILD_DEPENDS=  build2>=0:devel/build2
+LIB_DEPENDS=	libsqlite3.so:databases/sqlite3
 
 do-build:
-    cd ${WRKSRC} && bdep init -C @x64-posix-llvm-release cc config.config.load=tools/build-configs/posix-llvm-release.config && bdep sync "?sys:libsqlite3"
+	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${B_CMD} configure ${B_ARGS} \
+		config.cxx=${CXX} \
+		config.cxx.coptions="${CXXFLAGS}" \
+		config.cxx.loptions="${LDFLAGS} ${STRIP}" \
+		config.bin.lib=shared \
+		config.bin.rpath=${PREFIX}/lib \
+		config.install.chroot=${STAGEDIR} \
+		config.install.root=${PREFIX}
 
 do-install:
-    cd ${WRKSRC} && b install config.cxx.loptions="-L/usr/local/lib -Wl,-rpath,/usr/local/lib" config.install.root="/usr/local" config.install.sudo="sudo"
+    cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} b install -V -j ${MAKE_JOBS_NUMBER} -J ${MAKE_JOBS_NUMBER}
 
 # Metadata
 #PLIST_FILES=    bin/trash
