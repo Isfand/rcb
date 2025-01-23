@@ -1,6 +1,6 @@
 bin/trash
-local/share/man/man1/trash.1
-local/share/man/man1/trash-delete.1
-local/share/man/man1/trash-restore.1
-local/share/man/man1/trash-list.1
-local/share/man/man1/trash-validate.1
+share/man/man1/trash.1.gz
+share/man/man1/trash-delete.1.gz
+share/man/man1/trash-restore.1.gz
+share/man/man1/trash-list.1.gz
+share/man/man1/trash-validate.1.gz
