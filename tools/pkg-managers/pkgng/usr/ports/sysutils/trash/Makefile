@@ -1,19 +1,24 @@
 PORTNAME=       trash
 PORTVERSION=    0.9.4
 CATEGORIES=     sysutils
-MASTER_SITES=   https://github.com/Isfand/trash
+MASTER_SITES=   https://github.com/Isfand/trash/archive/refs/tags/
+DISTFILES=      v0.9.4.tar.gz
+WWW=            https://github.com/Isfand/trash
 
-#MAINTAINER=     you@example.com
+MAINTAINER=     ports@FreeBSD.org
 COMMENT=        File trashing utility for the terminal
 
-LICENSE=        Eclipse Public License 2.0
+LICENCE=        EPLv2
+LICENSE_NAME=   Eclipse Public License 2.0
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=           compiler:C++23-lang
+USES=           compiler:c++23-lang
 
-# Set build2-specific arguments
 BUILD_DEPENDS=  build2>=0:devel/build2
 LIB_DEPENDS=	libsqlite3.so:databases/sqlite3
+
+B_CMD=		${LOCALBASE}/bin/b
+B_ARGS=		-V -j ${MAKE_JOBS_NUMBER} -J ${MAKE_JOBS_NUMBER}
 
 do-build:
 	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${B_CMD} configure ${B_ARGS} \
@@ -26,7 +31,6 @@ do-build:
 		config.install.root=${PREFIX}
 
 do-install:
-    cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} b install -V -j ${MAKE_JOBS_NUMBER} -J ${MAKE_JOBS_NUMBER}
+	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${B_CMD} install ${B_ARGS}
 
-# Metadata
-#PLIST_FILES=    bin/trash
+.include <bsd.port.mk>
