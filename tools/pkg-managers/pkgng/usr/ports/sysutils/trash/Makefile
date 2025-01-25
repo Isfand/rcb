@@ -1,8 +1,8 @@
 PORTNAME=       trash
-PORTVERSION=    0.9.4
+PORTVERSION=    0.10.0
 CATEGORIES=     sysutils
 MASTER_SITES=   https://github.com/Isfand/trash/archive/refs/tags/
-DISTFILES=      v0.9.4.tar.gz
+DISTFILES=      v0.10.0.tar.gz
 WWW=            https://github.com/Isfand/trash
 
 MAINTAINER=     ports@FreeBSD.org
