@@ -18,22 +18,26 @@ List::List(ListOptions& lOpt) : m_lOpt{lOpt}
 {
 #ifndef NDEBUG
 	std::println("Inside List:");
-	std::println("defaultOption is:    {}", m_lOpt.defaultOption);
-	std::println("allOption is:        {}", m_lOpt.allOption);
-	std::println("totalSizeOption is:  {}", m_lOpt.totalSizeOption);
-	std::println("totalCountOption is: {}", m_lOpt.totalCountOption);
-	std::println("verboseOption is:    {}", m_lOpt.verboseOption); //Unused
-	std::println("noFormatOption is:   {}", m_lOpt.noFormatOption);
-	std::println("pastOption is:       {}", m_lOpt.pastOption);
-	std::println("previousOption is:   {}", m_lOpt.previousOption);
-	std::println("sqlOption is:        {}", m_lOpt.sqlOption);
+	std::println("defaultOption is:       {}", m_lOpt.defaultOption);
+	std::println("allOption is:           {}", m_lOpt.allOption);
+	std::println("totalSizeOption is:     {}", m_lOpt.totalSizeOption);
+	std::println("totalCountOption is:    {}", m_lOpt.totalCountOption);
+	std::println("humanReadableOption is: {}", m_lOpt.humanReadableOption);
+	std::println("verboseOption is:       {}", m_lOpt.verboseOption); //Unused
+	std::println("noFormatOption is:      {}", m_lOpt.noFormatOption);
+	std::println("pastOption is:          {}", m_lOpt.pastOption);
+	std::println("previousOption is:      {}", m_lOpt.previousOption);
+	std::println("sqlOption is:           {}", m_lOpt.sqlOption);
 #endif
-	if(!(m_lOpt.totalSizeOption || 
-		m_lOpt.totalCountOption || 
-		m_lOpt.pastOption       || 
-		m_lOpt.previousOption   || 
-		m_lOpt.sqlOption))
-		List::allFile();
+
+	//Order matters
+
+	//TEMPORARY:
+	//WARNING:
+	//REVISE: This is hard-coded. Create something that dynamically gets the column names.
+	//WIll also need a way to convert size of bytes to other units.
+	//Can pair this problem with --no-format to work with regular queries.
+	if(m_lOpt.humanReadableOption) { m_defaultSQLQuery = "SELECT id, file, path, datetime(timestamp, 'unixepoch') AS timestamp, size, filetype, user, execution FROM trash"; }
 
 	if(m_lOpt.defaultOption)   List::allFile();
 	if(m_lOpt.totalSizeOption) List::size();
@@ -41,12 +45,19 @@ List::List(ListOptions& lOpt) : m_lOpt{lOpt}
 	if(m_lOpt.pastOption)      List::past();
 	if(m_lOpt.previousOption)  List::previous();
 	if(m_lOpt.sqlOption)       List::sqlInjection();
+
+	if(!(m_lOpt.totalSizeOption || 
+		m_lOpt.totalCountOption || 
+		m_lOpt.pastOption       || 
+		m_lOpt.previousOption   || 
+		m_lOpt.sqlOption))
+		List::allFile();
 }
 
 //Prints all contents of trash/data/*.sqlite3 database 
 void List::allFile()
 {
-	std::print("Results:\n{}", Database().selectDataA("SELECT * FROM trash;"));
+	std::print("Results:\n{}", Database().selectDataA(m_defaultSQLQuery + ";"));
 }
 
 void List::file(std::vector<std::string>& args)
@@ -54,7 +65,7 @@ void List::file(std::vector<std::string>& args)
 	std::println("Results:");
 
 	for(auto& arg : args)
-		std::print("{}", Database().selectDataA(std::format("SELECT * FROM trash WHERE id='{}';", arg)));
+		std::print("{}", Database().selectDataA(std::format("{} WHERE id='{}';", m_defaultSQLQuery, arg)));
 }
 
 void List::past()
@@ -114,7 +125,6 @@ void List::count()
 
 void List::size()
 {
-	//std::vector<std::string> uniques;
 	std::string descriptor {"total size: "};
 	if(m_lOpt.noFormatOption)
 		descriptor.erase();

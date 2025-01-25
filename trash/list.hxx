@@ -18,6 +18,7 @@ private:
 	ListOptions& m_lOpt;
 	Database m_db;
 	std::vector<std::string> m_validFiles{};
+	std::string m_defaultSQLQuery{"SELECT * FROM trash"};
 
 	void allFile();
 	void file(std::vector<std::string>& args);

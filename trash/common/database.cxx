@@ -113,30 +113,21 @@ void Database::insertData(const std::array<std::string, 7>& fileDetails)
 //For delete.cxx & wipe.cxx
 std::string Database::selectData(const std::string& sql)
 {
-	// sqlite3 *m_db;
 	sqlite3_stmt *stmt;
-	// const char *sql = "SELECT * FROM trash;";
 	int rc;
+	
 	std::string st{};
 
-	// Open the database
 	rc = sqlite3_open((singleton->getWorkingTrashDataDir() / m_dataBaseName).string().c_str(), &m_db);
 	if (rc != SQLITE_OK) 
 	{
-		// fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(m_db));
-		// return "NULL";
-
 		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));
 	}
 
-	// Prepare the SQL statement
 	rc = sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, NULL);
 	if (rc != SQLITE_OK) 
 	{
-		// fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(m_db));
-		// sqlite3_close(m_db);
-		// return "NULL";
-
+		sqlite3_close(m_db);
 		throw std::runtime_error(std::format("Failed to prepare statement: {}\n", sqlite3_errmsg(m_db)));
 	}
 
@@ -154,49 +145,37 @@ std::string Database::selectData(const std::string& sql)
 
 	if (rc != SQLITE_DONE)
 	{
-		//fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(m_db));
+		throw std::runtime_error(std::format("Failed to execute statement: {}\n", sqlite3_errmsg(m_db)));
 	}
 
-	// Finalize the statement
 	sqlite3_finalize(stmt);
-
-	// Close the database
 	sqlite3_close(m_db);
+
 	return st;
  
 }
 
 //For list.cxx
+//TODO: Would be better to have this function return a type of std::vector<std::vector<std::string>> or custom struct instead of a plain string.
 std::string Database::selectDataA(const std::string& sql)
 {
-	// sqlite3 *m_db;
 	sqlite3_stmt *stmt;
-	// const char *sql = "SELECT * FROM trash;";
+
 	int rc;
 	std::string st{};
 
-	// Open the database
 	rc = sqlite3_open((singleton->getWorkingTrashDataDir() / m_dataBaseName).string().c_str(), &m_db);
 	if (rc != SQLITE_OK) 
 	{
-		// fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(m_db));
-		// return "NULL";
-
 		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));
 	}
 
-	// Prepare the SQL statement
 	rc = sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, NULL);
 	if (rc != SQLITE_OK) 
 	{
-		// fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(m_db));
-		// sqlite3_close(m_db);
-		// return "NULL";
-
 		throw std::runtime_error(std::format("Failed to prepare statement: {}\n", sqlite3_errmsg(m_db)));
 	}
 
-	// Execute the SQL statement and retrieve the results
 	while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) 
 	{
 		int col_count = sqlite3_column_count(stmt);
@@ -208,23 +187,17 @@ std::string Database::selectDataA(const std::string& sql)
 			st.append(col_name);
 			st.append(":");
 			st.append(col_text ? col_text : "NULL");
-			st.append(" | ");
+			if ((col + 1) != col_count) { st.append(" | "); }
 		}
 			st.append("\n");
-		// printf("\n");
 	}
-			// std::print("{}",st);
 
 	if (rc != SQLITE_DONE)
 	{
-		//fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(m_db));
 		throw std::runtime_error(std::format("Failed to execute statement: {}\n", sqlite3_errmsg(m_db)));
 	}
 
-	// Finalize the statement
 	sqlite3_finalize(stmt);
-
-	// Close the database
 	sqlite3_close(m_db);
 	return st;
 }
@@ -234,31 +207,22 @@ std::string Database::selectDataA(const std::string& sql)
 std::vector<std::string> Database::selectDataB(const std::string& sql)
 {
 	std::vector<std::string> vlist{};
-	// sqlite3 *m_db;
 	sqlite3_stmt *stmt;
-	// const char *sql = "SELECT * FROM trash;";
 	int rc;
 
-	// Open the database
 	rc = sqlite3_open((singleton->getWorkingTrashDataDir() / m_dataBaseName).string().c_str(), &m_db);
 	if (rc != SQLITE_OK) 
 	{
-		//fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(m_db));
-		//return vlist;
 		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));
 	}
 
-	// Prepare the SQL statement
 	rc = sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, NULL);
 	if (rc != SQLITE_OK) 
 	{
-		//fprintf(stderr, "Failed to prepare statement: %s\n", sqlite3_errmsg(m_db));
 		sqlite3_close(m_db);
 		throw std::runtime_error(std::format("Failed to prepare statement: {}\n", sqlite3_errmsg(m_db)));
-		//return vlist;
 	}
 
-	// Execute the SQL statement and retrieve the results
 	while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) 
 	{
 		int col_count = sqlite3_column_count(stmt);
@@ -269,21 +233,16 @@ std::vector<std::string> Database::selectDataB(const std::string& sql)
 			// printf("%s: %s\n", col_name, col_text ? col_text : "NULL");
 			vlist.push_back(col_text);
 		}
-		// printf("\n");
 	}
-		// std::print("{}",st);
 
 	if (rc != SQLITE_DONE) 
 	{
-		//fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(m_db));
 		throw std::runtime_error(std::format("Failed to execute statement: {}\n", sqlite3_errmsg(m_db)));
 	}
 
-	// Finalize the statement
 	sqlite3_finalize(stmt);
-
-	// Close the database
 	sqlite3_close(m_db);
+
 	return vlist;
 }
 
@@ -292,31 +251,21 @@ int Database::executeSQL(const std::string &sql)
 	char *errMsg = nullptr;
 	int rc;
 
-	// Open SQLite database (it will create a database file if it doesn't exist)
 	rc = sqlite3_open((singleton->getWorkingTrashDataDir() / m_dataBaseName).string().c_str(), &m_db);
 	if (rc != SQLITE_OK) 
 	{
-		//std::cerr << "Can't open database: " << sqlite3_errmsg(m_db) << std::endl;
 		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));
-		//return rc;
 	}
 
-	// Execute the SQL statement
 	rc = sqlite3_exec(m_db, sql.c_str(), nullptr, nullptr, &errMsg);
 	if (rc != SQLITE_OK) 
 	{
-		throw std::runtime_error(std::format("SQL error: {}\n", errMsg));
-		//NOTE: below is never executed.
-		
-		//std::cerr << "SQL error: " << errMsg << std::endl;
 		sqlite3_free(errMsg); // Free the error message memory
 		sqlite3_close(m_db);  // Close the database connection
-		//return rc;
+
+		throw std::runtime_error(std::format("SQL error: {}\n", errMsg));
 	}
 
-	//std::println("SQL update executed successfully!");
-
-	// Close the SQLite database connection
 	sqlite3_close(m_db);
 
 	return SQLITE_OK;

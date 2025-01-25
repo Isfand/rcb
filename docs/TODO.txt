@@ -1,3 +1,8 @@
+Known issues:
+2. Windows cannot delete broken symlinks due to _stat implementation.
+1. --no-format is only implemented for size and counts.
+3. --human-readable is only implemented for timestamp 
+
 ToDo:
 -ADD restore overwrite/rename with R/r O/o N/n. uppercase is ALL, lowercase is singular.
 -ADD restore option to restore parent directories if they no longer exist if permissible.

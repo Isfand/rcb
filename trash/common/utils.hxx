@@ -26,6 +26,11 @@ bool canReadDirChk(const std::filesystem::directory_entry& entry);
 std::array<std::array<bool, 3>, 3> getFilePerms(const std::filesystem::path& file);
 unsigned long long directorySize(const std::filesystem::directory_entry& directory);
 int formatToTimestamp(const std::string& format, long long& timestamp);
+
+//Unused
+std::string posixTimeToDateTime(std::chrono::seconds timestamp);
+
+//Unimplemented
 std::string dataUnitConversion();
 
 //Add a thread pool here

@@ -1,10 +1,13 @@
 #include <filesystem>
 #include <map>
 #include <print>
+#include <format>
 #include <set>
 #include <map>
 #include <regex>
 #include <array>
+#include <chrono>
+#include <ctime>
 
 #include "utils.hxx"
 #include "trash/platform/aci/aci.hxx"
@@ -320,6 +323,26 @@ int formatToTimestamp(const std::string& format, long long& timestamp)
 	return 3;
 }
 
+//Unused
+std::string posixTimeToDateTime(std::chrono::seconds timestamp)
+{
+	std::chrono::system_clock::time_point tp(timestamp);
+
+	std::time_t time = std::chrono::system_clock::to_time_t(tp);
+
+	std::tm *tm_info = std::localtime(&time);
+
+	//ISO 8601 format
+	return std::format("{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}",
+		tm_info->tm_year + 1900,   // tm_year is years since 1900
+		tm_info->tm_mon + 1,       // tm_mon is months since January (0-11)
+		tm_info->tm_mday,          // Day of the month (1-31)
+		tm_info->tm_hour,          // Hour (0-23)
+		tm_info->tm_min,           // Minute (0-59)
+		tm_info->tm_sec);          // Second (0-59)
+}
+
+//Unimplemented
 std::string dataUnitConversion()
 {
 	//Data Unit Scaling
