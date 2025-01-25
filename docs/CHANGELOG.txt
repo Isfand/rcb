@@ -4,6 +4,12 @@
 
 Decorated log and release notes: https://github.com/Isfand/trash/releases/tag/v?.?.?
 
+----------------------------------------------------------------------
+ VERSION 0.10.0 (25-01-2025)
+----------------------------------------------------------------------
+
+Decorated log and release notes: https://github.com/Isfand/trash/releases/tag/v0.10.0
+
 - ADDITION: --human-readable using list now works for timestamps.
 - UPDATE: Created tools/ directory and FreeBSD pkgng port
 - BUGFIX: list now no longer prints redundant pipe separator after the last value.

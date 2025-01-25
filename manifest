@@ -1,6 +1,6 @@
 : 1
 name: trash
-version: 0.9.4
+version: 0.10.0
 type: exe
 language: c++
 summary: File trashing utility for the terminal
