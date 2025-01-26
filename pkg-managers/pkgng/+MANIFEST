@@ -1,5 +1,5 @@
 name: trash
-version: "0.9.4"
+version: "0.10.0"
 origin: sysutils/trash
 comment: Trash Manager
 desc: File trashing utility for the terminal.
