@@ -1,7 +1,9 @@
-*    
-
+*
+# Now, whitelist anything that's a directory
 !*/
 
 !pkg-managers/
+!pkg-managers/*
+!pkg-managers/**
 !README.md
 !.gitignore
