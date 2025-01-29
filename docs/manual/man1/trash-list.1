@@ -1,19 +1,19 @@
 .nh
-.TH TRASH 1 "0.10.0" TRASH "User Manuals"
+.TH RCB 1 "0.10.0" RCB "User Manuals"
 .SH \fBNAME\fR
-trash-list
+rcb-list
 .SH \fBSYNOPSIS\fR
-\fBtrash list\fP [\fIoptions\fP] [\fIarguments\fP]
+\fBrcb list\fP [\fIoptions\fP] [\fIarguments\fP]
 .br
-\fBtrash list\fP [\fIoptions\fP]
+\fBrcb list\fP [\fIoptions\fP]
 .br
-\fBtrash list\fP
+\fBrcb list\fP
 .br
 .SH \fBDESCRIPTION\fR
-The list command allows for listing file data inside .trash/data/trash.sqlite3 
+The list command allows for listing file data inside .rcb/data/rcb.sqlite3 
 .SH \fBLIST OPTIONS\fR
 .PP
-\fBtrash list
+\fBrcb list
 .br
 .RS
 List everything in record.
@@ -22,7 +22,7 @@ List everything in record.
 \fB--help, -h\fP 
 .br
 .RS
-Prints basic usage of trash list.
+Prints basic usage of rcb list.
 .RE
 .br
 \fB--all, -a\fP
@@ -38,7 +38,7 @@ List file(s) by relative past time with units: t,s,m,h,d,w,mo,y,c,k,ae.
 
 \fBExample:\fP
 .br
-\fB$ trash list\fP \fI--past 10m\fP
+\fB$ rcb list\fP \fI--past 10m\fP
 
 Will list all files that were deleted 10 minutes ago.
 
@@ -84,13 +84,13 @@ List file(s) by highest execution. Execution is the order in which files were de
 \fB--total-count\fP
 .br
 .RS
-List total count of all files in trash
+List total count of all files in rcb
 .RE
 .br
 \fB--total-size\fP
 .br
 .RS
-List total size of all files in trash
+List total size of all files in rcb
 .RE
 .br
 \fB--human-readable\fP
@@ -112,7 +112,7 @@ Remove formatting
 
 \fBExample:\fP
 .br
-\fB$ trash list\fP \fI--sql \(dqSELECT id FROM trash WHERE file=\[aq]filename\[aq]\(dq\fP
+\fB$ rcb list\fP \fI--sql \(dqSELECT id FROM rcb WHERE file=\[aq]filename\[aq]\(dq\fP
 .RE
 .SH AUTHOR
 Written by Isfand Mirza.

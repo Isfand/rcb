@@ -1,10 +1,10 @@
 : 1
-name: trash
+name: rcb
 version: 0.10.0
 type: exe
 language: c++
 summary: File trashing utility for the terminal
-topics: trash-manager, trashing, trashcan, recycling-bin
+topics: recycling-bin, trashcan, trashing
 license: Eclipse Public License 2.0
 description-file: README.md
 url: https://github.com/Isfand/trash

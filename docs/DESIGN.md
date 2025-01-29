@@ -7,25 +7,25 @@
 ### Directory defaults
 
 <pre>
-$HOME/.trash
+$HOME/.rcb
 ├── data
-│   └── trash.sqlite3
+│   └── rcb.sqlite3
 ├── file
 ├── wipe
 └── word
 </pre>
 
-The trash directory location and name should be changeable through the use of a single environment variable. I.E TRASH_DIR.
+The rcb directory location and name should be changeable through the use of a single environment variable. I.E rcb_DIR.
 
 
 ### **data/**
 Contains saved details on the file that can be used to list, restore and erase. 
 
 **sqlite3 database and tables:**\
-By default the database 'trash.sqlite3' has a table called 'trash'
+By default the database 'rcb.sqlite3' has a table called 'rcb'
 it has the following schema:
 <pre>
-CREATE TABLE IF NOT EXISTS "trash" (
+CREATE TABLE IF NOT EXISTS "rcb" (
         "id" INTEGER PRIMARY KEY AUTOINCREMENT,
         "file" varchar(65535) UNIQUE,
         "directory" varchar(65535),
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS "trash" (
 
 **Explanation:**\
 "id" is the unique auto incremented identifier, which can be used to select a record to perform actions on.\
-"file" is the possibly altered unique filename within ~/.trash/file/.\
+"file" is the possibly altered unique filename within ~/.rcb/file/.\
 "directory" is the original system filepath. This is where the file can be restored as.\
 "timestamp" POSIX timestamp for the exact time in seconds when the file was 'deleted' and saved as a record.\
 "size" is the size contents of the file or directory(recursive).\
@@ -60,12 +60,12 @@ Contains files used for IPC (Inter-Process Communication).
 The following variables that can be globally accessed immutably and can only be set once while also having a single instance of access.
 
 <pre>
-workingTrashDir     | Defaults to $HOME/.trash/ or use TRASH_DIR
-workingTrashFileDir | file/ location
-workingTrashDataDir | data/ location
-workingTrashWipeDir | wipe/ location
-workingTrashWordDir | word/ location
-workingUsername     | Environment variable $USER 
+workingrcbDir     | Defaults to $HOME/.rcb/ or use RCB_DIR
+workingrcbFileDir | file/ location
+workingrcbDataDir | data/ location
+workingrcbWipeDir | wipe/ location
+workingrcbWordDir | word/ location
+workingUsername   | Environment variable $USER 
 </pre>
 
 # Commands
@@ -100,7 +100,7 @@ Reference for units of time:
 | Aeon(s)       | ae        |
 
 ## Delete
-Transfer existing files into the file/ directory. This is done by checking if the filepath exists and checking if the filename already exists or not inside of file/, if it does exist the filename is altered in the format of '\<filename>(n)'. Do not modify any extensions. Store the values for each column which match the 'trash' table schema in data/. The final action should be to 'rename()' the original path to the new one inside file/.
+Transfer existing files into the file/ directory. This is done by checking if the filepath exists and checking if the filename already exists or not inside of file/, if it does exist the filename is altered in the format of '\<filename>(n)'. Do not modify any extensions. Store the values for each column which match the 'rcb' table schema in data/. The final action should be to 'rename()' the original path to the new one inside file/.
 
 For files inside external devices you cannot use 'rename()'. Instead use 'copy_file_range()', followed by 'unlink()' to the original path. In other words copy and remove the original.
 ### Options:
@@ -138,14 +138,14 @@ Restore file(s) with relative time from system time to epoch.\
 Allows for SQL passthrough. AKA SQL injection.
 
 ## List
-Print record(s) inside data/ - database 'trash.sqlite3' - table 'trash'
+Print record(s) inside data/ - database 'rcb.sqlite3' - table 'rcb'
 ### Options:
 **--all**\
 Prints record(s), size and count.\
 **--total-size**\
-Prints total size of every file recorded in trash/, but ignore duplicate ino, dev.\
+Prints total size of every file recorded in rcb/, but ignore duplicate ino, dev.\
 **--total-count**\
-Prints total count of files recorded in trash/.\
+Prints total count of files recorded in rcb/.\
 **--human-readable**\
 Prints records in human readable form.\
 **--no-format**\
@@ -180,7 +180,7 @@ Allows for SQL passthrough. AKA SQL injection.
 
 
 ## Validate
-Checks for dangling file(s) and record(s) inside of the trash directory along with any other corrections. Print the file(s)/record(s)/corrections(s) found with verbose and prompt user a message asking input for removal/correction.
+Checks for dangling file(s) and record(s) inside of the rcb directory along with any other corrections. Print the file(s)/record(s)/corrections(s) found with verbose and prompt user a message asking input for removal/correction.
 ### Options:
 **--all**\
 Checks for all of the below.\

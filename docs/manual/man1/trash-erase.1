@@ -1,21 +1,21 @@
 .nh
-.TH TRASH 1 "0.10.0" TRASH "User Manuals"
+.TH RCB 1 "0.10.0" RCB "User Manuals"
 .SH \fBNAME\fR
-trash-erase
+rcb-erase
 .SH \fBSYNOPSIS\fR
-\fBtrash erase\fP [\fIoptions\fP] [\fIarguments\fP]
+\fBrcb erase\fP [\fIoptions\fP] [\fIarguments\fP]
 .br
-\fBtrash erase\fP [\fIarguments\fP] [\fIoptions\fP]
+\fBrcb erase\fP [\fIarguments\fP] [\fIoptions\fP]
 .br
-\fBtrash erase\fP [\fIoptions\fP]
+\fBrcb erase\fP [\fIoptions\fP]
 .br
-\fBtrash erase\fP [\fIarguments\fP]
+\fBrcb erase\fP [\fIarguments\fP]
 .br
 .SH \fBDESCRIPTION\fR
 The erase command allows for permanent file removal. This action is not reversible.
 .SH \fBERASE OPTIONS\fR
 .PP
-\fBtrash erase \<id\>
+\fBrcb erase \<id\>
 .br
 .RS
 Erase file(s) by record id.
@@ -24,7 +24,7 @@ Erase file(s) by record id.
 \fB--help, -h\fP 
 .br
 .RS
-Prints basic usage of trash erase.
+Prints basic usage of rcb erase.
 .RE
 .br
 \fB--all, -a\fP
@@ -40,7 +40,7 @@ Erase file(s) by relative past time with units: t,s,m,h,d,w,mo,y,c,k,ae.
 
 \fBExample:\fP
 .br
-\fB$ trash erase\fP \fI--past 10m\fP
+\fB$ rcb erase\fP \fI--past 10m\fP
 
 Will erase all files that were deleted 10 minutes ago.
 
@@ -96,7 +96,7 @@ Silences output to console
 
 \fBExample:\fP
 .br
-\fB$ trash erase\fP \fI--sql \(dqSELECT id FROM trash WHERE file=\[aq]filename\[aq]\(dq\fP
+\fB$ rcb erase\fP \fI--sql \(dqSELECT id FROM rcb WHERE file=\[aq]filename\[aq]\(dq\fP
 .RE
 .SH AUTHOR
 Written by Isfand Mirza.

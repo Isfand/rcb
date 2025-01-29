@@ -14,9 +14,9 @@ ToDo:
 Suggestions:
 -Implement a temporary file that contains the previous list of files that were restored. 
 	Can also be done by creating a new sql column 'restoration' values true/false. This will never be deleted unless if the restored files do not exist.
--Implement trash d --message 'text' | -m 'text'. for a column with a message attached per file.
--Implement trash r --all --exclude 'text'| -a -e 'text'. restore all but the excluded. #Note --sql would be a better alternative. 
--implement trash e --shred, shreds all or selected files instead of just using unlink().
+-Implement rcb d --message 'text' | -m 'text'. for a column with a message attached per file.
+-Implement rcb r --all --exclude 'text'| -a -e 'text'. restore all but the excluded. #Note --sql would be a better alternative. 
+-implement rcb e --shred, shreds all or selected files instead of just using unlink().
 
 End Goal:
 Once completed the final project will be to create a helper daemon/service for:

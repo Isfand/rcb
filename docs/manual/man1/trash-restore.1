@@ -1,21 +1,21 @@
 .nh
-.TH TRASH 1 "0.10.0" TRASH "User Manuals"
+.TH RCB 1 "0.10.0" RCB "User Manuals"
 .SH \fBNAME\fR
-trash-restore
+rcb-restore
 .SH \fBSYNOPSIS\fR
-\fBtrash restore\fP [\fIoptions\fP] [\fIarguments\fP]
+\fBrcb restore\fP [\fIoptions\fP] [\fIarguments\fP]
 .br
-\fBtrash restore\fP [\fIarguments\fP] [\fIoptions\fP]
+\fBrcb restore\fP [\fIarguments\fP] [\fIoptions\fP]
 .br
-\fBtrash restore\fP [\fIoptions\fP]
+\fBrcb restore\fP [\fIoptions\fP]
 .br
-\fBtrash restore\fP [\fIarguments\fP]
+\fBrcb restore\fP [\fIarguments\fP]
 .br
 .SH \fBDESCRIPTION\fR
 The restore command allows for file restoration back into its original path. 
 .SH \fBRESTORE OPTIONS\fR
 .PP
-\fBtrash restore \<id\>
+\fBrcb restore \<id\>
 .br
 .RS
 Restore file(s) by record id.
@@ -24,7 +24,7 @@ Restore file(s) by record id.
 \fB--help, -h\fP 
 .br
 .RS
-Prints basic usage of trash restore.
+Prints basic usage of rcb restore.
 .RE
 .br
 \fB--verbose, -v\fP 
@@ -46,7 +46,7 @@ Restore file(s) by relative past time with units: t,s,m,h,d,w,mo,y,c,k,ae.
 
 \fBExample:\fP
 .br
-\fB$ trash restore\fP \fI--past 10m\fP
+\fB$ rcb restore\fP \fI--past 10m\fP
 
 Will restore all files that were deleted 10 minutes ago.
 
@@ -102,7 +102,7 @@ Silences output to console
 
 \fBExample:\fP
 .br
-\fB$ trash restore\fP \fI--sql \(dqSELECT id FROM trash WHERE file=\[aq]filename\[aq]\(dq\fP
+\fB$ rcb restore\fP \fI--sql \(dqSELECT id FROM rcb WHERE file=\[aq]filename\[aq]\(dq\fP
 .RE
 .SH AUTHOR
 Written by Isfand Mirza.
