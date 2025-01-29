@@ -36,12 +36,12 @@ void Erase::file(std::vector<std::string>& args)
 	{
 		//TODO, Add a check for "" empty. Then continue the loop.
 		//TODO. check perms before rename and remove_all. Show stderr and then continue; 
-		std::string trashFile = Database().selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_progName, arg));
+		std::string stagedFile = Database().selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_progName, arg));
 
 		try 
 		{
-			std::filesystem::rename(g_singleton->getWorkingProgFileDir() / trashFile, g_singleton->getWorkingProgWipeDir() / trashFile);
-			std::filesystem::remove_all(g_singleton->getWorkingProgWipeDir() / trashFile);
+			std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, g_singleton->getWorkingProgWipeDir() / stagedFile);
+			std::filesystem::remove_all(g_singleton->getWorkingProgWipeDir() / stagedFile);
 		}
 		catch (std::runtime_error& e) 
 		{

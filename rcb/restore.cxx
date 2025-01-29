@@ -34,10 +34,10 @@ void Restore::file(std::vector<std::string>& args)
 	for(std::string& arg : args)
 	{
 		//TODO. Need to add something accounting for empty values returned from sql.
-		std::string trashFile              { Database().selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_progName, arg)) };
+		std::string stagedFile              { Database().selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_progName, arg)) };
 		std::filesystem::path originalPath { Database().selectData(std::format("SELECT path FROM {0} WHERE id='{1}';", g_progName, arg)) };
 
-		if(checkTrashFile(trashFile) && checkOriginalPath(originalPath))
+		if(checkProgFile(stagedFile) && checkOriginalPath(originalPath))
 		{
 			//Check for permissions on the original path
 			if(!canMvFileChk(std::filesystem::directory_entry(originalPath)))
@@ -50,7 +50,7 @@ void Restore::file(std::vector<std::string>& args)
 			if(aci::Stat(g_singleton->getWorkingProgDir().string().c_str()).st_dev() == aci::Stat(originalPath.parent_path().string().c_str()).st_dev())
 			{
 				//TODO. Place inside try catch and skip the current arg with continue:
-				std::filesystem::rename(g_singleton->getWorkingProgFileDir() / trashFile, originalPath);
+				std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, originalPath);
 
 				if(m_rOpt.verboseOption)
 					std::println("Path is:{0}", originalPath.string().c_str());
@@ -62,7 +62,7 @@ void Restore::file(std::vector<std::string>& args)
 			else
 			{
 				//TODO. Place inside try catch and skip the current arg with continue:
-				externRename((g_singleton->getWorkingProgFileDir() / trashFile), originalPath);
+				externRename((g_singleton->getWorkingProgFileDir() / stagedFile), originalPath);
 
 				if(m_rOpt.verboseOption)
 					std::println("Path is:{0}", originalPath.string());
@@ -121,7 +121,7 @@ void Restore::previous()
 	Restore::file(vList);
 }
 
-//Must return id. E.G "SELECT id FROM trash WHERE file='.hiddenfile';" 
+//Must return id. E.G "SELECT id FROM rcb WHERE file='.hiddenfile';" 
 void Restore::sqlInjection()
 {
 	for(auto sql : m_rOpt.sqlVec)
@@ -134,38 +134,38 @@ void Restore::sqlInjection()
 	}
 }
 
-//Checks if trashFile Exists inside of /trash/file/<name>
-bool Restore::checkTrashFile(const std::string& trashFile)
+//Checks if progFile Exists inside of /rcb/file/<name>
+bool Restore::checkProgFile(const std::string& stagedFile)
 {
-	std::filesystem::path filePath { g_singleton->getWorkingProgFileDir() / trashFile };
+	std::filesystem::path filePath { g_singleton->getWorkingProgFileDir() / stagedFile };
 
 	bool result = Verity(std::filesystem::directory_entry(filePath)).exists ? true : false;
 
 	if(!result && !m_rOpt.silentOption)
-		std::println("Failed to restore file: \"{0}\"\nfile to restore is missing in \"{1}\"", trashFile, g_singleton->getWorkingProgFileDir().string());
+		std::println("Failed to restore file: \"{0}\"\nfile to restore is missing in \"{1}\"", stagedFile, g_singleton->getWorkingProgFileDir().string());
 
 	//TODO; Needs semantic correction
 	return result;
 }
 
-bool Restore::checkOriginalPath(const std::filesystem::path& trashDir)
+bool Restore::checkOriginalPath(const std::filesystem::path& progDir)
 {
 	bool result{};
 	//check parent path exists
-	if(Verity(std::filesystem::directory_entry(trashDir.parent_path())).exists)
+	if(Verity(std::filesystem::directory_entry(progDir.parent_path())).exists)
 	{
-		if(Verity(std::filesystem::directory_entry(trashDir)).exists)
+		if(Verity(std::filesystem::directory_entry(progDir)).exists)
 		{
 			//TODO. Add an option to force move the file over upon user request through a prompt. overwriting the existing file
 			if(m_rOpt.verboseOption)
-			   std::println("failed on file check: \"{0}\"\nexisting file found inside DIR \"{1}\"", trashDir.filename().string(), trashDir.parent_path().string());
+			   std::println("failed on file check: \"{0}\"\nexisting file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
 
 			result = false;
 		}
 		else
 		{
 			if(m_rOpt.verboseOption)
-			   std::println("success on file check: \"{0}\"\nno existing file found inside DIR \"{1}\"", trashDir.filename().string(), trashDir.parent_path().string());
+			   std::println("success on file check: \"{0}\"\nno existing file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
 
 			result = true;
 		}
@@ -174,7 +174,7 @@ bool Restore::checkOriginalPath(const std::filesystem::path& trashDir)
 	{
 		//TODO. Add an option to recreate the directory if sufficient permissions are available.
 		if(m_rOpt.verboseOption)
-		   std::println("failed on file check: \"{0}\"\nparent directory not found: \"{1}\"", trashDir.filename().string(), trashDir.parent_path().string());
+		   std::println("failed on file check: \"{0}\"\nparent directory not found: \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
 		result = false;
 	}
 	
@@ -182,7 +182,7 @@ bool Restore::checkOriginalPath(const std::filesystem::path& trashDir)
 }
 
 //Read relevant column database. Then perform checks
-//Check if file trash name exists inside file/
+//Check if file name exists inside file/
 //Check if the original rcb directory exists/
 //Check if the original rcb directory contains the same filename.
 //Create exception for directory permission as they could have changed.

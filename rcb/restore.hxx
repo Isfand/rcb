@@ -21,8 +21,8 @@ private:
 	void file(std::vector<std::string>& args);
 
 	void allFile();
-	bool checkTrashFile(const std::string& trashFile);
-	bool checkOriginalPath(const std::filesystem::path& trashDir);
+	bool checkProgFile(const std::string& stagedFile);
+	bool checkOriginalPath(const std::filesystem::path& progDir);
 	void past();
 	void previous();
 	void sqlInjection();

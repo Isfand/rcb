@@ -40,7 +40,7 @@ void Validate::allFile()
 
 void Validate::file()
 {
-	// check if the trashFile is referenced inside data/ with any record.
+	// check if the stagedFile is referenced inside data/ with any record.
 	// Move to wipe/
 	// Finally delete it.
 
@@ -48,11 +48,11 @@ void Validate::file()
 
 	for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
 	{    
-		std::string trashFile = entry.path().filename().string();
-		std::string dbTrashFileRecord = m_db.selectData(std::format("SELECT file FROM {0} WHERE file='{1}';", g_progName, trashFile));
+		std::string stagedFile = entry.path().filename().string();
+		std::string dbProgFileRecord = m_db.selectData(std::format("SELECT file FROM {0} WHERE file='{1}';", g_progName, stagedFile));
 
-		if(trashFile != dbTrashFileRecord)
-			danglingFiles.push_back(trashFile);
+		if(stagedFile != dbProgFileRecord)
+			danglingFiles.push_back(stagedFile);
 	}
 
 	if(danglingFiles.size() == 0)
@@ -94,17 +94,17 @@ void Validate::file()
 void Validate::data()
 {
 	// Should check for:
-	// records points to a trashFile in /file
+	// records points to a stagedFile in /file
 	// Then delete
 
 	std::vector<std::string> danglingRecords { Database().selectDataB(std::format("SELECT file from {0};", g_progName)) };
 
-	std::vector<std::string> trashFiles{};
+	std::vector<std::string> stagedFiles{};
 	for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
-		trashFiles.push_back(entry.path().filename().string());
+		stagedFiles.push_back(entry.path().filename().string());
 
-	//pop back dbTrashFiles with whatever is inside trashFiles.
-	for (const auto& element : trashFiles)
+	//pop back dbProgFiles with whatever is inside program's file/.
+	for (const auto& element : stagedFiles)
 		danglingRecords.erase(std::remove(danglingRecords.begin(), danglingRecords.end(), element), danglingRecords.end());
 
 	if(danglingRecords.size() == 0)
