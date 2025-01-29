@@ -94,7 +94,7 @@ rcb validate --all | -a, Validate all
 </pre>
 
 ## **Environment variables:**
-**rcb_DIR**\
+**RCB_DIR**\
 The directory where the rcb/ folder will be located. Defaults to '$HOME/.rcb/'. The directory filename before the last delimiter will be used as the root of the rcb directory name.
 E.G 'export rcb_DIR=/home/user/.local/shared/.rcbAlt/', will make .rcbAlt/ become the rcb directory name.
 
