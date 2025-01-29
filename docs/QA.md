@@ -1,9 +1,9 @@
 # Q&A:
-The goal behind this project is to create an independent cross-platform CLI trash management program. 
+The goal behind this project is to create an independent cross-platform CLI recycling-bin implementation. 
 
 Prospective: In the future it can optionally interact with a given OS's native trash implementation through the use of a helper program,
-which will act as a bridge between the Trash Manager and the OS specific implementation. 
-This will allow the Trash Manager to remain independent and make the helper program entirely optional.
+which will act as a bridge between rcb and the OS specific implementation. 
+This will allow the rcb to remain independent and make the helper program entirely optional.
 
 ## 1. Why not follow the [XDG Trash Specification](https://specifications.freedesktop.org/trash-spec/latest/)?
 
@@ -14,7 +14,7 @@ And not a CLI program. Albeit can be made to work reasonably well, but not fully
 
 1.3. On Linux, desktop environments don't all perfectly follow the spec itself. 
 E.G Gnome has an expunged/ folder, which is not part of the spec and has no directorySizes at time of writing. 
-KDE on the other hand follows it more closely. In-fact they both had their own trash mechanisms originally before the XDG specification, which is why there are differences.
+KDE on the other hand follows it more closely. In-fact they both had their own trashing mechanisms originally before the XDG specification, which is why there are differences.
 
 1.4. The design intention is to be platform agnostic. XDG's specs generally assume linux.
 As it currently stands v1 is POSIX compliant, however there is no guarantee if a newer version in the future decides to change its behavior to something linux specific. This program works on Windows too.

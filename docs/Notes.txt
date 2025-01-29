@@ -3,7 +3,7 @@ c_str changes behaviour on string and wstring. Returns normal const char* on str
 std::println doesn't support wstring or wchar_t. Will require explicit use of .string().
 
 Note: When changing version, change version inside:
-	trash/common/globals.hxx
+	rcb/common/globals.hxx
 	docs/manual/man/*
 	docs/manual/help/*
 	manifest

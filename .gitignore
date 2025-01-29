@@ -29,10 +29,10 @@
 *.exe.dlls/
 *.exe.manifest
 *.pc
-trash/trash
-trash/.cache
+rcb/rcb
+rcb/.cache
 .cache
 compile_commands.json
-trash.core
+rcb.core
 .vscode
 raw_json.txt

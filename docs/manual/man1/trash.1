@@ -1,23 +1,23 @@
 .nh
-.TH TRASH 1 "0.10.0" TRASH "User Manuals"
+.TH RCB 1 "0.10.0" RCB "User Manuals"
 .SH \fBNAME\fR
-trash
+rcb
 .SH \fBSYNOPSIS\fR
-\fBtrash\fP [\fIcommand\fP] [\fIoptions\fP] [\fIarguments\fP]
+\fBrcb\fP [\fIcommand\fP] [\fIoptions\fP] [\fIarguments\fP]
 .br
-\fBtrash\fP [\fIcommand\fP] [\fIarguments\fP] [\fIoptions\fP]
+\fBrcb\fP [\fIcommand\fP] [\fIarguments\fP] [\fIoptions\fP]
 .br
-\fBtrash\fP [\fIcommand\fP] [\fIoptions\fP]
+\fBrcb\fP [\fIcommand\fP] [\fIoptions\fP]
 .br
-\fBtrash\fP [\fIcommand\fP] [\fIarguments\fP]
+\fBrcb\fP [\fIcommand\fP] [\fIarguments\fP]
 .br
-\fBtrash\fP [\fIoptions\fP]
+\fBrcb\fP [\fIoptions\fP]
 .br
 .SH \fBDESCRIPTION\fR
-This program is a file trashing utility for the terminal that can reverse file deletion.
-.SH \fBTRASH OPTIONS\fR
+This program is a file rcbing utility for the terminal that can reverse file deletion.
+.SH \fBrcb OPTIONS\fR
 .PP
-\fB$ trash\fP \fI--help, -h\fP
+\fB$ rcb\fP \fI--help, -h\fP
 .br
 Gives you basic usage information for the program.
 .br
@@ -25,13 +25,13 @@ When paired with a command it will change the output of basic usage.
 
 For example these two will have different usage outputs:
 .br 
-\fB$ trash\fP \fIdelete --help\fP
+\fB$ rcb\fP \fIdelete --help\fP
 .br
-\fB$ trash\fP \fI--help\fP
+\fB$ rcb\fP \fI--help\fP
 
-\fB$ trash\fP \fI--version\fR
+\fB$ rcb\fP \fI--version\fR
 .br
-Gives you the version of the trash program
+Gives you the version of the rcb program
 .SH \fBPRIMARY COMMANDS\fR
 \fBdelete   | d\fR
 .br
@@ -43,27 +43,27 @@ Gives you the version of the trash program
 .br
 \fBvalidate | v\fR
 .SH \fBENVIRONMENT\fR
-\fB$TRASH_DIR\fR
+\fB$rcb_DIR\fR
 .br
-The directory where the trash/ folder will be located. Defaults to \fI$HOME/.trash/\fP\&. The directory filename before the last delimiter will be used as the root of the trash directory name.
+The directory where the rcb/ folder will be located. Defaults to \fI$HOME/.rcb/\fP\&. The directory filename before the last delimiter will be used as the root of the rcb directory name.
 .PP
 E.G:
-\fIexport TRASH_DIR=/home/user/.local/shared/.trashAlt/\fP\&, will make .trashAlt/ become the trash directory name.
+\fIexport rcb_DIR=/home/user/.local/shared/.rcbAlt/\fP\&, will make .rcbAlt/ become the rcb directory name.
 .PP
 .SH \fBMANUAL ENTRIES\fR
-trash
+rcb
 .br
-trash-delete
+rcb-delete
 .br
-trash-list
+rcb-list
 .br
-trash-restore
+rcb-restore
 .br
-trash-erase
+rcb-erase
 .br
-trash-validate
+rcb-validate
 .SH SEE ALSO
-Public repository available at: https://github.com/Isfand/trash
+Public repository available at: https://github.com/Isfand/rcb
 .SH AUTHOR
 Written by Isfand Mirza.
 .SH COPYRIGHT

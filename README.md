@@ -8,7 +8,7 @@ Tested on Linux, FreeBSD & Windows. \
 See [docs/](docs/) for more information.
 
 ## **Pre-built binaries:**
-[Release](https://github.com/Isfand/trash/tags) binaries are provided for Linux, FreeBSD & Windows.
+[Release](https://github.com/Isfand/rcb/tags) binaries are provided for Linux, FreeBSD & Windows.
 
 ## **Build Pre-requisites:**
 *Requires the build2-toolchain to be pre-installed. See https://build2.org/install.xhtml \
@@ -17,10 +17,10 @@ See [docs/](docs/) for more information.
 
 ## **Build Instructions:**
 
-**`mkdir trash.d`** \
-**`cd trash.d`** \
-**`git clone https://github.com/Isfand/trash.git`** \
-**`cd trash`**
+**`mkdir rcb.d`** \
+**`cd rcb.d`** \
+**`git clone https://github.com/Isfand/rcb.git`** \
+**`cd rcb`**
 
 POSIX: **`./config-init.sh`**\
 WIN32: **`.\config-init.ps1`**
@@ -36,7 +36,7 @@ To clean a specific config: `bdep clean @<config-name>`
 ## **Install**
 
 ### POSIX:
-cd into your release target build configuration directory. E.G: `cd ../trash-x64-posix-llvm-release`
+cd into your release target build configuration directory. E.G: `cd ../rcb-x64-posix-llvm-release`
 
 And type: \
 `b install config.cxx.loptions="-L/usr/local/lib -Wl,-rpath,/usr/local/lib" config.install.root="/usr/local/" config.install.sudo="sudo"`
@@ -51,8 +51,8 @@ WIP
 ## **Basic usage:**
 *Note, '--help' option changes message when applied after a primary command:
 <pre>
-trash --version | 
-trash --help    | -h
+rcb --version | 
+rcb --help    | -h
 </pre>
 
 ## **Primary commands**
@@ -67,36 +67,36 @@ validate | v
 
 ### Deleting files:
 <pre>
-trash delete filename
-trash delete -- filename
+rcb delete filename
+rcb delete -- filename
 </pre>
 
 ### Listing files:
 <pre>
-trash list, List all by default
+rcb list, List all by default
 </pre>
 
 ### Restoring files:
 <pre>
-trash restore &lt;n&gt;
-trash restore --all | -a, Restore all
+rcb restore &lt;n&gt;
+rcb restore --all | -a, Restore all
 </pre>
 
 ### Erasing files:
 <pre>
-trash erase &lt;n&gt;
-trash erase --all | -a, erase all
+rcb erase &lt;n&gt;
+rcb erase --all | -a, erase all
 </pre>
 
 ### Validating files:
 <pre>
-trash validate --all | -a, Validate all
+rcb validate --all | -a, Validate all
 </pre>
 
 ## **Environment variables:**
-**TRASH_DIR**\
-The directory where the trash/ folder will be located. Defaults to '$HOME/.trash/'. The directory filename before the last delimiter will be used as the root of the trash directory name.
-E.G 'export TRASH_DIR=/home/user/.local/shared/.trashAlt/', will make .trashAlt/ become the trash directory name.
+**rcb_DIR**\
+The directory where the rcb/ folder will be located. Defaults to '$HOME/.rcb/'. The directory filename before the last delimiter will be used as the root of the rcb directory name.
+E.G 'export rcb_DIR=/home/user/.local/shared/.rcbAlt/', will make .rcbAlt/ become the rcb directory name.
 
 ---
 

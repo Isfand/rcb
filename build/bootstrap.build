@@ -1,4 +1,4 @@
-project = trash
+project = rcb
 
 using version
 using config

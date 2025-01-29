@@ -1,18 +1,18 @@
 .nh
-.TH TRASH 1 "0.10.0" TRASH "User Manuals"
+.TH RCB 1 "0.10.0" RCB "User Manuals"
 .SH \fBNAME\fR
-trash-delete
+rcb-delete
 .SH \fBSYNOPSIS\fR
-\fBtrash delete\fP [\fIoptions\fP] [\fIarguments\fP]
+\fBrcb delete\fP [\fIoptions\fP] [\fIarguments\fP]
 .br
-\fBtrash delete\fP [\fIarguments\fP] [\fIoptions\fP]
+\fBrcb delete\fP [\fIarguments\fP] [\fIoptions\fP]
 .br
-\fBtrash delete\fP [\fIoptions\fP]
+\fBrcb delete\fP [\fIoptions\fP]
 .br
-\fBtrash delete\fP [\fIarguments\fP]
+\fBrcb delete\fP [\fIarguments\fP]
 .br
 .SH \fBDESCRIPTION\fR
-The delete command allows for file deletion. Upon use it will save essential details into .trash/data/trash.sqlite3 about the file before moving it into the .trash/file/ directory. If an existing file entry is found with the same filename it will automatically increment it with a number to prevent filename collisions before moving.
+The delete command allows for file deletion. Upon use it will save essential details into .rcb/data/rcb.sqlite3 about the file before moving it into the .rcb/file/ directory. If an existing file entry is found with the same filename it will automatically increment it with a number to prevent filename collisions before moving.
 .SH \fBDELETE OPTIONS\fR
 .PP
 \fBdelete \<filename\>\fP
@@ -30,7 +30,7 @@ Options end after this point.
 \fB--help, -h\fP
 .br
 .RS
-Prints basic usage of trash delete.
+Prints basic usage of rcb delete.
 .RE
 .br
 \fB--verbose, -v\fP
