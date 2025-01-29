@@ -21,7 +21,7 @@ private:
 	
 	void file(std::vector<std::string>& args);
 	bool renameDupe(std::string& file);
-	const std::array<std::string, 7> saveFileData(const std::string& trashFilename, const std::filesystem::path& originalDir);
+	const std::array<std::string, 7> saveFileData(const std::string& stageFilename, const std::filesystem::path& originalDir);
 	unsigned long long fileSize(const std::filesystem::directory_entry& file);
 	std::string incrementExecutionID();
 

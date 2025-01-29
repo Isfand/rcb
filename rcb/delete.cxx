@@ -38,7 +38,7 @@ void Delete::file(std::vector<std::string>& args)
 		if(Verity(std::filesystem::directory_entry(systemFilePath)).exists)
 		{
 			std::string mutFilename { systemFilePath.filename().string() };
-			std::filesystem::directory_entry trashEntry { g_singleton->getWorkingProgFileDir() / systemFilePath.filename() };
+			std::filesystem::directory_entry stageEntry { g_singleton->getWorkingProgFileDir() / systemFilePath.filename() };
 
 			//Need to use systemFilePath for the full path. Relativity creates issues.
 			if (!canMvFileChk(std::filesystem::directory_entry(systemFilePath)))
@@ -55,7 +55,7 @@ void Delete::file(std::vector<std::string>& args)
 			}
 
 			//To improve time. Reverse the logic of these two. if and else ifs. As the second is more common
-			if(Verity trashEntryItem(trashEntry); trashEntryItem.exists)
+			if(Verity stageEntryItem(stageEntry); stageEntryItem.exists)
 			{
 				// Print entry is a dupe
 				if(m_dOpt.verboseOption)
@@ -70,14 +70,14 @@ void Delete::file(std::vector<std::string>& args)
 							std::cerr << "delete failed. cannot rename file. unknown format: " << mutFilename << "\n";
 						continue;
 					}
-					trashEntry.assign(g_singleton->getWorkingProgFileDir() / mutFilename);
+					stageEntry.assign(g_singleton->getWorkingProgFileDir() / mutFilename);
 #ifndef NDEBUG
-					std::println("Checking new name in DIR: {}", trashEntry.path().string());
+					std::println("Checking new name in DIR: {}", stageEntry.path().string());
 #endif
 				}
-				while(Verity(trashEntry).exists); //Needs to recheck with new instance. Cannot use same instance. WARNING: can create infinite loop.
+				while(Verity(stageEntry).exists); //Needs to recheck with new instance. Cannot use same instance. WARNING: can create infinite loop.
 			}
-			else if(!(trashEntryItem.exists))
+			else if(!(stageEntryItem.exists))
 			{
 				//Print if unique
 				if(m_dOpt.verboseOption)
@@ -117,7 +117,7 @@ void Delete::file(std::vector<std::string>& args)
 				//Using continue to allow the other args to be processed.
 				continue;
 			}
-//**********
+			
 			if(aci::Stat(systemFilePath.string().c_str()).st_dev() == aci::Stat(g_singleton->getWorkingProgDir().string().c_str()).st_dev())
 			{
 				if(m_dOpt.verboseOption)
@@ -157,7 +157,6 @@ void Delete::file(std::vector<std::string>& args)
 					continue;
 				}
 			}
-//***********
 		}
 		else
 		{
@@ -221,11 +220,11 @@ bool Delete::renameDupe(std::string& file)
 	return true;
 }
 
-const std::array<std::string, 7> Delete::saveFileData(const std::string& trashFilename, const std::filesystem::path& originalPath)
+const std::array<std::string, 7> Delete::saveFileData(const std::string& stageFilename, const std::filesystem::path& originalPath)
 {
 	auto currentTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 	
-	std::string fileName{trashFilename};
+	std::string fileName{stageFilename};
 	std::string filePath{originalPath.string()};
 	std::string timestamp{std::to_string(currentTime)};
 	

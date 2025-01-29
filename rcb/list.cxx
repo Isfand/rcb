@@ -115,11 +115,11 @@ void List::count()
 	if(m_validFiles.empty())
 		for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
 		{
-			std::string trashFile = entry.path().filename().string();
-			std::string dbTrashFileRecord = m_db.selectData(std::format("SELECT file FROM {0} WHERE file='{1}';", g_progName, trashFile));
+			std::string stagedFile = entry.path().filename().string();
+			std::string dbProgFileRecord = m_db.selectData(std::format("SELECT file FROM {0} WHERE file='{1}';", g_progName, stagedFile));
 
-			if(trashFile == dbTrashFileRecord)
-				m_validFiles.push_back(trashFile);
+			if(stagedFile == dbProgFileRecord)
+				m_validFiles.push_back(stagedFile);
 		};
 	std::println("{}{}", descriptor, m_validFiles.size());
 }
@@ -140,11 +140,11 @@ void List::size()
 	if(m_validFiles.empty())
 		for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
 		{
-			std::string trashFile { entry.path().filename().string() };
-			std::string dbTrashFileRecord { m_db.selectData(std::format("SELECT file FROM {0} WHERE file='{1}';", g_progName, trashFile)) };
+			std::string stagedFile { entry.path().filename().string() };
+			std::string dbProgFileRecord { m_db.selectData(std::format("SELECT file FROM {0} WHERE file='{1}';", g_progName, stagedFile)) };
 
-			if(trashFile == dbTrashFileRecord)
-				m_validFiles.push_back(trashFile);
+			if(stagedFile == dbProgFileRecord)
+				m_validFiles.push_back(stagedFile);
 		};
 
 	for(auto& validFile : m_validFiles)
