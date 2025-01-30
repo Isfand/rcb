@@ -210,7 +210,7 @@ void Args::init()
 		else if(std::string(arg) == "--version")
 		{
 			//https://stackoverflow.com/questions/4053837/colorizing-text-in-the-console-with-c
-			std::println("\x1B[32m{} {} version ({})\033[0m", "♻️", g_progName, g_progVersion);
+			std::println("\x1B[32m{} {} version ({})\033[0m", "♻", g_progName, g_progVersion);
 			std::println("\x1B[90m{}\033[0m", m_rcb_ASCII_art);
 			return;	
 		}
