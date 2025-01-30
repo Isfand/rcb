@@ -1,0 +1,6 @@
+bin/rcb
+share/man/man1/rcb.1.gz
+share/man/man1/rcb-delete.1.gz
+share/man/man1/rcb-restore.1.gz
+share/man/man1/rcb-list.1.gz
+share/man/man1/rcb-validate.1.gz
