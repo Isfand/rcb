@@ -66,20 +66,21 @@ private:
 		"Top-Level Options:\n"
 		"--version, gives program version.\n";
 
-	//https://emojicombos.com/trash-can-text-art
+	//https://www.asciiart.eu/logos/recycle
 	const char* m_rcb_ASCII_art =
-		"                \n  " 
-		"    ⢰⡟⠛⠛⠛⠛⢻⡆    \n  "
-		"⣤⣤⣤⣤⣼⣧⣤⣤⣤⣤⣼⣧⣤⣤⣤⣤\n  "
-		"⠛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⣛⠛\n  "
-		" ⢻⣿⣿⢹⣿⣿⡏⢹⣿⣿⡏⣿⣿⡟ \n  "
-		" ⢸⣿⣿⠘⣿⣿⡇⢸⣿⣿⠃⣿⣿⡇ \n  "
-		" ⠸⣿⣿⠀⣿⣿⡇⢸⣿⣿⠀⣿⣿⠇ \n  "
-		"  ⣿⣿⠀⣿⣿⡇⢸⣿⣿⠀⣿⣿  \n  "
-		"  ⣿⣿⠀⢿⣿⡇⢸⣿⡿⠀⣿⣿  \n  "
-		"  ⢸⣿⡆⢸⣿⡇⢸⣿⡇⢰⣿⡇  \n  "
-		"  ⢸⣿⡇⢸⣿⡇⢸⣿⡇⢸⣿⡇  \n  "
-		"  ⠈⣿⣷⣾⣿⣷⣾⣿⣷⣾⣿   \n  ";
+	R"(
+   _____\    _______
+   /      \  |      /\
+  /_______/  |_____/  \
+ |   \   /        /   /
+  \   \         \/   /
+   \  /          \__/_  
+    \/ ____    /\    
+      /  \    /  \   
+     /\   \  /   /   
+       \   \/   /    
+        \___\__/
+    )";
 };
 
 } // namespace rcb
