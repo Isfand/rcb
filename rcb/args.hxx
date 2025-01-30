@@ -69,7 +69,7 @@ private:
 	//https://www.asciiart.eu/logos/recycle
 	const char* m_rcb_ASCII_art =
 	R"(
-   _____\    _______
+    _____\    _______
    /      \  |      /\
   /_______/  |_____/  \
  |   \   /        /   /
