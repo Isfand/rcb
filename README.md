@@ -22,8 +22,8 @@ See [docs/](docs/) for more information.
 **`git clone https://github.com/Isfand/rcb.git`** \
 **`cd rcb`**
 
-POSIX: **`./config-init.sh`**\
-WIN32: **`.\config-init.ps1`**
+POSIX: **`./config_init.sh`**\
+WIN32: **`.\config_init.ps1`**
 
 **`bdep update -a`**
 
