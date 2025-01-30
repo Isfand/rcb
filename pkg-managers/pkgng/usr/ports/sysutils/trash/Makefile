@@ -1,9 +1,9 @@
-PORTNAME=       trash
+PORTNAME=       rcb
 PORTVERSION=    0.10.0
 CATEGORIES=     sysutils
-MASTER_SITES=   https://github.com/Isfand/trash/archive/refs/tags/
+MASTER_SITES=   https://github.com/Isfand/rcb/archive/refs/tags/
 DISTFILES=      v0.10.0.tar.gz
-WWW=            https://github.com/Isfand/trash
+WWW=            https://github.com/Isfand/rcb
 
 MAINTAINER=     ports@FreeBSD.org
 COMMENT=        File trashing utility for the terminal
