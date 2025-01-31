@@ -4,7 +4,6 @@ Known issues:
 3. --human-readable is only implemented for timestamp 
 
 ToDo:
--Rename validate --force to --yes. 
 -restore --all should restore paths with the least depth first.
 -ADD restore --force-rename, --force-replace.
 -ADD restore option to restore parent directories if they no longer exist if permissible. E.G --force-recreate-parent.
@@ -22,7 +21,7 @@ Suggestions:
 
 End Goal:
 Once completed the final project will be to create a helper daemon/service for:
-- trash scheduled time erases,
-- automatic validation of everything inside /trash directory 
+- Scheduled time erases,
+- automatic validation of everything inside .rbn/ directory 
 - Desktop integration with every major OS. Starting with XDG Trash Spec.
 - Has a config implemented
