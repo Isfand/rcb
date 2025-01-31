@@ -4,7 +4,9 @@
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
+- ADDITION: Added depth into schema.
 - UPDATE: Project rename to rcb.
+- BUGFIX: directorySize() can now determine size of a circular symlink
 
 ----------------------------------------------------------------------
  VERSION 0.10.0 (25-01-2025)
