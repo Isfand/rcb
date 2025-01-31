@@ -220,7 +220,7 @@ bool Delete::renameDupe(std::string& file)
 	return true;
 }
 
-const std::array<std::string, 7> Delete::saveFileData(const std::string& stageFilename, const std::filesystem::path& originalPath)
+const std::array<std::string, 8> Delete::saveFileData(const std::string& stageFilename, const std::filesystem::path& originalPath)
 {
 	auto currentTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 	
@@ -238,10 +238,11 @@ const std::array<std::string, 7> Delete::saveFileData(const std::string& stageFi
 		"NULL" : std::to_string(Delete::fileSize(std::filesystem::directory_entry(originalPath)));
 
 	std::string fileType{fileTypeToString(Verity(std::filesystem::directory_entry(originalPath)).type)};
+	std::string originalPathDepth{std::to_string(pathDepth(originalPath))};
 	std::string workingUsername{g_singleton->getWorkingUsername()};
 	std::string executionID{m_currentExecutionID};
 
-	return std::array<std::string, 7>{fileName, filePath, timestamp, fileByteSize, fileType, workingUsername, executionID};
+	return std::array<std::string, 8>{fileName, filePath, timestamp, fileByteSize, fileType, originalPathDepth, workingUsername, executionID};
 }
 
 long long unsigned Delete::fileSize(const std::filesystem::directory_entry& file)

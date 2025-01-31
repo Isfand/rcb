@@ -27,8 +27,9 @@ void Database::createTable()
 											  "\t\"{4}\" BIGINT UNSIGNED,\n"
 											  "\t\"{5}\" BIGINT UNSIGNED,\n" 
 											  "\t\"{6}\" varchar(65535),\n"
-											  "\t\"{7}\" varchar(65535),\n" 
-											  "\t\"{8}\" BIGINT UNSIGNED);\n",
+											  "\t\"{7}\" BIGINT UNSIGNED,\n" 
+											  "\t\"{8}\" varchar(65535),\n" 
+											  "\t\"{9}\" BIGINT UNSIGNED);\n",
 											  g_progName, 
 											  m_fileIdColumn, 
 											  m_fileNameColumn, 
@@ -36,6 +37,7 @@ void Database::createTable()
 											  m_fileTimestampColumn, 
 											  m_fileSizeColumn,
 											  m_fileTypeColumn,
+											  m_filePathDepthColumn,
 											  m_fileUserColumn,
 											  m_fileExecutionIDColumn);
 											  //sqlite3 does not support UNSIGNED. It is simply ignored. Keep it here for a workaround.
@@ -63,22 +65,23 @@ void Database::createTable()
 
 } 
 
-void Database::insertData(const std::array<std::string, 7>& fileDetails)
+void Database::insertData(const std::array<std::string, 8>& fileDetails)
 {
 	char* errorMsg{};
 
 	sqlite3_open((g_singleton->getWorkingProgDataDir() / m_dataBaseName).string().c_str(), &m_db);
 
 	std::string recordData = std::format("INSERT INTO {} ("
-										 "{}, {}, {}, {}, {}, {}, {}) "
+										 "{}, {}, {}, {}, {}, {}, {}, {}) "
 										 "VALUES("
-										 "'{}', '{}', '{}', '{}', '{}', '{}', '{}');",
+										 "'{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}');",
 										 g_progName, 
 										 m_fileNameColumn,
 										 m_filePathColumn,
 										 m_fileTimestampColumn,
 										 m_fileSizeColumn,
 										 m_fileTypeColumn,
+										 m_filePathDepthColumn,
 										 m_fileUserColumn,
 										 m_fileExecutionIDColumn,
 										 fileDetails.at(0),
@@ -87,7 +90,8 @@ void Database::insertData(const std::array<std::string, 7>& fileDetails)
 										 fileDetails.at(3),
 										 fileDetails.at(4),
 										 fileDetails.at(5),
-										 fileDetails.at(6));
+										 fileDetails.at(6),
+										 fileDetails.at(7));
 	
 	int exit = {sqlite3_exec(m_db, recordData.c_str(), NULL, 0, &errorMsg)};
 	if (exit != SQLITE_OK)
