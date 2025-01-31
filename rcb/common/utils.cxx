@@ -342,6 +342,11 @@ std::string posixTimeToDateTime(std::chrono::seconds timestamp)
 		tm_info->tm_sec);          // Second (0-59)
 }
 
+int pathDepth(const std::filesystem::path& p)
+{
+	return std::distance(p.begin(), p.end());
+}
+
 //Unimplemented
 std::string dataUnitConversion()
 {

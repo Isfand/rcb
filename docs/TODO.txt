@@ -1,11 +1,13 @@
 Known issues:
-2. Windows cannot delete broken symlinks due to _stat implementation.
-1. --no-format is only implemented for size and counts.
+1. Windows cannot delete broken symlinks due to _stat implementation.
+2. --no-format is only implemented for size and counts.
 3. --human-readable is only implemented for timestamp 
 
 ToDo:
--ADD restore overwrite/rename with R/r O/o N/n. uppercase is ALL, lowercase is singular.
--ADD restore option to restore parent directories if they no longer exist if permissible.
+-Rename validate --force to --yes. 
+-restore --all should restore paths with the least depth first.
+-ADD restore --force-rename, --force-replace.
+-ADD restore option to restore parent directories if they no longer exist if permissible. E.G --force-recreate-parent.
 -Implement --human-readable for list
 -Implement PID_LOCK in /word
 -Implement environment variable for .config as well as default dir.

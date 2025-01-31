@@ -18,8 +18,8 @@ Validate::Validate(ValidateOptions& vOpt) : m_vOpt{vOpt}
 {
 #ifndef NDEBUG
 	std::println("verboseOption is:     {}", m_vOpt.verboseOption);
-	std::println("forceOption is:       {}", m_vOpt.forceOption);
 	std::println("silentOption is:      {}", m_vOpt.silentOption);
+	std::println("yesOption is:         {}", m_vOpt.yesOption);
 	std::println("fileOption is:        {}", m_vOpt.fileOption);
 	std::println("dataOption is:        {}", m_vOpt.dataOption);
 	std::println("wipeOption is:        {}", m_vOpt.wipeOption);
@@ -70,7 +70,7 @@ void Validate::file()
 			for(const auto& file : danglingFiles)
 				std::println("{}", file);
 		}
-		if(!confirmFlag && !m_vOpt.forceOption && !m_vOpt.silentOption)
+		if(!confirmFlag && !m_vOpt.yesOption && !m_vOpt.silentOption)
 		{
 			std::string confirm;
 			std::println("permanently remove dangling files? [Y/n]"); 
@@ -78,7 +78,7 @@ void Validate::file()
 			while(confirm != "Y" && confirm != "n");
 			confirm == "Y" ? confirmFlag=true : confirmFlag=false;
 		}
-		if(confirmFlag || m_vOpt.forceOption || m_vOpt.silentOption)
+		if(confirmFlag || m_vOpt.yesOption || m_vOpt.silentOption)
 		{
 			for(const auto& file : danglingFiles)
 			{
@@ -122,7 +122,7 @@ void Validate::data()
 			for (const auto& danglingRecord : danglingRecords)
 				std::println("{}", danglingRecord);
 		}
-		if(!confirmFlag && !m_vOpt.forceOption && !m_vOpt.silentOption)
+		if(!confirmFlag && !m_vOpt.yesOption && !m_vOpt.silentOption)
 		{
 			std::string confirm;
 			std::println("permanently remove dangling record(s)? [Y/n]"); 
@@ -130,7 +130,7 @@ void Validate::data()
 			while(confirm != "Y" && confirm != "n");
 			confirm == "Y" ? confirmFlag=true : confirmFlag=false;
 		}
-		if(confirmFlag || m_vOpt.forceOption || m_vOpt.silentOption)
+		if(confirmFlag || m_vOpt.yesOption || m_vOpt.silentOption)
 		{
 			for (const auto& danglingRecord : danglingRecords)
 				Database().executeSQL(std::format("DELETE FROM {0} WHERE file='{1}';", g_progName, danglingRecord));
@@ -162,7 +162,7 @@ void Validate::wipe()
 			for(const auto& entry : danglingFiles)
 				std::println("{}", entry.filename().string());
 		}
-		if(!confirmFlag && !m_vOpt.forceOption && !m_vOpt.silentOption)
+		if(!confirmFlag && !m_vOpt.yesOption && !m_vOpt.silentOption)
 		{
 			std::string confirm;
 			std::println("permanently remove dangling files? [Y/n]"); 
@@ -170,7 +170,7 @@ void Validate::wipe()
 			while(confirm != "Y" && confirm != "n");
 			confirm == "Y" ? confirmFlag=true : confirmFlag=false;
 		}
-		if(confirmFlag || m_vOpt.forceOption || m_vOpt.silentOption)
+		if(confirmFlag || m_vOpt.yesOption || m_vOpt.silentOption)
 		{
 			for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgWipeDir()))
 			{
