@@ -17,7 +17,7 @@ class Database
 public:
 	void createDB();
 	void createTable();
-	void insertData(const std::array<std::string, 7>& fileDetails);
+	void insertData(const std::array<std::string, 8>& fileDetails);
 	std::string selectData(const std::string& sql);
 	std::string selectDataA(const std::string& sql);
 	std::vector<std::string> selectDataB(const std::string& sql);
@@ -32,6 +32,7 @@ private:
 	const char* m_fileTimestampColumn    {"timestamp"};     //Unix Timestamp since epoch
 	const char* m_fileSizeColumn         {"size"};          //Bytes
 	const char* m_fileTypeColumn         {"filetype"};      //Filesystem file type
+	const char* m_filePathDepthColumn    {"depth"};         //Path depth
 	const char* m_fileUserColumn         {"user"};          //The user who executed the command
 	const char* m_fileExecutionIDColumn  {"execution"};     //Execution id of all files deleted in the same run
 };
