@@ -15,7 +15,7 @@ $HOME/.rcb
 └── word
 </pre>
 
-The rcb directory location and name should be changeable through the use of a single environment variable. I.E rcb_DIR.
+The rcb directory location and name should be changeable through the use of a single environment variable. I.E RCB_DIR.
 
 
 ### **data/**
@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS "rcb" (
         "timestamp" BIGINT UNSIGNED,
         "size" BIGINT UNSIGNED,
         "filetype" varchar(65535),
+        "depth" BIGINT UNSIGNED,
         "user" varchar(65535),
         "execution" BIGINT UNSIGNED);
 </pre>
@@ -196,7 +197,7 @@ Checks for 'NULL' directory sizes and evaluates them.\
 Print extra information on program state.\
 **--silent**\
 Prevent printing anything with auto default(s).\
-**--force**\
+**--yes**\
 Do not ask the user for input. Perform the action(s) requested.
 
 ---
