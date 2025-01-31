@@ -27,6 +27,7 @@ private:
 
 	bool has_trailing_slash(const std::filesystem::path& path);
 	std::filesystem::path remove_trailing_slash(const std::filesystem::path& path);
+	int pathDepth(const std::filesystem::path& path);
 };
 	
 }//namespace rcb
