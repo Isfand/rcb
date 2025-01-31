@@ -29,6 +29,7 @@ int formatToTimestamp(const std::string& format, long long& timestamp);
 
 //Unused
 std::string posixTimeToDateTime(std::chrono::seconds timestamp);
+int pathDepth(const std::filesystem::path& p);
 
 //Unimplemented
 std::string dataUnitConversion();

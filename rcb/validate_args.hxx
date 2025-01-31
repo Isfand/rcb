@@ -10,7 +10,7 @@ namespace rcb{
 struct ValidateOptions
 {
 	bool verboseOption{};
-	bool forceOption{};
+	bool yesOption{};
 	bool silentOption{};
 	bool fileOption{};
 	bool dataOption{};
@@ -31,7 +31,7 @@ private:
 		"validate usage:\n"
 		"--help    | -h\n"
 		"--verbose | -v\n"
-		"--force   | -f\n"
+		"--yes     | -y\n"
 		"--all     | -a, validate all directories.\n"
 		"--file    | -F, validate file/ only\n"
 		"--data    | -D, validate data/ only\n"

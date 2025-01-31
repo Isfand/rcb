@@ -54,17 +54,17 @@ void ValidateArgs::run(std::vector<std::string>& args)
 #endif
 				m_vOpt.verboseOption = true;
 			}
-			else if (std::string(args.at(i)) == "--force" || std::string(args.at(i)) == "-f")
+			else if (std::string(args.at(i)) == "--yes" || std::string(args.at(i)) == "-y")
 			{
 #ifndef NDEBUG
-				std::println("validate force triggered");
+				std::println("validate yes triggered");
 #endif
-				m_vOpt.forceOption = true;
+				m_vOpt.yesOption = true;
 			}
 			else if (std::string(args.at(i)) == "--silent" || std::string(args.at(i)) == "-s")
 			{
 #ifndef NDEBUG
-				std::println("silent force triggered");
+				std::println("validate silent triggered");
 #endif
 				m_vOpt.silentOption = true;
 			}
