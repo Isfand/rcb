@@ -189,9 +189,20 @@ unsigned long long directorySize(const std::filesystem::directory_entry& directo
 
 	for (const auto& entry : std::filesystem::recursive_directory_iterator(directory.path())) 
 	{
-		//Is not dir is for preventing dir duplication.
-		if(!std::filesystem::is_directory(entry.path()))
+		std::filesystem::file_status status = std::filesystem::symlink_status(entry.path());
+		//Note: For some reason is_directory fails on circular symlinks. Which is why this exists. Can't be used on the same if statement.
+		if(!std::filesystem::is_symlink(status)) 
 		{
+			//Is not dir is for preventing dir duplication.
+			if(!std::filesystem::is_directory(entry.path()))
+			{
+				aci::Stat stat = entry.path().string().c_str();
+				directoryEntries.push_back(std::make_tuple(entry, stat.st_ino(), stat.st_dev()));
+			}
+		}
+		else
+		{
+			//if(!std::filesystem::is_directory(status)) continue;
 			aci::Stat stat = entry.path().string().c_str();
 			directoryEntries.push_back(std::make_tuple(entry, stat.st_ino(), stat.st_dev()));
 		}
@@ -340,11 +351,6 @@ std::string posixTimeToDateTime(std::chrono::seconds timestamp)
 		tm_info->tm_hour,          // Hour (0-23)
 		tm_info->tm_min,           // Minute (0-59)
 		tm_info->tm_sec);          // Second (0-59)
-}
-
-int pathDepth(const std::filesystem::path& p)
-{
-	return std::distance(p.begin(), p.end());
 }
 
 //Unimplemented
