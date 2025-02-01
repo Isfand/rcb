@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS "rcb" (
 "timestamp" POSIX timestamp for the exact time in seconds when the file was 'deleted' and saved as a record.\
 "size" is the size contents of the file or directory(recursive).\
 "filetype" is a type of file which the filesystem supports.\
+"depth" is the directory depth from root.\
 "user" is the one who ran the delete command on the file.\
 "execution" is the relative execution order which the files where deleted in. 
 

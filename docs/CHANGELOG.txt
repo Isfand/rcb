@@ -4,6 +4,12 @@
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
+----------------------------------------------------------------------
+ VERSION 0.11.0 (01-02-2025)
+----------------------------------------------------------------------
+
+Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v0.11.0
+
 - BREAKING CHANGE: Project renamed to rcb.
 - BREAKING CHANGE: Added depth into schema.
 - BREAKING CHANGE: validate --force/-f changed to --yes/-y.

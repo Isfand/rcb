@@ -1,6 +1,6 @@
 : 1
 name: rcb
-version: 0.10.0
+version: 0.11.0
 type: exe
 language: c++
 summary: File trashing utility for the terminal
