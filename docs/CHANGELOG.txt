@@ -4,7 +4,7 @@
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
-- BREAKING CHANGE: Project rename to rcb.
+- BREAKING CHANGE: Project renamed to rcb.
 - BREAKING CHANGE: Added depth into schema.
 - UPDATE: new pkg-mangers branch.
 - BUGFIX: directorySize() can now determine size of a circular symlink.
