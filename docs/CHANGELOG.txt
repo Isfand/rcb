@@ -6,8 +6,9 @@ Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?
 
 - BREAKING CHANGE: Project rename to rcb.
 - BREAKING CHANGE: Added depth into schema.
-- UPDATE: new pkg-mangers branch
-- BUGFIX: directorySize() can now determine size of a circular symlink
+- UPDATE: new pkg-mangers branch.
+- BUGFIX: directorySize() can now determine size of a circular symlink.
+- BUGFIX: restore --all now restores with lowest depth ascending.
 
 ----------------------------------------------------------------------
  VERSION 0.10.0 (25-01-2025)
@@ -16,7 +17,7 @@ Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v0.10.0
 
 - ADDITION: --human-readable using list now works for timestamps.
-- UPDATE: Created tools/ directory and FreeBSD pkgng port
+- UPDATE: Created tools/ directory and FreeBSD pkgng port.
 - BUGFIX: list now no longer prints redundant pipe separator after the last value.
 
 ----------------------------------------------------------------------

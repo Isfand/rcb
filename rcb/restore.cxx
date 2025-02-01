@@ -84,7 +84,8 @@ void Restore::file(std::vector<std::string>& args)
 
 void Restore::allFile()
 {
-	std::vector<std::string> vList { Database().selectDataB(std::format("SELECT id FROM {0};", g_progName)) };
+	//Need to restore files with the lowest depth ascending.
+	std::vector<std::string> vList { Database().selectDataB(std::format("SELECT id FROM {0} ORDER BY depth ASC;", g_progName)) };
 
 #ifndef NDEBUG
 	std::println("Printing all existing record IDs");
