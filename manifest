@@ -7,7 +7,7 @@ summary: File trashing utility for the terminal
 topics: recycling-bin, trashcan, trashing
 license: Eclipse Public License 2.0
 description-file: README.md
-url: https://github.com/Isfand/trash
+url: https://github.com/Isfand/rcb
 #email: you@example.com
 #build-error-email: you@example.com
 requires: c++23
