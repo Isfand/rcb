@@ -1,8 +1,8 @@
 PORTNAME=       rcb
-PORTVERSION=    0.10.0
+PORTVERSION=    0.11.0
 CATEGORIES=     sysutils
 MASTER_SITES=   https://github.com/Isfand/rcb/archive/refs/tags/
-DISTFILES=      v0.10.0.tar.gz
+DISTFILES=      v0.11.0.tar.gz
 WWW=            https://github.com/Isfand/rcb
 
 MAINTAINER=     ports@FreeBSD.org
