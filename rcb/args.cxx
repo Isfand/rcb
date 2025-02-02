@@ -219,7 +219,7 @@ void Args::init()
 			if(m_sharedCmdFlag)
 				continue;
 
-			std::println("Default {0} execute\nIncorrect use of command. Enter --help for usage", g_progName);
+			std::println("Incorrect use of command. Enter --help for usage", g_progName);
 			return;
 		}
 	}
