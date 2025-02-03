@@ -4,6 +4,8 @@
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
+- Updated: Added tests/ directory.
+
 ----------------------------------------------------------------------
  VERSION 0.11.0 (01-02-2025)
 ----------------------------------------------------------------------
