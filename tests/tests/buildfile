@@ -1,0 +1,7 @@
+libs =
+
+exe{tests}: {hxx ixx txx cxx}{**} $libs #testscript
+
+cxx.poptions =+ "-I$out_root" "-I$src_root"
+
+exe{tests}: install = false
