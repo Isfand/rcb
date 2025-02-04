@@ -4,7 +4,8 @@
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
-- Updated: Added tests/ directory.
+- BREAKING CHANGE: delete now requires explicit use of --force or --no-directorysize to delete directories with no read access.
+- UPDATE: Added tests/ directory.
 
 ----------------------------------------------------------------------
  VERSION 0.11.0 (01-02-2025)
