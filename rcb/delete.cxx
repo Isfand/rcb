@@ -104,8 +104,8 @@ void Delete::file(std::vector<std::string>& args)
 					Verity(std::filesystem::directory_entry(systemFilePath)).type ==
 					std::filesystem::file_type::directory) 
 				{
-					if(!m_dOpt.silentOption)
-						std::println("cannot save directory size, process execution user {} is missing read permissions for directory {}",
+					if(!m_dOpt.silentOption && !m_dOpt.forceOption)
+						std::println("cannot save directory size, process execution user {} is missing read permissions for directory {}\nUse --force or explicitly --no-directorysize",
 						g_singleton->getWorkingUsername(), systemFilePath.string());
 				}
 				auto fileDetails = Delete::saveFileData(mutFilename, systemFilePath);
@@ -233,6 +233,7 @@ const std::array<std::string, 8> Delete::saveFileData(const std::string& stageFi
 		Verity(std::filesystem::directory_entry(originalPath)).type == 
 		std::filesystem::file_type::directory) || 
 		(!canReadDirChk(std::filesystem::directory_entry(originalPath)) && 
+		m_dOpt.forceOption &&
 		Verity(std::filesystem::directory_entry(originalPath)).type == 
 		std::filesystem::file_type::directory) ? 
 		"NULL" : std::to_string(Delete::fileSize(std::filesystem::directory_entry(originalPath)));
