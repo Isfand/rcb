@@ -130,6 +130,10 @@ Restore all files.\
 Print extra information on program state.\
 **--force**\
 Do not ask the user for input. Perform the action(s) requested.\
+**--force-replace**\
+Restore by replacing any existing file from original path.\
+**--force-rename**\
+Restore by renaming any existing file from original path by incrementing filename.\
 **--silent**\
 Prevent printing anything with auto default(s).\
 **--previous**\

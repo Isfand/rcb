@@ -13,6 +13,8 @@ struct RestoreOptions
 	bool allOption{};
 	bool verboseOption{};
 	bool forceOption{};
+	bool forceReplaceOption{};
+	bool forceRenameOption{};
 	bool silentOption{};
 	bool previousOption{};
 
@@ -35,12 +37,15 @@ private:
 	const char* m_restoreHelpMsg = 
 		"restore usage:\n" 
 		"restore <n> | r <n>, restore file by id.\n"
-		"--help      | -h \n"
-		"--verbose   | -v \n"
-		"--all       | -a \n"
+		"--help      | -h\n"
+		"--verbose   | -v\n"
+		"--all       | -a\n"
+		"--force-replace\n"
+		"--force-rename\n"
 		"--past <n>(unit), t,s,m,h,d,w,mo,y,c,k,ae\n"
 		"--previous\n"
-		"--sql <s>, UNSAFE: Insert sql statement directly for restore. Must return ID.\n";;
+		"--sql <s>, UNSAFE: Insert sql statement directly for restore. Must return ID.\n"
+		;
 };
 
 } // namespace rcb

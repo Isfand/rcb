@@ -14,13 +14,15 @@ namespace rcb{
 Restore::Restore(std::vector<std::string>& args, RestoreOptions& rOpt) : m_rOpt{rOpt}
 {
 #ifndef NDEBUG
-	std::println("allOption is:      {}", m_rOpt.allOption);
-	std::println("presentOption is:  {}", m_rOpt.pastOption);
-	std::println("previousOption is: {}", m_rOpt.previousOption);
-	std::println("verboseOption is:  {}", m_rOpt.verboseOption);
-	std::println("forceOption is:    {}", m_rOpt.forceOption); //Unused
-	std::println("silentOption is:   {}", m_rOpt.silentOption);
-	std::println("sqlOption is:      {}", m_rOpt.sqlOption);
+	std::println("allOption is:          {}", m_rOpt.allOption);
+	std::println("presentOption is:      {}", m_rOpt.pastOption);
+	std::println("previousOption is:     {}", m_rOpt.previousOption);
+	std::println("verboseOption is:      {}", m_rOpt.verboseOption);
+	std::println("forceOption is:        {}", m_rOpt.forceOption); //Unused
+	std::println("forceReplaceOption is: {}", m_rOpt.forceReplaceOption); //Unused
+	std::println("forceRenameOption is:  {}", m_rOpt.forceRenameOption); //Unused
+	std::println("silentOption is:       {}", m_rOpt.silentOption);
+	std::println("sqlOption is:          {}", m_rOpt.sqlOption);
 #endif
 	Restore::file(args);
 	if(m_rOpt.allOption)     Restore::allFile();
@@ -34,9 +36,10 @@ void Restore::file(std::vector<std::string>& args)
 	for(std::string& arg : args)
 	{
 		//TODO. Need to add something accounting for empty values returned from sql.
-		std::string stagedFile              { Database().selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_progName, arg)) };
+		std::string stagedFile             { Database().selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_progName, arg)) };
 		std::filesystem::path originalPath { Database().selectData(std::format("SELECT path FROM {0} WHERE id='{1}';", g_progName, arg)) };
 
+		//TODO. Add replace and rename checks here...
 		if(checkProgFile(stagedFile) && checkOriginalPath(originalPath))
 		{
 			//Check for permissions on the original path
@@ -47,6 +50,7 @@ void Restore::file(std::vector<std::string>& args)
 				continue;
 			}
 
+			//Check if the path is internal or external
 			if(aci::Stat(g_singleton->getWorkingProgDir().string().c_str()).st_dev() == aci::Stat(originalPath.parent_path().string().c_str()).st_dev())
 			{
 				//TODO. Place inside try catch and skip the current arg with continue:
@@ -149,6 +153,7 @@ bool Restore::checkProgFile(const std::string& stagedFile)
 	return result;
 }
 
+//Checks if the original path is occupied.
 bool Restore::checkOriginalPath(const std::filesystem::path& progDir)
 {
 	bool result{};
