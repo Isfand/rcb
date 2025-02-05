@@ -39,7 +39,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 			else if (std::string(args.at(i)) == "--all" || std::string(args.at(i)) == "-a")
 			{
 #ifndef NDEBUG
-				std::println("all triggered");
+				std::println("restore all triggered");
 #endif
 				m_rOpt.allOption = true;
 				m_erasePositions.push_back(i);
@@ -47,7 +47,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 			else if (std::string(args.at(i)) == "--verbose" || std::string(args.at(i)) == "-v")
 			{
 #ifndef NDEBUG
-				std::println("verbose triggered");
+				std::println("restore verbose triggered");
 #endif
 				m_rOpt.verboseOption = true;
 				m_erasePositions.push_back(i);
@@ -55,15 +55,31 @@ void RestoreArgs::run(std::vector<std::string>& args)
 			else if (std::string(args.at(i)) == "--force" || std::string(args.at(i)) == "-f")
 			{
 #ifndef NDEBUG
-				std::println("force triggered");
+				std::println("restore force triggered");
 #endif
 				m_rOpt.forceOption = true;
+				m_erasePositions.push_back(i);
+			}
+			else if (std::string(args.at(i)) == "--force-replace")
+			{
+#ifndef NDEBUG
+				std::println("restore force-replace triggered");
+#endif
+				m_rOpt.forceReplaceOption = true;
+				m_erasePositions.push_back(i);
+			}
+			else if (std::string(args.at(i)) == "--force-rename")
+			{
+#ifndef NDEBUG
+				std::println("restore force-rename triggered");
+#endif
+				m_rOpt.forceRenameOption = true;
 				m_erasePositions.push_back(i);
 			}
 			else if (std::string(args.at(i)) == "--silent" || std::string(args.at(i)) == "-s")
 			{
 #ifndef NDEBUG
-				std::println("silent triggered");
+				std::println("restore silent triggered");
 #endif
 				m_rOpt.silentOption = true;
 				m_erasePositions.push_back(i);
@@ -71,7 +87,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 			else if (std::string(args.at(i)) == "--past")
 			{
 #ifndef NDEBUG
-				std::println("present triggered");
+				std::println("restore present triggered");
 #endif
 
 				if (i + 1 < args.size())
@@ -91,7 +107,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 			else if (std::string(args.at(i)) == "--previous")
 			{
 #ifndef NDEBUG
-				std::println("previous triggered");
+				std::println("restore previous triggered");
 #endif
 				m_rOpt.previousOption = true;
 				m_erasePositions.push_back(i);
