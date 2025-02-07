@@ -1,8 +1,9 @@
 PORTNAME=       rcb
-PORTVERSION=    0.11.0
+DISTVERSION=    0.11.0
+PORTREVISION=   1
 CATEGORIES=     sysutils
-MASTER_SITES=   https://github.com/Isfand/rcb/archive/refs/tags/
-DISTFILES=      v0.11.0.tar.gz
+MASTER_SITES=   https://github.com/Isfand/${PORTNAME}/archive/refs/tags/
+DISTFILES=      v${DISTVERSION}.tar.gz
 WWW=            https://github.com/Isfand/rcb
 
 MAINTAINER=     ports@FreeBSD.org
@@ -15,10 +16,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 USES=           compiler:c++23-lang
 
 BUILD_DEPENDS=  build2>=0:devel/build2
-LIB_DEPENDS=	libsqlite3.so:databases/sqlite3
+LIB_DEPENDS=    libsqlite3.so:databases/sqlite3
 
-B_CMD=		${LOCALBASE}/bin/b
-B_ARGS=		-V -j ${MAKE_JOBS_NUMBER} -J ${MAKE_JOBS_NUMBER}
+B_CMD=          ${LOCALBASE}/bin/b
+B_ARGS=         -V -j ${MAKE_JOBS_NUMBER} -J ${MAKE_JOBS_NUMBER}
 
 do-build:
 	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${B_CMD} configure ${B_ARGS} \
