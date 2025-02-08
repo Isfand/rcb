@@ -13,7 +13,7 @@
 
 namespace rcb{
 
-Erase::Erase(std::vector<std::string>& args, EraseOptions& eOpt) : m_eOpt{eOpt}
+Erase::Erase(const std::vector<std::string>& args, const EraseOptions& eOpt) : m_eOpt{eOpt}
 {
 #ifndef NDEBUG
 	std::println("allOption is:      {}", m_eOpt.allOption);
@@ -30,9 +30,9 @@ Erase::Erase(std::vector<std::string>& args, EraseOptions& eOpt) : m_eOpt{eOpt}
 	if(m_eOpt.previousOption)Erase::previous();
 }
 
-void Erase::file(std::vector<std::string>& args)
+void Erase::file(const std::vector<std::string>& args)
 {
-	for(std::string& arg : args)
+	for(const std::string& arg : args)
 	{
 		//TODO, Add a check for "" empty. Then continue the loop.
 		//TODO. check perms before rename and remove_all. Show stderr and then continue; 

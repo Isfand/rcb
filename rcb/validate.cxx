@@ -14,7 +14,7 @@
 
 namespace rcb{
 
-Validate::Validate(ValidateOptions& vOpt) : m_vOpt{vOpt}  
+Validate::Validate(const ValidateOptions& vOpt) : m_vOpt{vOpt}  
 {
 #ifndef NDEBUG
 	std::println("verboseOption is:     {}", m_vOpt.verboseOption);

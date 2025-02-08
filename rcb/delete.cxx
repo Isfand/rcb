@@ -15,7 +15,7 @@
 
 namespace rcb{
 
-Delete::Delete(std::vector<std::string>& args, DeleteOptions& dOpt) : m_dOpt{dOpt}
+Delete::Delete(const std::vector<std::string>& args, const DeleteOptions& dOpt) : m_dOpt{dOpt}
 {
 #ifndef NDEBUG
 	std::println("verboseOption is:   {}", m_dOpt.verboseOption);
@@ -27,9 +27,9 @@ Delete::Delete(std::vector<std::string>& args, DeleteOptions& dOpt) : m_dOpt{dOp
 	Delete::file(args);
 }
 
-void Delete::file(std::vector<std::string>& args)
+void Delete::file(const std::vector<std::string>& args)
 {
-	for(std::string& file : args)
+	for(const std::string& file : args)
 	{
 		//UPDATE: weakly canonical can throw exception if a symlink chains to many symlinks. Replacing with custom solution.
 		//CHANGED: systemFilePath should be in for loop top-level scope that way Verity can check symlink_status() properly. 
@@ -64,7 +64,7 @@ void Delete::file(std::vector<std::string>& args)
 				//Can make this into a else while instead of the else if below? Would have to swap the declaration and definitions inside
 				do
 				{
-					if (!Delete::renameDupe(mutFilename))
+					if (!renameDupe(mutFilename))
 					{
 						if(!m_dOpt.silentOption)
 							std::cerr << "delete failed. cannot rename file. unknown format: " << mutFilename << "\n";
@@ -164,60 +164,6 @@ void Delete::file(std::vector<std::string>& args)
 				std::println("path doesn't exist: {0}", systemFilePath.string());
 		}
 	}
-}
-
-bool Delete::renameDupe(std::string& file)
-{
-	std::smatch m{};
-	//std::string newFile{};
-
-	if(std::regex patternA (R"(\((\d+)\)\.[^.]*?$|[^\.]\((\d+)\)$)"); 
-	std::regex_search(file, m, patternA))
-	{
-#ifndef NDEBUG
-		std::println("Matches *(1).ext");
-		std::println("number: {}\nposition is: {}\nlength is: {}", (std::stoi(m[2]))+1, m.position(), m.length());
-#endif
-		file.replace(m.position(2), m.length(2), std::to_string((std::stoi(m[2]))+1));
-		//newFile = file.replace(m.position(2), m.length(2), std::to_string((std::stoi(m[2]))+1));
-	}// Matches *(1).ext
-	else if(std::regex patternB (R"(^[^\.].+(\.).*[^\.]$)");
-	std::regex_search(file, m, patternB))
-	{
-#ifndef NDEBUG
-		std::println("Matches *.ext pos is {}, size is: {}", m.position(1), m.size());
-#endif
-		file.insert((m[1].first - file.begin()), "(1)");
-		//newFile = file;
-	}// Matches *.ext
-	else if(std::regex patternC (R"((\.)$)");
-	std::regex_search(file, m, patternC))
-	{
-#ifndef NDEBUG
-		std::println("Matches * pos is {}, size is: {}", m.position(1), m.size());
-#endif
-		file.insert((m[1].first - file.begin()), "(1)");
-		//newFile = file;
-	}// Matches *
-	else if(std::regex patternD (R"([^\.]($))");
-	std::regex_search(file, m, patternD))
-	{
-#ifndef NDEBUG
-		std::println("Matches *. pos is {}, size is: {}", m.position(1), m.size());
-#endif
-		file.insert((m[1].first - file.begin()), "(1)");
-		//newFile = file;
-	}// Matches *.
-	else
-	{
-#ifndef NDEBUG
-		std::println("No_match");
-#endif
-		return false;
-		//newFile = "UNKNOWN_FILE_FORMAT";
-	}
-
-	return true;
 }
 
 const std::array<std::string, 8> Delete::saveFileData(const std::string& stageFilename, const std::filesystem::path& originalPath)

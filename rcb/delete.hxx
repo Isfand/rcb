@@ -14,13 +14,12 @@ namespace rcb{
 class Delete
 {
 public:
-	Delete(std::vector<std::string>& args, DeleteOptions& dOpt);
+	Delete(const std::vector<std::string>& args, const DeleteOptions& dOpt);
 private:
-	DeleteOptions& m_dOpt;
+	const DeleteOptions& m_dOpt;
 	std::string m_currentExecutionID;
 	
-	void file(std::vector<std::string>& args);
-	bool renameDupe(std::string& file);
+	void file(const std::vector<std::string>& args);
 	const std::array<std::string, 8> saveFileData(const std::string& stageFilename, const std::filesystem::path& originalDir);
 	unsigned long long fileSize(const std::filesystem::directory_entry& file);
 	std::string incrementExecutionID();

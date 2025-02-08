@@ -12,10 +12,10 @@ namespace rcb{
 class Erase
 {
 public:
-	Erase(std::vector<std::string>& args, EraseOptions& eOpt);
+	Erase(const std::vector<std::string>& args, const EraseOptions& eOpt);
 private:
-	EraseOptions& m_eOpt;
-	void file(std::vector<std::string>& args);
+	const EraseOptions& m_eOpt;
+	void file(const std::vector<std::string>& args);
 	void allFile();
 	void past();
 	void previous();
