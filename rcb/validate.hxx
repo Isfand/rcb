@@ -10,12 +10,12 @@ namespace rcb{
 class Validate
 {
 public:
-	Validate(ValidateOptions& vOpt);
+	Validate(const ValidateOptions& vOpt);
 
 private:
+	const ValidateOptions& m_vOpt;
+	
 	Database m_db;
-
-	ValidateOptions& m_vOpt;
 	
 	//Unused
 	void allFile();

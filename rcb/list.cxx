@@ -15,7 +15,7 @@
 
 namespace rcb{
 
-List::List(ListOptions& lOpt) : m_lOpt{lOpt}
+List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 {
 #ifndef NDEBUG
 	std::println("Inside List:");
@@ -61,7 +61,7 @@ void List::allFile()
 	std::print("Results:\n{}", Database().selectDataA(m_defaultSQLQuery + ";"));
 }
 
-void List::file(std::vector<std::string>& args)
+void List::file(const std::vector<std::string>& args)
 {
 	std::println("Results:");
 

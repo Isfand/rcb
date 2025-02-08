@@ -14,15 +14,15 @@ namespace rcb{
 class List
 {
 public:
-	List(ListOptions& lOpt);
+	List(const ListOptions& lOpt);
 private:
-	ListOptions& m_lOpt;
+	const ListOptions& m_lOpt;
 	Database m_db;
 	std::vector<std::string> m_validFiles{};
 	std::string m_defaultSQLQuery{std::format("SELECT * FROM {0}", g_progName)};
 
 	void allFile();
-	void file(std::vector<std::string>& args);
+	void file(const std::vector<std::string>& args);
 	void count();
 	void size();
 	void past();
