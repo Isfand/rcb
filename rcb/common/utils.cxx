@@ -360,4 +360,58 @@ std::string dataUnitConversion()
 	return "";
 }
 
+bool renameDupe(std::string& file)
+{
+	std::smatch m{};
+	//std::string newFile{};
+
+	if(std::regex patternA (R"(\((\d+)\)\.[^.]*?$|[^\.]\((\d+)\)$)"); 
+	std::regex_search(file, m, patternA))
+	{
+#ifndef NDEBUG
+		std::println("Matches *(1).ext");
+		std::println("number: {}\nposition is: {}\nlength is: {}", (std::stoi(m[2]))+1, m.position(), m.length());
+#endif
+		file.replace(m.position(2), m.length(2), std::to_string((std::stoi(m[2]))+1));
+		//newFile = file.replace(m.position(2), m.length(2), std::to_string((std::stoi(m[2]))+1));
+	}// Matches *(1).ext
+	else if(std::regex patternB (R"(^[^\.].+(\.).*[^\.]$)");
+	std::regex_search(file, m, patternB))
+	{
+#ifndef NDEBUG
+		std::println("Matches *.ext pos is {}, size is: {}", m.position(1), m.size());
+#endif
+		file.insert((m[1].first - file.begin()), "(1)");
+		//newFile = file;
+	}// Matches *.ext
+	else if(std::regex patternC (R"((\.)$)");
+	std::regex_search(file, m, patternC))
+	{
+#ifndef NDEBUG
+		std::println("Matches * pos is {}, size is: {}", m.position(1), m.size());
+#endif
+		file.insert((m[1].first - file.begin()), "(1)");
+		//newFile = file;
+	}// Matches *
+	else if(std::regex patternD (R"([^\.]($))");
+	std::regex_search(file, m, patternD))
+	{
+#ifndef NDEBUG
+		std::println("Matches *. pos is {}, size is: {}", m.position(1), m.size());
+#endif
+		file.insert((m[1].first - file.begin()), "(1)");
+		//newFile = file;
+	}// Matches *.
+	else
+	{
+#ifndef NDEBUG
+		std::println("No_match");
+#endif
+		return false;
+		//newFile = "UNKNOWN_FILE_FORMAT";
+	}
+
+	return true;
+}
+
 }//namespace rcb
