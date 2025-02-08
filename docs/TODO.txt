@@ -4,7 +4,6 @@ Known issues:
 3. --human-readable is only implemented for timestamp 
 
 ToDo:
--Change it so that by default when deleting a directory with no read access the file deletion fails with a message to use either --force or --no-directorysize.
 -Fix. When deleting a directory which has a nested unreadable directory the program throws an exception instead of disregarding the directorySize. Or could just add a message saying to use --no-directorysize on the error.
 -ADD restore --force-rename, --force-replace.
 -ADD restore option to restore parent directories if they no longer exist if permissible. E.G --force-recreate-parent.
