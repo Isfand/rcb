@@ -13,12 +13,12 @@ namespace rcb{
 class Restore
 {
 public:
-	Restore(std::vector<std::string>& args, RestoreOptions& rOpt);
+	Restore(const std::vector<std::string>& args, const RestoreOptions& rOpt);
 
 private:
-	RestoreOptions& m_rOpt;
+	const RestoreOptions& m_rOpt;
 	
-	void file(std::vector<std::string>& args);
+	void file(const std::vector<std::string>& args);
 
 	void allFile();
 	bool checkProgFile(const std::string& stagedFile);

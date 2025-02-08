@@ -11,7 +11,7 @@
 
 namespace rcb{
 
-Restore::Restore(std::vector<std::string>& args, RestoreOptions& rOpt) : m_rOpt{rOpt}
+Restore::Restore(const std::vector<std::string>& args, const RestoreOptions& rOpt) : m_rOpt{rOpt}
 {
 #ifndef NDEBUG
 	std::println("allOption is:          {}", m_rOpt.allOption);
@@ -31,16 +31,19 @@ Restore::Restore(std::vector<std::string>& args, RestoreOptions& rOpt) : m_rOpt{
 	if(m_rOpt.sqlOption)     Restore::sqlInjection();
 }
 
-void Restore::file(std::vector<std::string>& args)
+void Restore::file(const std::vector<std::string>& args)
 {
-	for(std::string& arg : args)
+	for(const std::string& arg : args)
 	{
 		//TODO. Need to add something accounting for empty values returned from sql.
-		std::string stagedFile             { Database().selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_progName, arg)) };
-		std::filesystem::path originalPath { Database().selectData(std::format("SELECT path FROM {0} WHERE id='{1}';", g_progName, arg)) };
+		std::string stagedFile                   { Database().selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_progName, arg)) };
+		const std::filesystem::path originalPath { Database().selectData(std::format("SELECT path FROM {0} WHERE id='{1}';", g_progName, arg)) };
 
+		//TODO. may need to check for rename and replace coexistence in args parsing.
+		//TODO. make checkProgFile() alone an early return with continue;
 		//TODO. Add replace and rename checks here...
-		if(checkProgFile(stagedFile) && checkOriginalPath(originalPath))
+		if((checkProgFile(stagedFile) && checkOriginalPath(originalPath)) 
+		|| (checkProgFile(stagedFile) && !checkOriginalPath(originalPath) && m_rOpt.forceReplaceOption))
 		{
 			//Check for permissions on the original path
 			if(!canMvFileChk(std::filesystem::directory_entry(originalPath)))
@@ -142,9 +145,12 @@ void Restore::sqlInjection()
 //Checks if progFile Exists inside of /rcb/file/<name>
 bool Restore::checkProgFile(const std::string& stagedFile)
 {
+	//Early return check to see if file is empty. This should also be handled from the sql querying function.
+	if(stagedFile.empty()) return false;
+	
 	std::filesystem::path filePath { g_singleton->getWorkingProgFileDir() / stagedFile };
 
-	bool result = Verity(std::filesystem::directory_entry(filePath)).exists ? true : false;
+	bool result = Verity(std::filesystem::directory_entry(filePath)).exists; // ? true : false;
 
 	if(!result && !m_rOpt.silentOption)
 		std::println("Failed to restore file: \"{0}\"\nfile to restore is missing in \"{1}\"", stagedFile, g_singleton->getWorkingProgFileDir().string());
@@ -160,9 +166,9 @@ bool Restore::checkOriginalPath(const std::filesystem::path& progDir)
 	//check parent path exists
 	if(Verity(std::filesystem::directory_entry(progDir.parent_path())).exists)
 	{
+		//TODO. --force-replace usage create false negative with the failed message being print. Need to prevent this.
 		if(Verity(std::filesystem::directory_entry(progDir)).exists)
 		{
-			//TODO. Add an option to force move the file over upon user request through a prompt. overwriting the existing file
 			if(m_rOpt.verboseOption)
 			   std::println("failed on file check: \"{0}\"\nexisting file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
 
