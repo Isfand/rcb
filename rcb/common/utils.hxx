@@ -33,6 +33,8 @@ std::string posixTimeToDateTime(std::chrono::seconds timestamp);
 //Unimplemented
 std::string dataUnitConversion();
 
+bool renameDupe(std::string& file);
+
 //Add a thread pool here
 
 } //namespace rcb
