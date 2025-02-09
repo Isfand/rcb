@@ -59,15 +59,22 @@ This is where the files are moved to be permanently wiped/removed. It exists as 
 Contains files used for IPC (Inter-Process Communication).
 
 ## Globals
-The following variables that can be globally accessed immutably and can only be set once while also having a single instance of access.
 
 <pre>
-workingrcbDir     | Defaults to $HOME/.rcb/ or use RCB_DIR
-workingrcbFileDir | file/ location
-workingrcbDataDir | data/ location
-workingrcbWipeDir | wipe/ location
-workingrcbWordDir | word/ location
-workingUsername   | Environment variable $USER 
+g_progName    | Program name
+g_progVersion | Program version
+g_singleton   | Forced single class instance
+</pre>
+
+The following variables have global immutable access after the first assignment via g_singleton. They can only be mutated once and have a single instance of access.
+
+<pre>
+get/set+workingProgDir     | Defaults to $HOME/.rcb/ or use RCB_DIR
+get/set+workingProgFileDir | file/ location
+get/set+workingProgDataDir | data/ location
+get/set+workingProgWipeDir | wipe/ location
+get/set+workingProgWordDir | word/ location
+get/set+workingUsername    | Environment variable $USER 
 </pre>
 
 # Commands
@@ -125,7 +132,7 @@ For files inside external devices you cannot use 'rename()'. Instead use 'copy_f
 **\<n>**...\
 Restore the files by record id number(s) entered.\
 **--all**\
-Restore all files.\
+Restore all files with lowest depth ascending.\
 **--verbose**\
 Print extra information on program state.\
 **--force**\
