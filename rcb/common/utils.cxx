@@ -445,6 +445,8 @@ bool renameDupe(
 #endif
 		}
 		while(Verity(stagePath).exists); //Needs to recheck with new instance. Cannot use same instance. WARNING: can create infinite loop.
+		
+		return true;
 	}
 	else if(!(stageEntryItem.exists))
 	{
