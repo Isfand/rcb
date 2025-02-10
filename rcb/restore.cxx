@@ -36,15 +36,29 @@ void Restore::file(const std::vector<std::string>& args)
 	for(const std::string& arg : args)
 	{
 		//TODO. Need to add something accounting for empty values returned from sql.
-		std::string stagedFile                   { Database().selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_progName, arg)) };
+		const std::string stagedFile             { Database().selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_progName, arg)) };
 		const std::filesystem::path originalPath { Database().selectData(std::format("SELECT path FROM {0} WHERE id='{1}';", g_progName, arg)) };
 
+		std::string mutFilename              { originalPath.filename() };
+		std::filesystem::path mutRestorePath { originalPath.parent_path() / mutFilename };
+
 		//TODO. may need to check for rename and replace coexistence in args parsing.
-		//TODO. make checkProgFile() alone an early return with continue;
+		//TODO. make checkProgFile() alone an early return with continue; it only needs to check once per StagedFile.
 		//TODO. Add replace and rename checks here...
 		if((checkProgFile(stagedFile) && checkOriginalPath(originalPath)) 
-		|| (checkProgFile(stagedFile) && !checkOriginalPath(originalPath) && m_rOpt.forceReplaceOption))
+		|| (checkProgFile(stagedFile) && !checkOriginalPath(originalPath) && m_rOpt.forceReplaceOption)
+		|| (checkProgFile(stagedFile) && !checkOriginalPath(originalPath) && m_rOpt.forceRenameOption))
 		{
+			//REVISE: We are checking m_rOpt.forceRenameOption twice. Find a way to reduce it to one.
+			if (m_rOpt.forceRenameOption)
+			{
+				//NOTE: .parent_path() when applied to root it will return root itself /.
+				if(!renameDupe(originalPath.parent_path(), std::filesystem::directory_entry(originalPath), mutFilename)) continue;
+
+				//reassign
+				mutRestorePath.assign(originalPath.parent_path() / mutFilename);
+			}
+
 			//Check for permissions on the original path
 			if(!canMvFileChk(std::filesystem::directory_entry(originalPath)))
 			{
@@ -57,10 +71,10 @@ void Restore::file(const std::vector<std::string>& args)
 			if(aci::Stat(g_singleton->getWorkingProgDir().string().c_str()).st_dev() == aci::Stat(originalPath.parent_path().string().c_str()).st_dev())
 			{
 				//TODO. Place inside try catch and skip the current arg with continue:
-				std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, originalPath);
+				std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, mutRestorePath);
 
 				if(m_rOpt.verboseOption)
-					std::println("Path is:{0}", originalPath.string().c_str());
+					std::println("Path is:{0}", mutRestorePath.string().c_str());
 
 				//TODO;
 				//Also check against saveFileData() values to make sure.
@@ -69,10 +83,10 @@ void Restore::file(const std::vector<std::string>& args)
 			else
 			{
 				//TODO. Place inside try catch and skip the current arg with continue:
-				externRename((g_singleton->getWorkingProgFileDir() / stagedFile), originalPath);
+				externRename((g_singleton->getWorkingProgFileDir() / stagedFile), mutRestorePath);
 
 				if(m_rOpt.verboseOption)
-					std::println("Path is:{0}", originalPath.string());
+					std::println("Path is:{0}", mutRestorePath.string());
 
 				//TODO; //Also check against saveFileData() values to make sure.
 				Database().executeSQL(std::format("DELETE FROM {0} WHERE id='{1}';", g_progName, arg));

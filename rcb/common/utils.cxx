@@ -360,7 +360,7 @@ std::string dataUnitConversion()
 	return "";
 }
 
-bool renameDupe(std::string& file)
+bool renameFile(std::string& file)
 {
 	std::smatch m{};
 	//std::string newFile{};
@@ -412,6 +412,56 @@ bool renameDupe(std::string& file)
 	}
 
 	return true;
+}
+
+bool renameDupe(
+	const std::filesystem::path& directory, 
+	std::filesystem::directory_entry stagePath,
+	std::string& mutFilename)
+{
+//To improve time. Reverse the logic of these two. if and else ifs. As the second is more common
+	if(Verity stageEntryItem(stagePath); stageEntryItem.exists)
+	{
+		// Print entry is a dupe
+		//if(Opt.verboseOption)
+#ifndef NDEBUG
+			std::println("Existing entry found in {0} DIR: {1}", g_progName, g_singleton->getWorkingProgFileDir().string());
+#endif
+
+		//Can make this into a else while instead of the else if below? Would have to swap the declaration and definitions inside
+		do
+		{
+			if (!renameFile(mutFilename))
+			{
+				//if(!Opt.silentOption)
+#ifndef NDEBUG
+				std::cerr << "renameDupe iteration failed. cannot rename file. unknown format: " << mutFilename << "\n";
+#endif
+				continue;
+			}
+			stagePath.assign(directory / mutFilename);
+#ifndef NDEBUG
+			std::println("Checking new name in DIR: {}", stagePath.path().string());
+#endif
+		}
+		while(Verity(stagePath).exists); //Needs to recheck with new instance. Cannot use same instance. WARNING: can create infinite loop.
+	}
+	else if(!(stageEntryItem.exists))
+	{
+		//Print if unique
+		//if(Opt.verboseOption)
+#ifndef NDEBUG
+		std::println("Check for target path passed {0} DIR: {1}", g_progName, g_singleton->getWorkingProgFileDir().string());
+#endif
+		return true;
+	}
+	else 
+	{
+		//Path check failed
+		return false;
+	}
+
+	return false;
 }
 
 }//namespace rcb
