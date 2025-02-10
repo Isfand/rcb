@@ -54,6 +54,7 @@ void Delete::file(const std::vector<std::string>& args)
 				std::println("Searching path: {}", (g_singleton->getWorkingProgFileDir() / systemFilePath.filename()).string());
 			}
 
+			//TODO: Replace with renameDupe().
 			//To improve time. Reverse the logic of these two. if and else ifs. As the second is more common
 			if(Verity stageEntryItem(stageEntry); stageEntryItem.exists)
 			{
@@ -64,7 +65,7 @@ void Delete::file(const std::vector<std::string>& args)
 				//Can make this into a else while instead of the else if below? Would have to swap the declaration and definitions inside
 				do
 				{
-					if (!renameDupe(mutFilename))
+					if (!renameFile(mutFilename))
 					{
 						if(!m_dOpt.silentOption)
 							std::cerr << "delete failed. cannot rename file. unknown format: " << mutFilename << "\n";

@@ -2,8 +2,12 @@
 #ifndef UTILS_HXX
 #define UTILS_HXX
 
+#include <iostream>
 #include <filesystem>
 #include <string>
+#include <print>
+
+#include "globals.hxx"
 
 namespace rcb{
 
@@ -33,7 +37,11 @@ std::string posixTimeToDateTime(std::chrono::seconds timestamp);
 //Unimplemented
 std::string dataUnitConversion();
 
-bool renameDupe(std::string& file);
+bool renameFile(std::string& file);
+bool renameDupe(
+	const std::filesystem::path& directory, 
+	std::filesystem::directory_entry stagePath,
+	std::string& mutFilename);
 
 //Add a thread pool here
 
