@@ -425,7 +425,7 @@ bool renameDupe(
 		// Print entry is a dupe
 		//if(Opt.verboseOption)
 #ifndef NDEBUG
-			std::println("Existing entry found in {0} DIR: {1}", g_progName, g_singleton->getWorkingProgFileDir().string());
+		std::println("Existing entry found in {0} DIR: {1}", g_progName, g_singleton->getWorkingProgFileDir().string());
 #endif
 
 		//Can make this into a else while instead of the else if below? Would have to swap the declaration and definitions inside
@@ -445,7 +445,7 @@ bool renameDupe(
 #endif
 		}
 		while(Verity(stagePath).exists); //Needs to recheck with new instance. Cannot use same instance. WARNING: can create infinite loop.
-		
+
 		return true;
 	}
 	else if(!(stageEntryItem.exists))

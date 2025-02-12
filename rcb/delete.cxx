@@ -114,7 +114,9 @@ void Delete::file(const std::vector<std::string>& args)
 			}
 			catch(const std::runtime_error& e)
 			{
+#ifndef NDEBUG
 				std::println("{}", e.what());
+#endif
 				//Using continue to allow the other args to be processed.
 				continue;
 			}
