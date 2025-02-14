@@ -253,7 +253,7 @@ long long unsigned Delete::fileSize(const std::filesystem::directory_entry& file
 std::string Delete::incrementExecutionID()
 {
 	std::string highestExecution{};
-	std::string selectedExecution = Database().selectData(std::format("SELECT execution FROM {0} WHERE execution=(SELECT max(execution) FROM {0}) AND id=(SELECT max(id) FROM {0});", g_progName));
+	std::string selectedExecution = m_db.selectData(std::format("SELECT execution FROM {0} WHERE execution=(SELECT max(execution) FROM {0}) AND id=(SELECT max(id) FROM {0});", g_progName));
 
 	if (selectedExecution != "") highestExecution = std::to_string(std::stoll(selectedExecution) + 1);
 	else if (selectedExecution == "") highestExecution = "1";

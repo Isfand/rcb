@@ -1,4 +1,5 @@
 #pragma once
+#include "rcb/common/database.hxx"
 #ifndef ERASE_HXX
 #define ERASE_HXX
 
@@ -15,6 +16,8 @@ public:
 	Erase(const std::vector<std::string>& args, const EraseOptions& eOpt);
 private:
 	const EraseOptions& m_eOpt;
+	Database m_db;
+
 	void file(const std::vector<std::string>& args);
 	void allFile();
 	void past();

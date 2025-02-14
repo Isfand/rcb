@@ -1,4 +1,5 @@
 #pragma once
+#include "rcb/common/database.hxx"
 #ifndef DELETE_HXX
 #define DELETE_HXX
 
@@ -17,6 +18,7 @@ public:
 	Delete(const std::vector<std::string>& args, const DeleteOptions& dOpt);
 private:
 	const DeleteOptions& m_dOpt;
+	Database m_db;
 	std::string m_currentExecutionID;
 	
 	void file(const std::vector<std::string>& args);

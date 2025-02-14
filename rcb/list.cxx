@@ -58,7 +58,7 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 //Prints all contents of rcb/data/*.sqlite3 database 
 void List::allFile()
 {
-	std::print("Results:\n{}", Database().selectDataA(m_defaultSQLQuery + ";"));
+	std::print("Results:\n{}", m_db.selectDataA(m_defaultSQLQuery + ";"));
 }
 
 void List::file(const std::vector<std::string>& args)
@@ -66,7 +66,7 @@ void List::file(const std::vector<std::string>& args)
 	std::println("Results:");
 
 	for(auto& arg : args)
-		std::print("{}", Database().selectDataA(std::format("{} WHERE id='{}';", m_defaultSQLQuery, arg)));
+		std::print("{}", m_db.selectDataA(std::format("{} WHERE id='{}';", m_defaultSQLQuery, arg)));
 }
 
 void List::past()
@@ -79,7 +79,7 @@ void List::past()
 
 		if (return_code == 0)
 		{
-			std::vector<std::string> vList = Database().selectDataB(std::format("SELECT id FROM {0} WHERE timestamp > {1};", g_progName, timestamp));
+			std::vector<std::string> vList = m_db.selectDataB(std::format("SELECT id FROM {0} WHERE timestamp > {1};", g_progName, timestamp));
 			List::file(vList);
 		}
 		else if(return_code == 1) std::cerr << "error: units not found\n";
@@ -90,7 +90,7 @@ void List::past()
 
 void List::previous()
 {
-	std::vector<std::string> vList { Database().selectDataB(std::format("SELECT id FROM {0} WHERE execution=(SELECT MAX(execution) FROM {0});", g_progName)) };
+	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT id FROM {0} WHERE execution=(SELECT MAX(execution) FROM {0});", g_progName)) };
 	List::file(vList);
 }
 
@@ -99,7 +99,7 @@ void List::sqlInjection()
 	std::println("Results:");
 	for(auto i { 0UL }; i < m_lOpt.sqlVec.size(); ++i)
 	{
-		std::print("{}", Database().selectDataA(m_lOpt.sqlVec.at(i)));
+		std::print("{}", m_db.selectDataA(m_lOpt.sqlVec.at(i)));
 		if(!(i + 1 >= m_lOpt.sqlVec.size()))
 			std::print("---\n");
 	}

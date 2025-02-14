@@ -1,4 +1,5 @@
 #pragma once
+#include "rcb/common/database.hxx"
 #ifndef RESTORE_HXX
 #define RESTORE_HXX
 
@@ -17,6 +18,7 @@ public:
 
 private:
 	const RestoreOptions& m_rOpt;
+	Database m_db;
 	
 	void file(const std::vector<std::string>& args);
 
