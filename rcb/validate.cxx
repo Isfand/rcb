@@ -97,7 +97,7 @@ void Validate::data()
 	// records points to a stagedFile in /file
 	// Then delete
 
-	std::vector<std::string> danglingRecords { Database().selectDataB(std::format("SELECT file from {0};", g_progName)) };
+	std::vector<std::string> danglingRecords { m_db.selectDataB(std::format("SELECT file from {0};", g_progName)) };
 
 	std::vector<std::string> stagedFiles{};
 	for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
@@ -133,7 +133,7 @@ void Validate::data()
 		if(confirmFlag || m_vOpt.yesOption || m_vOpt.silentOption)
 		{
 			for (const auto& danglingRecord : danglingRecords)
-				Database().executeSQL(std::format("DELETE FROM {0} WHERE file='{1}';", g_progName, danglingRecord));
+				m_db.executeSQL(std::format("DELETE FROM {0} WHERE file='{1}';", g_progName, danglingRecord));
 		}
 	}
 
@@ -206,7 +206,7 @@ void Validate::fillDirectorySize()
 	//Update the directory size in the database using executeSQL().
 
 	//REVISE: This should be vector of type std::filesystem::path
-	std::vector<std::string> nullDirectoriesQuery { Database().selectDataB(std::format("SELECT file from {0} WHERE filetype='directory' AND size='NULL';", g_progName)) };
+	std::vector<std::string> nullDirectoriesQuery { m_db.selectDataB(std::format("SELECT file from {0} WHERE filetype='directory' AND size='NULL';", g_progName)) };
 	
 	//prepend file/ path to each filename
 	std::transform(nullDirectoriesQuery.begin(), 
@@ -230,7 +230,7 @@ void Validate::fillDirectorySize()
 
 		auto directory_entry = std::filesystem::directory_entry(directoryPathString);
 		unsigned long long size { directorySize(directory_entry) };
-		Database().executeSQL(std::format("UPDATE {0} SET size='{1}' WHERE file='{2}';", g_progName, size, directory_entry.path().filename().string()));
+		m_db.executeSQL(std::format("UPDATE {0} SET size='{1}' WHERE file='{2}';", g_progName, size, directory_entry.path().filename().string()));
 	}
 }
 

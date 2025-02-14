@@ -14,7 +14,6 @@ public:
 
 private:
 	const ValidateOptions& m_vOpt;
-	
 	Database m_db;
 	
 	//Unused
