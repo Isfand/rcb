@@ -2,8 +2,8 @@
 #ifndef VALIDATE_HXX
 #define VALIDATE_HXX
 
-#include "common/database.hxx"
 #include "validate_args.hxx"
+#include "common/database.hxx"
 
 namespace rcb{
 
