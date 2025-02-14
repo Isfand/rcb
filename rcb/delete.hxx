@@ -1,5 +1,4 @@
 #pragma once
-#include "rcb/common/database.hxx"
 #ifndef DELETE_HXX
 #define DELETE_HXX
 
@@ -9,6 +8,7 @@
 #include <vector>
 
 #include "delete_args.hxx"
+#include "common/database.hxx"
 
 namespace rcb{
 

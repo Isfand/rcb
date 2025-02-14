@@ -1,5 +1,4 @@
 #pragma once
-#include "rcb/common/database.hxx"
 #ifndef ERASE_HXX
 #define ERASE_HXX
 
@@ -7,6 +6,7 @@
 #include <vector>
 
 #include "erase_args.hxx"
+#include "common/database.hxx"
 
 namespace rcb{
 

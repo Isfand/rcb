@@ -1,5 +1,4 @@
 #pragma once
-#include "rcb/common/database.hxx"
 #ifndef RESTORE_HXX
 #define RESTORE_HXX
 
@@ -8,6 +7,7 @@
 #include <vector>
 
 #include "restore_args.hxx"
+#include "common/database.hxx"
 
 namespace rcb{
 
