@@ -1,6 +1,5 @@
 #include <iostream>
 #include <filesystem>
-#include <regex>
 #include <chrono>
 #include <stdexcept>
 #include <string>
