@@ -2,7 +2,7 @@
 
 ## **Summary**
 
-This project is a cross-platform file trashing utility for the terminal that can reverse file deletion.
+This project is a cross-platform file recycling utility for the terminal that can delete, restore, erase, list and validate files.
 
 Tested on Linux, FreeBSD & Windows. \
 See [docs/](docs/) for more information.
