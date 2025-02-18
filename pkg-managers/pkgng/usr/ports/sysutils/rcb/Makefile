@@ -6,7 +6,7 @@ DISTFILES=      v${DISTVERSION}.tar.gz
 WWW=            https://github.com/Isfand/rcb
 
 MAINTAINER=     ports@FreeBSD.org
-COMMENT=        File trashing utility for the terminal
+COMMENT=        File recycling utility for the terminal
 
 LICENCE=        EPLv2
 LICENSE_NAME=   Eclipse Public License 2.0

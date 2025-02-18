@@ -2,7 +2,7 @@ name: rcb
 version: "0.11.0"
 origin: sysutils/rcb
 comment: Trash Manager
-desc: File trashing utility for the terminal.
+desc: File recycling utility for the terminal
 categories: [sysutils]
 #maintainer: you@example.com
 www: https://github.com/Isfand/rcb
