@@ -3,8 +3,8 @@ name: rcb
 version: 0.11.0
 type: exe
 language: c++
-summary: File trashing utility for the terminal
-topics: recycling-bin, trashcan, trashing
+summary: File recycling utility for the terminal
+topics: recycling-bin, trashcan
 license: Eclipse Public License 2.0
 description-file: README.md
 url: https://github.com/Isfand/rcb
