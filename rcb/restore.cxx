@@ -14,15 +14,16 @@ namespace rcb{
 Restore::Restore(const std::vector<std::string>& args, const RestoreOptions& rOpt) : m_rOpt{rOpt}
 {
 #ifndef NDEBUG
-	std::println("allOption is:          {}", m_rOpt.allOption);
-	std::println("presentOption is:      {}", m_rOpt.pastOption);
-	std::println("previousOption is:     {}", m_rOpt.previousOption);
-	std::println("verboseOption is:      {}", m_rOpt.verboseOption);
-	std::println("forceOption is:        {}", m_rOpt.forceOption); //Unused
-	std::println("forceReplaceOption is: {}", m_rOpt.forceReplaceOption); //Unused
-	std::println("forceRenameOption is:  {}", m_rOpt.forceRenameOption); //Unused
-	std::println("silentOption is:       {}", m_rOpt.silentOption);
-	std::println("sqlOption is:          {}", m_rOpt.sqlOption);
+	std::println("allOption is:              {}", m_rOpt.allOption);
+	std::println("presentOption is:          {}", m_rOpt.pastOption);
+	std::println("previousOption is:         {}", m_rOpt.previousOption);
+	std::println("verboseOption is:          {}", m_rOpt.verboseOption);
+	std::println("forceOption is:            {}", m_rOpt.forceOption); 
+	std::println("forceReplaceOption is:     {}", m_rOpt.forceReplaceOption);
+	std::println("forceRenameOption is:      {}", m_rOpt.forceRenameOption);
+	std::println("forceRecreateDirectory is: {}", m_rOpt.forceRecreateDirectoryOption);
+	std::println("silentOption is:           {}", m_rOpt.silentOption);
+	std::println("sqlOption is:              {}", m_rOpt.sqlOption);
 #endif
 	Restore::file(args);
 	if(m_rOpt.allOption)     Restore::allFile();
@@ -44,11 +45,49 @@ void Restore::file(const std::vector<std::string>& args)
 
 		//TODO. may need to check for rename and replace coexistence in args parsing.
 		//TODO. make checkProgFile() alone an early return with continue; it only needs to check once per StagedFile.
-		//TODO. Add replace and rename checks here...
-		if((checkProgFile(stagedFile) && checkOriginalPath(originalPath)) 
-		|| (checkProgFile(stagedFile) && !checkOriginalPath(originalPath) && m_rOpt.forceReplaceOption)
-		|| (checkProgFile(stagedFile) && !checkOriginalPath(originalPath) && m_rOpt.forceRenameOption))
+		//TODO. Add recreate-directory option here.
+
+		if(!progFileExists(stagedFile)) continue;
+
+		if(int pathStatus = (originalPathStatus(originalPath)); 
+		   (pathStatus == 1) 
+		|| (pathStatus == 0 && m_rOpt.forceReplaceOption) // order 2
+		|| (pathStatus == 0 && m_rOpt.forceRenameOption) // order 1
+		|| (pathStatus == 2 && m_rOpt.forceRecreateDirectoryOption) // order 0
+		)
 		{
+			if(m_rOpt.forceRecreateDirectoryOption)
+			{
+				if(std::filesystem::path dep = deepestExistingPath(originalPath); 
+					canMvFileChk(std::filesystem::directory_entry(dep)))
+				{
+					//Try catch is here as a just in case. It should never be triggered.
+					try
+					{
+						if (std::filesystem::create_directories(originalPath.parent_path()))
+						{
+							if(m_rOpt.verboseOption)
+								std::println("directories created successfully: {0}", originalPath.string());
+						}
+						else 
+						{
+							if(m_rOpt.verboseOption)
+								std::println("directories already exist or creation failed: {}", originalPath.string());
+						};
+					}
+					catch(const std::exception& e)
+					{
+						if(!m_rOpt.silentOption) std::cerr << "Error creating directories: " << e.what() << std::endl;
+					}
+				}
+				else
+				{
+					if(!m_rOpt.silentOption)
+						std::println("no (w,x) permissions for {0}. cannot force recreate original directory path", dep.string());
+					continue;
+				};
+			}
+
 			//REVISE: We are checking m_rOpt.forceRenameOption twice. Find a way to reduce it to one.
 			if (m_rOpt.forceRenameOption)
 			{
@@ -71,7 +110,15 @@ void Restore::file(const std::vector<std::string>& args)
 			if(aci::Stat(g_singleton->getWorkingProgDir().string().c_str()).st_dev() == aci::Stat(originalPath.parent_path().string().c_str()).st_dev())
 			{
 				//TODO. Place inside try catch and skip the current arg with continue:
-				std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, mutRestorePath);
+				try
+				{
+					std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, mutRestorePath);
+				}
+				catch(const std::exception& e)
+				{
+					if(!m_rOpt.silentOption) std::cerr << e.what() << std::endl;
+					continue;
+				}
 
 				if(m_rOpt.verboseOption)
 					std::println("Path is:{0}", mutRestorePath.string().c_str());
@@ -83,7 +130,15 @@ void Restore::file(const std::vector<std::string>& args)
 			else
 			{
 				//TODO. Place inside try catch and skip the current arg with continue:
-				externRename((g_singleton->getWorkingProgFileDir() / stagedFile), mutRestorePath);
+				try
+				{
+					externRename((g_singleton->getWorkingProgFileDir() / stagedFile), mutRestorePath);
+				}
+				catch(const std::exception& e)
+				{
+					if(!m_rOpt.silentOption) std::cerr << e.what() << std::endl;
+					continue;
+				}
 
 				if(m_rOpt.verboseOption)
 					std::println("Path is:{0}", mutRestorePath.string());
@@ -157,7 +212,7 @@ void Restore::sqlInjection()
 }
 
 //Checks if progFile Exists inside of /rcb/file/<name>
-bool Restore::checkProgFile(const std::string& stagedFile)
+bool Restore::progFileExists(const std::string& stagedFile)
 {
 	//Early return check to see if file is empty. This should also be handled from the sql querying function.
 	if(stagedFile.empty()) return false;
@@ -173,10 +228,13 @@ bool Restore::checkProgFile(const std::string& stagedFile)
 	return result;
 }
 
-//Checks if the original path is occupied.
-bool Restore::checkOriginalPath(const std::filesystem::path& progDir)
+//return original path status
+//0 == occupied
+//1 == free
+//2 == missing directory
+int Restore::originalPathStatus(const std::filesystem::path& progDir)
 {
-	bool result{};
+	int result{};
 	//check parent path exists
 	if(Verity(std::filesystem::directory_entry(progDir.parent_path())).exists)
 	{
@@ -184,16 +242,14 @@ bool Restore::checkOriginalPath(const std::filesystem::path& progDir)
 		if(Verity(std::filesystem::directory_entry(progDir)).exists)
 		{
 			if(m_rOpt.verboseOption)
-			   std::println("failed on file check: \"{0}\"\nexisting file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
-
-			result = false;
+				std::println("failed on file check: \"{0}\"\nexisting file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
+			result = 0;
 		}
 		else
 		{
 			if(m_rOpt.verboseOption)
-			   std::println("success on file check: \"{0}\"\nno existing file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
-
-			result = true;
+				std::println("success on file check: \"{0}\"\nno existing file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
+			result = 1;
 		}
 	}
 	else
@@ -201,7 +257,7 @@ bool Restore::checkOriginalPath(const std::filesystem::path& progDir)
 		//TODO. Add an option to recreate the directory if sufficient permissions are available.
 		if(m_rOpt.verboseOption)
 		   std::println("failed on file check: \"{0}\"\nparent directory not found: \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
-		result = false;
+		result = 2;
 	}
 	
 	return result;

@@ -188,7 +188,7 @@ void Validate::wipe()
 
 					The exception is then thrown. Executing the program as root allows the operation to finish without throwing any exceptions.
 					*/
-					if(!m_vOpt.silentOption) std::cerr << e.what() << "\n";
+					if(!m_vOpt.silentOption) std::cerr << e.what() << std::endl;
 					continue;
 				}
 			}

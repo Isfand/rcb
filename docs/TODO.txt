@@ -5,7 +5,7 @@ Known issues:
 
 ToDo:
 -Fix. When deleting a directory which has a nested unreadable directory the program throws an exception instead of disregarding the directorySize. Or could just add a message saying to use --no-directorysize on the error.
--ADD restore option to restore parent directories if they no longer exist if permissible. E.G --force-recreate-parent.
+-ADD an option to recreate .rcb/ folder. Helpful for incompatible versions.
 -ADD a built in option to elevate privileges using an elevation command. E.G sudo/doas. Must enter name of command followed by password.
 -Implement --human-readable for list
 -Implement PID_LOCK in /word
