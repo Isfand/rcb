@@ -1,5 +1,23 @@
 # **RCB**
 
+**Table of Contents**
+- [**RCB**](#rcb)
+	- [**Summary**](#summary)
+	- [**Pre-built binaries:**](#pre-built-binaries)
+	- [**Build Pre-requisites:**](#build-pre-requisites)
+	- [**Build Instructions:**](#build-instructions)
+	- [**Install**](#install)
+		- [POSIX:](#posix)
+		- [WIN32:](#win32)
+	- [**Primary commands**](#primary-commands)
+	- [**Basic usage:**](#basic-usage)
+		- [Deleting files:](#deleting-files)
+		- [Listing files:](#listing-files)
+		- [Restoring files:](#restoring-files)
+		- [Erasing files:](#erasing-files)
+		- [Validating files:](#validating-files)
+	- [**Environment variables:**](#environment-variables)
+
 ## **Summary**
 
 This project is a cross-platform file recycling utility for the terminal that can delete, restore, erase, list and validate files.
@@ -48,13 +66,6 @@ This should work on any POSIX compliant platform.
 ### WIN32:
 WIP
 
-## **Basic usage:**
-*Note, '--help' option changes message when applied after a primary command:
-<pre>
-rcb --version | 
-rcb --help    | -h
-</pre>
-
 ## **Primary commands**
 
 <pre>
@@ -64,6 +75,14 @@ restore  | r
 erase    | e
 validate | v
 </pre>
+
+## **Basic usage:**
+*Note, '--help' option changes message when applied after a primary command:
+<pre>
+rcb --version | 
+rcb --help    | -h
+</pre>
+
 
 ### Deleting files:
 <pre>

@@ -466,4 +466,18 @@ bool renameDupe(
 	return false;
 }
 
+std::filesystem::path deepestExistingPath(const std::filesystem::path& fullPath) 
+{
+	std::filesystem::path currentPath;
+	for (const auto& part : fullPath)
+	{
+		currentPath /= part;
+		if (!std::filesystem::exists(currentPath))
+		{
+			return currentPath.parent_path();  // Return the last existing directory
+		}
+	}
+	return fullPath;  // Entire path exists
+}
+
 }//namespace rcb

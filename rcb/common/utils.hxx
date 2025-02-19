@@ -43,6 +43,8 @@ bool renameDupe(
 	std::filesystem::directory_entry stagePath,
 	std::string& mutFilename);
 
+std::filesystem::path deepestExistingPath(const std::filesystem::path& fullPath);
+
 //Add a thread pool here
 
 } //namespace rcb
