@@ -31,7 +31,7 @@ See [docs/](docs/) for more information.
 ## **Build Pre-requisites:**
 *Requires the build2-toolchain to be pre-installed. See https://build2.org/install.xhtml \
 *Requires c++23 supporting compiler. \
-(Optional): For building compilation database use latest [staged](https://stage.build2.org/0/) toolchain.
+*(Optional)*: For building compilation database use latest [staged](https://stage.build2.org/0/) toolchain.
 
 ## **Build Instructions:**
 
@@ -45,7 +45,9 @@ WIN32: **`.\config_init.ps1`**
 
 **`bdep update -a`**
 
-This should build all initialized build configurations. \
+This should build all initialized build configurations.
+
+*(Optional Information)* \
 To list all build configs, type: `bdep config list` \
 To clean all build configs and dependencies recursively, type: `bdep clean -a -r` \
 To update a specific config: `bdep update @<config-name>` \
