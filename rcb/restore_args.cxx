@@ -76,6 +76,14 @@ void RestoreArgs::run(std::vector<std::string>& args)
 				m_rOpt.forceRenameOption = true;
 				m_erasePositions.push_back(i);
 			}
+			else if (std::string(args.at(i)) == "--force-recreate-directory")
+			{
+#ifndef NDEBUG
+				std::println("restore force-recreate-directory triggered");
+#endif
+				m_rOpt.forceRecreateDirectoryOption = true;
+				m_erasePositions.push_back(i);
+			}
 			else if (std::string(args.at(i)) == "--silent" || std::string(args.at(i)) == "-s")
 			{
 #ifndef NDEBUG

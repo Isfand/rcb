@@ -23,8 +23,8 @@ private:
 	void file(const std::vector<std::string>& args);
 
 	void allFile();
-	bool checkProgFile(const std::string& stagedFile);
-	bool checkOriginalPath(const std::filesystem::path& progDir);
+	bool progFileExists(const std::string& stagedFile);
+	int originalPathStatus(const std::filesystem::path& progDir);
 	void past();
 	void previous();
 	void sqlInjection();

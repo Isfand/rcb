@@ -8,6 +8,7 @@ Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?
 - UPDATE: Added tests/ directory.
 - ADDITION: implemented restore --force-replace
 - ADDITION: implemented restore --force-rename
+- ADDITION: implemented restore --force-recreate-directory
 
 ----------------------------------------------------------------------
  VERSION 0.11.0 (01-02-2025)
