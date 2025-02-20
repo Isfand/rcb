@@ -141,6 +141,8 @@ Do not ask the user for input. Perform the action(s) requested.\
 Restore by replacing any existing file from original path.\
 **--force-rename**\
 Restore by renaming any existing file from original path by incrementing filename.\
+**--force-recreate-directory**\
+Restore by recreating any directories leading up-to the original filepath.\
 **--silent**\
 Prevent printing anything with auto default(s).\
 **--previous**\
