@@ -43,6 +43,7 @@ private:
 		"--all       | -a\n"
 		"--force-replace\n"
 		"--force-rename\n"
+		"--force-recreate-directory\n"
 		"--past <n>(unit), t,s,m,h,d,w,mo,y,c,k,ae\n"
 		"--previous\n"
 		"--sql <s>, UNSAFE: Insert sql statement directly for restore. Must return ID.\n"
