@@ -1,5 +1,5 @@
 PORTNAME=       rcb
-DISTVERSION=    0.11.0
+DISTVERSION=    0.12.0
 CATEGORIES=     sysutils
 MASTER_SITES=   https://github.com/Isfand/${PORTNAME}/archive/refs/tags/
 DISTFILES=      v${DISTVERSION}.tar.gz
