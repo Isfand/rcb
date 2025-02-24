@@ -40,7 +40,7 @@ void Restore::file(const std::vector<std::string>& args)
 		const std::string stagedFile             { m_db.selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_progName, arg)) };
 		const std::filesystem::path originalPath { m_db.selectData(std::format("SELECT path FROM {0} WHERE id='{1}';", g_progName, arg)) };
 
-		std::string mutFilename              { originalPath.filename() };
+		std::string mutFilename              { originalPath.filename().string() };
 		std::filesystem::path mutRestorePath { originalPath.parent_path() / mutFilename };
 
 		//TODO. may need to check for rename and replace coexistence in args parsing.
@@ -51,8 +51,8 @@ void Restore::file(const std::vector<std::string>& args)
 
 		if(int pathStatus = (originalPathStatus(originalPath)); 
 		   (pathStatus == 1) 
-		|| (pathStatus == 0 && m_rOpt.forceReplaceOption) // order 2
-		|| (pathStatus == 0 && m_rOpt.forceRenameOption) // order 1
+		|| (pathStatus == 0 && m_rOpt.forceReplaceOption)           // order 2
+		|| (pathStatus == 0 && m_rOpt.forceRenameOption)            // order 1
 		|| (pathStatus == 2 && m_rOpt.forceRecreateDirectoryOption) // order 0
 		)
 		{
