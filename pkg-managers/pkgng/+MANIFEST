@@ -4,7 +4,7 @@ origin: sysutils/rcb
 comment: Trash Manager
 desc: File recycling utility for the terminal
 categories: [sysutils]
-#maintainer: you@example.com
+maintainer: ports@FreeBSD.org
 www: https://github.com/Isfand/rcb
 abi: FreeBSD:14:amd64
 arch: freebsd:14:x86:64
