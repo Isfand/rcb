@@ -52,36 +52,7 @@ void Delete::file(const std::vector<std::string>& args)
 				std::println("Searching path: {}", (g_singleton->getWorkingProgFileDir() / systemFilePath.filename()).string());
 			}
 
-			//TODO: Replace with renameDupe().
-			//To improve time. Reverse the logic of these two. if and else ifs. As the second is more common
-			if(Verity stageEntryItem(stageEntry); stageEntryItem.exists)
-			{
-				// Print entry is a dupe
-				if(m_dOpt.verboseOption)
-					std::println("Existing entry found in {0} DIR: {1}", g_progName, g_singleton->getWorkingProgFileDir().string());
-
-				//Can make this into a else while instead of the else if below? Would have to swap the declaration and definitions inside
-				do
-				{
-					renameFile(mutFilename);
-					stageEntry.assign(g_singleton->getWorkingProgFileDir() / mutFilename);
-#ifndef NDEBUG
-					std::println("Checking new name in DIR: {}", stageEntry.path().string());
-#endif
-				}
-				while(Verity(stageEntry).exists); //Needs to recheck with new instance. Cannot use same instance. WARNING: can create infinite loop.
-			}
-			else if(!(stageEntryItem.exists))
-			{
-				//Print if unique
-				if(m_dOpt.verboseOption)
-					std::println("Creating new entry in {0} DIR: {1}", g_progName, g_singleton->getWorkingProgFileDir().string());
-			}
-			else
-			{
-				//File deletion failed
-				return;
-			}
+			if(!renameDupe(stageEntry.path().parent_path(), std::filesystem::directory_entry(stageEntry.path()), mutFilename)) continue;
 
 #ifndef NDEBUG
 			std::println("CFP is: {0}\nMFN is: {1}", systemFilePath.string(), mutFilename);
