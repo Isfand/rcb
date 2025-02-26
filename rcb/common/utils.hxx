@@ -37,7 +37,7 @@ std::string posixTimeToDateTime(std::chrono::seconds timestamp);
 //Unimplemented
 std::string dataUnitConversion();
 
-bool renameFile(std::string& file);
+void renameFile(std::string& file);
 bool renameDupe(
 	const std::filesystem::path& directory, 
 	std::filesystem::directory_entry stagePath,

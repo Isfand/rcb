@@ -64,12 +64,7 @@ void Delete::file(const std::vector<std::string>& args)
 				//Can make this into a else while instead of the else if below? Would have to swap the declaration and definitions inside
 				do
 				{
-					if (!renameFile(mutFilename))
-					{
-						if(!m_dOpt.silentOption)
-							std::cerr << "delete failed. cannot rename file. unknown format: " << mutFilename << "\n";
-						continue;
-					}
+					renameFile(mutFilename);
 					stageEntry.assign(g_singleton->getWorkingProgFileDir() / mutFilename);
 #ifndef NDEBUG
 					std::println("Checking new name in DIR: {}", stageEntry.path().string());

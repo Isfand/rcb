@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <filesystem>
 #include <map>
 #include <print>
@@ -8,6 +9,8 @@
 #include <array>
 #include <chrono>
 #include <ctime>
+#include <string>
+#include <unordered_set>
 
 #include "utils.hxx"
 #include "rcb/platform/aci/aci.hxx"
@@ -360,58 +363,105 @@ std::string dataUnitConversion()
 	return "";
 }
 
-bool renameFile(std::string& file)
+//TODO. Can turn this into a struct or a class. This grew exponentially...
+void renameFile(std::string& file)
 {
-	std::smatch m{};
-	//std::string newFile{};
+	const std::string originalFile = file;
+	std::string mutFile = file;
 
-	if(std::regex patternA (R"(\((\d+)\)\.[^.]*?$|[^\.]\((\d+)\)$)"); 
-	std::regex_search(file, m, patternA))
+	// Set of known multi-part extensions
+	// Can make these into regexs instead of hard-coded values. E.G .tar.* or .7z.* for any extension.
+	const std::unordered_set<std::string> knownMultiPartExtensions =
 	{
-#ifndef NDEBUG
-		std::println("Matches *(1).ext");
-		std::println("number: {}\nposition is: {}\nlength is: {}", (std::stoi(m[2]))+1, m.position(), m.length());
-#endif
-		file.replace(m.position(2), m.length(2), std::to_string((std::stoi(m[2]))+1));
-		//newFile = file.replace(m.position(2), m.length(2), std::to_string((std::stoi(m[2]))+1));
-	}// Matches *(1).ext
-	else if(std::regex patternB (R"(^[^\.].+(\.).*[^\.]$)");
-	std::regex_search(file, m, patternB))
-	{
-#ifndef NDEBUG
-		std::println("Matches *.ext pos is {}, size is: {}", m.position(1), m.size());
-#endif
-		file.insert((m[1].first - file.begin()), "(1)");
-		//newFile = file;
-	}// Matches *.ext
-	else if(std::regex patternC (R"((\.)$)");
-	std::regex_search(file, m, patternC))
-	{
-#ifndef NDEBUG
-		std::println("Matches * pos is {}, size is: {}", m.position(1), m.size());
-#endif
-		file.insert((m[1].first - file.begin()), "(1)");
-		//newFile = file;
-	}// Matches *
-	else if(std::regex patternD (R"([^\.]($))");
-	std::regex_search(file, m, patternD))
-	{
-#ifndef NDEBUG
-		std::println("Matches *. pos is {}, size is: {}", m.position(1), m.size());
-#endif
-		file.insert((m[1].first - file.begin()), "(1)");
-		//newFile = file;
-	}// Matches *.
-	else
-	{
-#ifndef NDEBUG
-		std::println("No_match");
-#endif
-		return false;
-		//newFile = "UNKNOWN_FILE_FORMAT";
-	}
+		".tar.gz", ".tar.bz2", ".tar.xz", ".tar.zst", ".tar.lz", ".tar.lzma"
+	};
 
-	return true;
+	// Function to remove known multi-part extensions & single extensions
+	auto getStem = [&](const std::filesystem::path& filePath) -> std::string
+	{
+		std::filesystem::path temp = filePath;
+		std::string ext = temp.extension().string();
+	
+		// Check if the full known extension exists
+		for (const std::string& knownExt : knownMultiPartExtensions)
+		{
+			if (temp.string().size() > knownExt.size() && 
+				temp.string().substr(temp.string().size() - knownExt.size()) == knownExt)
+			{
+				// Remove full known extension
+				return temp.string().substr(0, temp.string().size() - knownExt.size());
+			}
+		}
+
+		// If no known multi-part extension, just return regular stem()
+		return temp.stem().string();
+	};
+
+	auto stringDifference = [&](const std::string& str1, const std::string& str2) -> std::string
+	{
+		auto [it1, it2] = std::mismatch(str1.begin(), str1.end(), str2.begin(), str2.end());
+		return (str1.size() > str2.size()) ? std::string(it1, str1.end()) : std::string(it2, str2.end());
+	};
+	
+	auto incrementFilename = [&](std::string& filename) -> std::string
+	{
+		// Check if the filename is long enough to have "(n)" at the end
+		if (filename.size() < 4)
+		{
+			return filename + "(1)";  // Too short, so just append (1)
+		}
+	
+		// Check if the filename ends with ')'
+		if (filename[filename.size() - 1] != ')')
+		{
+			return filename + "(1)";  // No parentheses at the end, so append (1)
+		}
+	
+		// Find the position of the last '(' before ')'
+		size_t openParenPos = filename.rfind('(');
+		if (openParenPos == std::string::npos || openParenPos == filename.size() - 2)
+		{
+			return filename + "(1)";  // No '(' or no digits between parentheses
+		}
+	
+		// Check if the characters between '(' and ')' are digits
+		bool isValidNumber = true;
+		for (size_t i = openParenPos + 1; i < filename.size() - 1; ++i)
+		{
+			if (!std::isdigit(filename[i])) {
+				isValidNumber = false;
+				break;
+			}
+		}
+	
+		if (isValidNumber)
+		{
+			// Extract the number between parentheses and increment it
+			size_t startPos = openParenPos + 1;
+			size_t endPos = filename.size() - 1;
+			int number = std::stoll(filename.substr(startPos, endPos - startPos)) + 1;
+			
+			// Create new filename with incremented number
+			filename = filename.substr(0, openParenPos + 1) + std::to_string(number) + ")";
+		}
+		else
+		{
+			// If the parentheses don't contain a valid number, append (1)
+			filename = filename + "(1)";
+		}
+	
+		// Return the modified filename with the original extension
+		return filename;
+	};
+
+	// Get stem
+	mutFile = getStem(file);
+
+    // Extract the extension using stringDifference
+    std::string extension = stringDifference(mutFile, originalFile);
+
+    // Increment the filename and append the correct extension
+    file = incrementFilename(mutFile) + extension;
 }
 
 bool renameDupe(
@@ -431,14 +481,7 @@ bool renameDupe(
 		//Can make this into a else while instead of the else if below? Would have to swap the declaration and definitions inside
 		do
 		{
-			if (!renameFile(mutFilename))
-			{
-				//if(!Opt.silentOption)
-#ifndef NDEBUG
-				std::cerr << "renameDupe iteration failed. cannot rename file. unknown format: " << mutFilename << "\n";
-#endif
-				continue;
-			}
+			renameFile(mutFilename);
 			stagePath.assign(directory / mutFilename);
 #ifndef NDEBUG
 			std::println("Checking new name in DIR: {}", stagePath.path().string());
