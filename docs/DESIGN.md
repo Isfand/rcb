@@ -122,7 +122,7 @@ Prevent printing anything with auto default(s). \
 **--force** \
 Force file deletion if possible. \
 **--no-directorysize** \
-Do not save size for directories. Write as 'NULL' \
+Do not save size for directories. Write as 'NULL'
 
 ## Restore
 Transfer files back to their original paths. This is done by reading the 'directory' column value(s) for the corresponding id entered and using 'rename()' on the filename on the file(s) inside file/.
