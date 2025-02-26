@@ -364,8 +364,10 @@ std::string dataUnitConversion()
 	return "";
 }
 
-//TODO. Can turn this into a struct or a class. This grew exponentially...
-//TODO. 'file' No longer needs to be passed as reference. RenameDupe() handles it.
+//DESCRIPTION: renameFile renames the filename(string) by first getting the stem()
+//Getting the extension by checking stringDifference() between the stem() and the originalFile's filename.
+//Incrementing the filename in format *(n)
+//Finally combining the the incremented filename with the extension.
 void renameFile(std::string& file)
 {
 	const std::string originalFile = file;
@@ -467,6 +469,11 @@ void renameFile(std::string& file)
     file = incrementFilename(mutFile) + extension;
 }
 
+//TODO. The first two can be passed as a single variable. Needs Revising.
+//directory is where the checks will be made for recursive searching. This is immutable.
+//stagePath is the entire filepath for where the file actually is. This is internal
+
+//mutFilename is the filename that will be renamed if a dupe is found. Passed as mutable reference.
 bool renameDupe(
 	const std::filesystem::path& directory, 
 	std::filesystem::directory_entry stagePath,
