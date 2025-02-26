@@ -378,10 +378,10 @@ void renameFile(std::string& file)
 	};
 
 	// Function to remove known multi-part extensions & single extensions
-	auto getStem = [&](const std::filesystem::path& filePath) -> std::string
+	auto getStem = [&knownMultiPartExtensions](const std::filesystem::path& filePath) -> std::string
 	{
 		std::filesystem::path temp = filePath;
-		std::string ext = temp.extension().string();
+		std::string ext = temp.extension().string(); //unused
 	
 		// Check if the full known extension exists
 		for (const std::string& knownExt : knownMultiPartExtensions)
@@ -398,13 +398,13 @@ void renameFile(std::string& file)
 		return temp.stem().string();
 	};
 
-	auto stringDifference = [&](const std::string& str1, const std::string& str2) -> std::string
+	auto stringDifference = [](const std::string& str1, const std::string& str2) -> std::string
 	{
 		auto [it1, it2] = std::mismatch(str1.begin(), str1.end(), str2.begin(), str2.end());
 		return (str1.size() > str2.size()) ? std::string(it1, str1.end()) : std::string(it2, str2.end());
 	};
 	
-	auto incrementFilename = [&](std::string& filename) -> std::string
+	auto incrementFilename = [](std::string& filename) -> std::string
 	{
 		// Check if the filename is long enough to have "(n)" at the end
 		if (filename.size() < 4)
