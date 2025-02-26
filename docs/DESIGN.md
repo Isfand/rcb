@@ -113,16 +113,16 @@ Transfer existing files into the file/ directory. This is done by checking if th
 
 For files inside external devices you cannot use 'rename()'. Instead use 'copy_file_range()', followed by 'unlink()' to the original path. In other words copy and remove the original.
 ### Options:
-**--**\
-Managed by parser. Options end after this point\
-**--verbose**\
-Print extra information on program state\
-**--silent**\
-Prevent printing anything with auto default(s).\
-**--force**\
-Force file deletion if possible.\
-**--no-directorysize**\
-Do not save size for directories. Write as 'NULL'\
+**--** \
+Managed by parser. Options end after this point \
+**--verbose** \
+Print extra information on program state \
+**--silent** \
+Prevent printing anything with auto default(s). \
+**--force** \
+Force file deletion if possible. \
+**--no-directorysize** \
+Do not save size for directories. Write as 'NULL' \
 
 ## Restore
 Transfer files back to their original paths. This is done by reading the 'directory' column value(s) for the corresponding id entered and using 'rename()' on the filename on the file(s) inside file/.
@@ -131,89 +131,89 @@ The final action should be to DELETE the record inside the table.
 
 For files inside external devices you cannot use 'rename()'. Instead use 'copy_file_range()', followed by 'unlink()' to the original path. In other words copy and remove the original.
 ### Options:
-**\<n>**...\
-Restore the files by record id number(s) entered.\
-**--all**\
-Restore all files with lowest depth ascending.\
-**--verbose**\
-Print extra information on program state.\
-**--force**\
-Do not ask the user for input. Perform the action(s) requested.\
-**--force-replace**\
-Restore by replacing any existing file from original path.\
-**--force-rename**\
-Restore by renaming any existing file from original path by incrementing filename.\
+**\<n>**... \
+Restore the files by record id number(s) entered. \
+**--all** \
+Restore all files with lowest depth ascending. \
+**--verbose** \
+Print extra information on program state. \
+**--force** \
+Do not ask the user for input. Perform the action(s) requested. \
+**--force-replace** \
+Restore by replacing any existing file from original path. \
+**--force-rename** \
+Restore by renaming any existing file from original path by incrementing filename. \
 **--force-recreate-directory**\
-Restore by recreating any directories leading up-to the original filepath.\
-**--silent**\
-Prevent printing anything with auto default(s).\
-**--previous**\
-Restores file(s) with record(s) with the highest execution number.\
-**--past \<n>(unit)**\
-Restore file(s) with relative time from system time to epoch.\
-**--sql '\<s>'**\
+Restore by recreating any directories leading up-to the original filepath. \
+**--silent** \
+Prevent printing anything with auto default(s). \
+**--previous** \
+Restores file(s) with record(s) with the highest execution number. \
+**--past \<n>(unit)** \
+Restore file(s) with relative time from system time to epoch. \
+**--sql '\<s>'** \
 Allows for SQL passthrough. AKA SQL injection.
 
 ## List
 Print record(s) inside data/ - database 'rcb.sqlite3' - table 'rcb'
 ### Options:
-**--all**\
-Prints record(s), size and count.\
-**--total-size**\
-Prints total size of every file recorded in rcb/, but ignore duplicate ino, dev.\
-**--total-count**\
-Prints total count of files recorded in rcb/.\
-**--human-readable**\
-Prints records in human readable form.\
-**--no-format**\
-Prints only the values in-line separated with spaces and nothing else as default. Allow custom delimiter.\
-**--previous**\
-Print file(s) with record(s) with the highest execution number.\
-**--past \<n>(unit)**\
-Print file(s) with relative time from system time to epoch.\
-**--sql '\<s>'**\
+**--all** \
+Prints record(s), size and count. \
+**--total-size** \
+Prints total size of every file recorded in rcb/, but ignore duplicate ino, dev. \
+**--total-count** \
+Prints total count of files recorded in rcb/. \
+**--human-readable** \
+Prints records in human readable form. \
+**--no-format** \
+Prints only the values in-line separated with spaces and nothing else as default. Allow custom delimiter. \
+**--previous** \
+Print file(s) with record(s) with the highest execution number. \
+**--past \<n>(unit)** \
+Print file(s) with relative time from system time to epoch. \
+**--sql '\<s>'** \
 Allows for SQL passthrough. AKA SQL injection.
 
 
 ## Erase
 Permanently removes files by reading table records inside data/, matching the corresponding filename(s) to the file(s) inside file/, moving them into wipe/ and then finally permanently removing them.
 ### Options:
-**\<n>**...\
-Remove the files by record id number(s) entered\
-**--all**\
-Remove every file recorded inside data/ by id. Check against 'file' column for matching values that correspond to a file inside file/\
-**--verbose**\
-Print extra information on program state\
-**--silent**\
-Prevent printing anything with auto default(s).\
-**--force**\
-Do not ask the user for input. Perform the action(s) requested.\
-**--previous**\
-Erase file(s) with record(s) with the highest execution number.\
-**--past \<n>(unit)**\
-Erase file(s) with relative time from system time to epoch.\
-**--sql '\<s>'**\
+**\<n>**... \
+Remove the files by record id number(s) entered \
+**--all** \
+Remove every file recorded inside data/ by id. Check against 'file' column for matching values that correspond to a file inside file/ \
+**--verbose** \
+Print extra information on program state. \
+**--silent** \
+Prevent printing anything with auto default(s). \
+**--force** \
+Do not ask the user for input. Perform the action(s) requested. \
+**--previous** \
+Erase file(s) with record(s) with the highest execution number. \
+**--past \<n>(unit)** \
+Erase file(s) with relative time from system time to epoch. \
+**--sql '\<s>'** \
 Allows for SQL passthrough. AKA SQL injection.
 
 
 ## Validate
 Checks for dangling file(s) and record(s) inside of the rcb directory along with any other corrections. Print the file(s)/record(s)/corrections(s) found with verbose and prompt user a message asking input for removal/correction.
 ### Options:
-**--all**\
-Checks for all of the below.\
-**--file**\
-Checks for dangling file(s) in file/ that have no corresponding record in data/.\
-**--data**\
-Checks for dangling record(s) in data/ that have no corresponding file in file/.\
-**--wipe**\
-Checks for dangling file(s) in wipe/ that exist.\
-**--fill-directorysize**\
-Checks for 'NULL' directory sizes and evaluates them.\
-**--verbose**\
-Print extra information on program state.\
-**--silent**\
-Prevent printing anything with auto default(s).\
-**--yes**\
+**--all** \
+Checks for all of the below. \
+**--file** \
+Checks for dangling file(s) in file/ that have no corresponding record in data/. \
+**--data** \
+Checks for dangling record(s) in data/ that have no corresponding file in file/. \
+**--wipe** \
+Checks for dangling file(s) in wipe/ that exist. \
+**--fill-directorysize** \
+Checks for 'NULL' directory sizes and evaluates them. \
+**--verbose** \
+Print extra information on program state. \
+**--silent** \
+Prevent printing anything with auto default(s). \
+**--yes** \
 Do not ask the user for input. Perform the action(s) requested.
 
 ---
