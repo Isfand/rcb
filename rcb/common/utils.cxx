@@ -14,6 +14,7 @@
 
 #include "utils.hxx"
 #include "rcb/platform/aci/aci.hxx"
+#include "globals.hxx"
 
 namespace rcb{
 

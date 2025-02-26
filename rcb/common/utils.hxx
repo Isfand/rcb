@@ -2,12 +2,9 @@
 #ifndef UTILS_HXX
 #define UTILS_HXX
 
-#include <iostream>
 #include <filesystem>
 #include <string>
 #include <print>
-
-#include "globals.hxx"
 
 namespace rcb{
 
