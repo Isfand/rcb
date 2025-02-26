@@ -29,6 +29,7 @@ private:
 		"delete <filename> | d <filename>, erase file by filename\n"
 		"--help            | -h \n"
 		"--verbose         | -v \n"
+		"--silent          | -s \n"
 		"--force           | -f \n"
 		"--no-directorysize, don't save size for filetype:directory\n"
 		"--, options end after this point.\n"

@@ -119,6 +119,8 @@ Managed by parser. Options end after this point\
 Print extra information on program state\
 **--silent**\
 Prevent printing anything with auto default(s).\
+**--force**\
+Force file deletion if possible.\
 **--no-directorysize**\
 Do not save size for directories. Write as 'NULL'\
 
