@@ -59,7 +59,6 @@ void Delete::file(const std::vector<std::string>& args)
 #endif
 			//The reason to always write the file data first is because the program could be terminated.
 			//Its better to have dangling records than have some file moved which is not on record.
-			Database db;
 			try
 			{
 				//Checks for read perms on directory, which is needed in order to iterate through it to save its size.
@@ -74,7 +73,7 @@ void Delete::file(const std::vector<std::string>& args)
 						g_singleton->getWorkingUsername(), systemFilePath.string());
 				}
 				auto fileDetails = Delete::saveFileData(mutFilename, systemFilePath);
-				db.insertData(fileDetails); // Could make InsertData Return bool for error checking instead of using try/catch
+				m_db.insertData(fileDetails); // Could make InsertData Return bool for error checking instead of using try/catch
 			}
 			catch(const std::runtime_error& e)
 			{
@@ -96,7 +95,7 @@ void Delete::file(const std::vector<std::string>& args)
 				{
 					//Insert data failed
 					//FIX. If failed delete the data that was just recently entered. THIS IS NOT IDEAL. Create a more thread safe solution. *Added 2nd try catch above to prevent removing existing data if insertData fails.
-					db.executeSQL(std::format("DELETE FROM {0} WHERE id=(SELECT MAX(id) FROM {0});", g_progName));
+					m_db.executeSQL(std::format("DELETE FROM {0} WHERE id=(SELECT MAX(id) FROM {0});", g_progName));
 					if(!m_dOpt.silentOption)
 						std::println("cannot move file. insufficient permissions");
 					continue;
@@ -116,7 +115,7 @@ void Delete::file(const std::vector<std::string>& args)
 				{
 					//Insert data failed
 					//FIX. If failed delete the data that was just recently entered. THIS IS NOT IDEAL. Create a more thread safe solution. *Added 2nd try catch above to prevent removing existing data if insertData fails.
-					db.executeSQL(std::format("DELETE FROM {0} WHERE id=(SELECT MAX(id) FROM {0});", g_progName));
+					m_db.executeSQL(std::format("DELETE FROM {0} WHERE id=(SELECT MAX(id) FROM {0});", g_progName));
 					if(!m_dOpt.silentOption)
 						std::println("cannot move file. insufficient permissions");
 					continue;
