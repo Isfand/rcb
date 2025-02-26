@@ -49,11 +49,11 @@ CREATE TABLE IF NOT EXISTS "rcb" (
 "execution" is the relative execution order which the files where deleted in. 
 
 ### **file/**
-Contains deleted files that can be restored. The name is changed if needed to prevent overwriting existing ones through the use of regex.
-E.G 'filename', if a duplicate, it will be incremented to 'filename(1)'.
+Contains deleted files that can be restored. The name is modified if needed to prevent overwriting existing ones.
+E.G 'filename', 'filename.desc.txt' 'filename.tar.gz', if duplicate(s), will be incremented to 'filename(1)', filename.desc(1).txt, filename(1).tar.gz. This format must be followed with the intension of still allowing the file to be accessible, because of this the extension(s) cannot be altered, nor can you add the increment at the start as POSIX compliant filesystems list files in alphanumerical order. Special exceptions have to be made for known multi-part extensions such as .tar.gz formats. This is how browsers like FireFox also deal with duplicate filenames.
 
 ### **wipe/**
-This is where the files are moved to be permanently wiped/removed. It exists as a way to mark files to be permanently removed by placing them inside a specialized directory. Because using 'unlink()' is faster than 'rename()'. This means if there was a large file that needed to be removed and something cancelled the process, the file would not be removed. But because we have wipe/ we know everything inside this directory is marked for removal. It is also useful for using a 'shred' like feature for files inside wipe/.
+This is where the files are moved to be permanently removed/wiped. It exists as a way to mark files to be permanently removed by placing them inside a specialized directory. Because using 'unlink()' is faster than 'rename()'. This means if there was a large file that needed to be removed and something cancelled the process, the file would not be removed. But because we have wipe/ we know everything inside this directory is marked for removal. It is also useful for using a 'shred' like feature for files inside wipe/.
 
 ### **word/**
 Contains files used for IPC (Inter-Process Communication).
