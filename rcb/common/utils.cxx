@@ -365,13 +365,14 @@ std::string dataUnitConversion()
 }
 
 //TODO. Can turn this into a struct or a class. This grew exponentially...
+//TODO. 'file' No longer needs to be passed as reference. RenameDupe() handles it.
 void renameFile(std::string& file)
 {
 	const std::string originalFile = file;
 	std::string mutFile = file;
 
 	// Set of known multi-part extensions
-	// Can make these into regexs instead of hard-coded values. E.G .tar.* or .7z.* for any extension.
+	// Can make these into regexs instead of hard-coded values. E.G .tar.*, .7z.* or .tar.xz.* for any extension.
 	const std::unordered_set<std::string> knownMultiPartExtensions =
 	{
 		".tar.gz", ".tar.bz2", ".tar.xz", ".tar.zst", ".tar.lz", ".tar.lzma"
@@ -398,6 +399,7 @@ void renameFile(std::string& file)
 		return temp.stem().string();
 	};
 
+	//Used for getting extension.
 	auto stringDifference = [](const std::string& str1, const std::string& str2) -> std::string
 	{
 		auto [it1, it2] = std::mismatch(str1.begin(), str1.end(), str2.begin(), str2.end());
@@ -456,7 +458,7 @@ void renameFile(std::string& file)
 	};
 
 	// Get stem
-	mutFile = getStem(file);
+	mutFile = getStem(mutFile);
 
     // Extract the extension using stringDifference
     std::string extension = stringDifference(mutFile, originalFile);
