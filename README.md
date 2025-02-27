@@ -1,1 +1,1 @@
-Branch for pkg-managers
+Branch for packages and overlays.
