@@ -141,7 +141,7 @@ void Validate::data()
 
 void Validate::wipe()
 {
-	//Check for existence of files first. Display them. Then delete...
+	//Check for existence of files first. Display them. Then remove...
 	std::vector<std::filesystem::path> danglingFiles{};
 
 	for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgWipeDir()))
