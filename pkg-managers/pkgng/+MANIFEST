@@ -1,5 +1,5 @@
 name: rcb
-version: "0.12.0"
+version: "0.12.1"
 origin: sysutils/rcb
 comment: Trash Manager
 desc: File recycling utility for the terminal
