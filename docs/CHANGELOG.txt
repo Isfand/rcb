@@ -4,6 +4,14 @@
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
+----------------------------------------------------------------------
+ VERSION 0.12.1 (27-02-2025)
+----------------------------------------------------------------------
+
+Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v0.12.1
+
+- UPDATE: Updated documentation
+- UPDATE: Recreated functionality to increment filenames. More reliable and optimized.
 - BUGFIX: 'delete' no longer fails with error for stoi conversion when deleting certain file names.
 
 ----------------------------------------------------------------------
