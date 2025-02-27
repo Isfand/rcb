@@ -1,6 +1,6 @@
 Local install instructions for FreeBSD pkgng port.
 
-You may be prompted through an ncursors interface to install dependencies. I.E sqlite3. This can be bypassed by 'BATCH=yes' for defaults. Either as a one off by passing it in 'make' or /etc/make.conf
+You may be prompted through an ncursors interface to install dependencies. I.E sqlite3, build2. This can be bypassed by 'BATCH=yes' for defaults. Either as a one off by passing it in 'make' or /etc/make.conf
 
 If you're modifying the Makefile beyond a simple value change then it's recommend to use 'portclippy Makefile' afterwards from the portfmt package for validation as it checks Makefile order and variables.
 
