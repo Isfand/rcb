@@ -4,6 +4,7 @@
 - [**RCB**](#rcb)
 	- [**Summary**](#summary)
 	- [**Pre-built binaries:**](#pre-built-binaries)
+	- [**Ports:**](#ports)
 	- [**Build Pre-requisites:**](#build-pre-requisites)
 	- [**Build Instructions:**](#build-instructions)
 	- [**Install**](#install)
@@ -26,7 +27,10 @@ Tested on Linux, FreeBSD & Windows. \
 See [docs/](docs/) for more information.
 
 ## **Pre-built binaries:**
-[Release](https://github.com/Isfand/rcb/releases) binaries are provided for Linux, FreeBSD & Windows.
+[Release](https://github.com/Isfand/rcb/releases) binaries are provided for Linux & Windows.
+
+## **Ports:**
+FreeBSD port is provided inside pkg-managers branch.
 
 ## **Build Pre-requisites:**
 *Requires the build2-toolchain to be pre-installed. See https://build2.org/install.xhtml \
