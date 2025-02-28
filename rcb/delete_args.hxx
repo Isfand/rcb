@@ -26,7 +26,7 @@ private:
 
 	const char* m_deleteHelpMsg =
 		"delete usage:\n" 
-		"delete <filename> | d <filename>, erase file by filename\n"
+		"delete <filename> | d <filename>, delete file by filename\n"
 		"--help            | -h \n"
 		"--verbose         | -v \n"
 		"--silent          | -s \n"
