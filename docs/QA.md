@@ -3,7 +3,7 @@ The goal behind this project is to create an independent cross-platform CLI recy
 
 Prospective: In the future it can optionally interact with a given OS's native trash implementation through the use of a helper program,
 which will act as a bridge between rcb and the OS specific implementation. 
-This will allow the rcb to remain independent and make the helper program entirely optional.
+This will allow rcb to remain independent and make the helper program entirely optional.
 
 ## 1. Why not follow the [XDG Trash Specification](https://specifications.freedesktop.org/trash-spec/latest/)?
 
@@ -29,7 +29,7 @@ https://github.com/oberblastmeister/trashy \
 https://github.com/umlx5h/gtrash
 
 ## 3. Why use build2 instead of defacto cmake. 
-4.1. I like build2 because it's better in almost every way except for the lack of IDE integration.
+3.1. I like build2 because it's better in almost every way except for the lack of IDE integration.
 Build2 is probably the closest thing to a unified c++ ecosystem. Similar to rust's cargo.
 You can very easily add and remove dependencies from cppget.org or external repos with little hassle. 
 cppget also shows if a library works or not on many different targets including previous versions.  
