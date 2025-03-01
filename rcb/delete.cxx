@@ -31,7 +31,7 @@ void Delete::file(const std::vector<std::string>& args)
 	{
 		//UPDATE: weakly canonical can throw exception if a symlink chains to many symlinks. Replacing with custom solution.
 		//CHANGED: systemFilePath should be in for loop top-level scope that way Verity can check symlink_status() properly. 
-		const std::filesystem::path systemFilePath { remove_trailing_slash(std::filesystem::absolute(file).lexically_normal()) };
+		const std::filesystem::path systemFilePath { removeTrailingSlash(std::filesystem::absolute(file).lexically_normal()) };
 
 		if(Verity(std::filesystem::directory_entry(systemFilePath)).exists)
 		{
@@ -222,7 +222,7 @@ std::string Delete::incrementExecutionID()
 	return highestExecution;
 }
 
-bool Delete::has_trailing_slash(const std::filesystem::path& path)
+bool Delete::hasTrailingSlash(const std::filesystem::path& path)
 {
 	std::string path_str = path.string();
 	
@@ -230,10 +230,10 @@ bool Delete::has_trailing_slash(const std::filesystem::path& path)
 	return !path_str.empty() && (path_str.back() == static_cast<char>(std::filesystem::path::preferred_separator));
 }
 
-std::filesystem::path Delete::remove_trailing_slash(const std::filesystem::path& path)
+std::filesystem::path Delete::removeTrailingSlash(const std::filesystem::path& path)
 {
 	// If the path has a trailing slash, return the parent path
-	if (has_trailing_slash(path)) 
+	if (hasTrailingSlash(path)) 
 		return path.parent_path();  // Return the parent path without trailing slashes
 
 	return path;  // No trailing slash found, return the path as-is

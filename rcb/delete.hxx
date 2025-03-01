@@ -26,8 +26,8 @@ private:
 	unsigned long long fileSize(const std::filesystem::directory_entry& file);
 	std::string incrementExecutionID();
 
-	bool has_trailing_slash(const std::filesystem::path& path);
-	std::filesystem::path remove_trailing_slash(const std::filesystem::path& path);
+	bool hasTrailingSlash(const std::filesystem::path& path);
+	std::filesystem::path removeTrailingSlash(const std::filesystem::path& path);
 	int pathDepth(const std::filesystem::path& path);
 };
 	
