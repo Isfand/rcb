@@ -22,6 +22,6 @@ Suggestions:
 End Goal:
 Once completed the final project will be to create a helper daemon/service for:
 - Scheduled time erases,
-- automatic validation of everything inside .rbn/ directory 
+- automatic validation of everything inside .rcb/ directory 
 - Desktop integration with every major OS. Starting with XDG Trash Spec.
 - Has a config implemented
