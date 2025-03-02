@@ -31,7 +31,7 @@ void ListArgs::run(std::vector<std::string>& args)
 					
 				return;
 			} 
-			else if (std::string(args.at(i)) == "--all")
+			else if (std::string(args.at(i)) == "--all" || std::string(args.at(i)) == "-a")
 			{
 #ifndef NDEBUG
 				std::println("all triggered");
