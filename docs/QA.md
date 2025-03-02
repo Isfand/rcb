@@ -1,9 +1,10 @@
 # Q&A:
-The goal behind this project is to create an independent cross-platform CLI recycling-bin implementation. 
+The goal behind this project is to create an independent cross-platform CLI file recycling implementation. 
 
 Prospective: In the future it can optionally interact with a given OS's native trash implementation through the use of a helper program,
 which will act as a bridge between rcb and the OS specific implementation. 
 This will allow rcb to remain independent and make the helper program entirely optional.
+
 
 ## 1. Why not follow the [XDG Trash Specification](https://specifications.freedesktop.org/trash-spec/latest/)?
 
@@ -27,6 +28,8 @@ trash-cli is non-native with a requirement on python and follows the XDG trash s
 E.G mac or windows support:\
 https://github.com/oberblastmeister/trashy \
 https://github.com/umlx5h/gtrash
+
+There also 'gio trash', but it doesn't exist on Windows or Mac, also the requirements on operating systems like FreeBSD require over 600mb worth of dependencies. I.E gvfs. This is significantly smaller in size and adds more features. For one you can just use literal SQL to query files. Instead of using POSIX file utilities, which otherwise wouldn't exist on Windows.
 
 ## 3. Why use build2 instead of defacto cmake. 
 3.1. I like build2 because it's better in almost every way except for the lack of IDE integration.
