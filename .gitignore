@@ -5,5 +5,10 @@
 !pkg-managers/
 !pkg-managers/*
 !pkg-managers/**
+
+!overlays/
+!overlays/*
+!overlays/**
+
 !README.md
 !.gitignore
