@@ -4,6 +4,7 @@ Known issues:
 3. --human-readable is only implemented for timestamp 
 
 ToDo:
+-No $USER variable exists on Termux. Implement getpwuid(getuid()) & GetUserNameW() for windows in aci
 -Fix. When deleting a directory which has a nested unreadable directory the program throws an exception instead of disregarding the directorySize. Or could just add a message saying to use --no-directorysize on the error.
 -ADD an option to recreate .rcb/ folder. Helpful for incompatible versions.
 -ADD a built in option to elevate privileges using an elevation command. E.G sudo/doas. Must enter name of command followed by password.
