@@ -18,13 +18,13 @@ include_directories(upstream)
 
 # Manually find and add source files, explicitly excluding the tests directory
 file(GLOB_RECURSE SRCS
-    "*.cxx"
+	"*.cxx"
 )
 
 # Exclude files in upstream/tests
 list(REMOVE_ITEM SRCS
-    ${CMAKE_SOURCE_DIR}/upstream/tests/tests/tests.cxx
-    ${CMAKE_SOURCE_DIR}/upstream/tests/tests/*.cxx
+	${CMAKE_SOURCE_DIR}/upstream/tests/tests/tests.cxx
+	${CMAKE_SOURCE_DIR}/upstream/tests/tests/*.cxx
 )
 
 # Add the executable target
