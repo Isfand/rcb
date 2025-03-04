@@ -4,7 +4,7 @@ version: 0.12.1
 type: exe
 language: c++
 summary: File recycling utility for the terminal
-topics: recycling-bin, trashcan
+topics: recycling
 license: Eclipse Public License 2.0
 description-file: README.md
 url: https://github.com/Isfand/rcb
