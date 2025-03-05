@@ -10,6 +10,9 @@
 
 #include <sys/stat.h> //Needed for mingw
 #include <windows.h>
+#include <lmcons.h>
+#include <shlobj.h>
+#include <shobjidl.h>
 #include <sddl.h>
 
 #include "windows.hxx"
@@ -186,6 +189,28 @@ Pwuid::Pwuid(unsigned long long id) : m_id{id}
 }
 std::string Pwuid::pw_dir() const
 {
+	WCHAR* path = nullptr;  // Pointer to WCHAR, which will be allocated by SHGetKnownFolderPath
+
+	// KnownFolderID for the user's profile folder
+	GUID folderId = FOLDERID_Profile;
+
+	// Retrieve the user's home directory path
+	if (SUCCEEDED(SHGetKnownFolderPath(folderId, 0, NULL, &path)))
+	{
+		// Convert WCHAR (UTF-16) string to a narrow multi-byte string (e.g., UTF-8)
+		int bufferSize = WideCharToMultiByte(CP_UTF8, 0, path, -1, nullptr, 0, nullptr, nullptr);
+		if (bufferSize > 0)
+		{
+			std::string homeDir(bufferSize - 1, 0);  // Subtract 1 to avoid adding extra null terminator
+			WideCharToMultiByte(CP_UTF8, 0, path, -1, &homeDir[0], bufferSize, nullptr, nullptr);
+
+			// Free the memory allocated for path by SHGetKnownFolderPath
+			CoTaskMemFree(path);
+
+			return homeDir;
+		}
+	}
+	// Return an empty string if the function fails
 	return "";
 }
 std::string Pwuid::pw_gecos() const
@@ -198,7 +223,30 @@ unsigned long long Pwuid::pw_gid() const
 }
 std::string Pwuid::pw_name() const
 {
-	return "";
+	WCHAR username[UNLEN + 1]; // UNLEN is the max username length
+	DWORD username_len = UNLEN + 1;
+
+	// Get the username
+	if (!GetUserNameW(username, &username_len))
+	{
+		return ""; 
+	}
+
+	// Convert from UTF-16 to UTF-8 using WideCharToMultiByte
+	int buffer_size = WideCharToMultiByte(CP_UTF8, 0, username, -1, nullptr, 0, nullptr, nullptr);
+	if (buffer_size == 0)
+	{
+		return "";
+	}
+
+	std::string str(buffer_size, 0);
+	WideCharToMultiByte(CP_UTF8, 0, username, -1, &str[0], buffer_size, nullptr, nullptr);
+
+	return str;
+
+	// Convert from wstring (UTF-16) to string (UTF-8)
+	//std::wstring wstr(username);
+	//std::string str(wstr.begin(), wstr.end());
 }
 std::string Pwuid::pw_passwd() const
 {
