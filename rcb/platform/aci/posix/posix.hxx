@@ -7,6 +7,7 @@
 #include <string>
 
 #include <sys/stat.h>
+#include <unistd.h>
 
 namespace aci{
    
@@ -70,7 +71,7 @@ private:
 class Pwuid
 {
 public:
-	Pwuid(unsigned long long id);
+	Pwuid(unsigned long long id = getuid());
 
 	std::string pw_dir() const;
 	std::string pw_gecos() const;

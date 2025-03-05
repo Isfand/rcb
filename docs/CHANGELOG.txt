@@ -4,6 +4,10 @@
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
+- UPDATE: Added overlays/ inside the pkg-managers branch.
+- UPDATE: In env.cxx user & home now use platform specific APIs in aci to determine environment.
+- BUGFIX: rcb can now run on Termux.
+
 ----------------------------------------------------------------------
  VERSION 0.12.1 (27-02-2025)
 ----------------------------------------------------------------------

@@ -4,18 +4,11 @@
 
 #include "env.hxx"
 #include "globals.hxx"
+#include "rcb/platform/aci/aci.hxx"
 
-//TEMPORARY: USE ACI in future.
-#if defined(__unix__) || defined(__APPLE__)
-const char* HOME = "HOME";
-const char* USER = "USER";
-#elif defined(_WIN32) && !defined(__CYGWIN__)
-const char* HOME = "USERPROFILE";
-const char* USER = "USERNAME";
-#endif
 
 namespace rcb{
-
+	
 Env::Env()
 {
 	var();
@@ -26,22 +19,24 @@ Env::Env()
 
 void Env::var()
 {
+	const std::string home = aci::Pwuid().pw_dir();
+	const std::string user = aci::Pwuid().pw_name();
+
 	//FUTURE:
 	//TODO. Optimize this code to use init if statement. Ideally all connected.
-	
-	if(std::getenv(HOME) == NULL)
+	if(home.empty())
 	{
-		throw std::runtime_error("$HOME is NULL");
+		throw std::runtime_error("HOME NOT FOUND");
 	} // Prevent segmentation fault
-	else if(std::getenv(USER) == NULL)
+	else if(user.empty())
 	{
-		throw std::runtime_error("$USER is NULL");
+		throw std::runtime_error("USER NOT FOUND");
 	}
 
-	m_workingUsername = (std::string(std::getenv(USER)));
+	m_workingUsername = user;
 		
 	if(std::getenv("RCB_DIR") == NULL) // Prevent segmentation fault
-		m_workingProgDir = (std::filesystem::path(std::getenv(HOME)) / (std::string(".") + g_progName)).string();
+		m_workingProgDir = (std::filesystem::path(home) / (std::string(".") + g_progName)).string();
 	else
 		m_workingProgDir = (std::string(std::getenv("RCB_DIR")));
 }

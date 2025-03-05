@@ -69,7 +69,7 @@ private:
 class Pwuid
 {
 public:
-	Pwuid(unsigned long long id);
+	Pwuid(unsigned long long id = 0);
 
 	std::string pw_dir() const;
 	std::string pw_gecos() const;
