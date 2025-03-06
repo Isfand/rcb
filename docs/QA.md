@@ -7,7 +7,7 @@ This will allow rcb to remain independent and make the helper program entirely o
 
 ## 1. Why not follow the [XDG Trash Specification](https://specifications.freedesktop.org/trash-spec/latest/)?
 
-1.1. The XDG trash specification doesn't have the features or the design goals the program is set out to provide.
+1.1. The XDG trash specification doesn't have the features or the design goals the program is set out to provide. As one of the design intentions is to provide enough metadata that can be narrowed or expanded to another format.
 
 1.2. XDG's trash spec assumes you are writing a daemon/service that actively monitors files. 
 And not a CLI program. Albeit can be made to work reasonably well, but not fully compliant. This is because of features like 'Automatic trash cleaning'.
@@ -15,8 +15,6 @@ And not a CLI program. Albeit can be made to work reasonably well, but not fully
 1.3. On Linux, desktop environments don't all perfectly follow the spec itself. 
 E.G Gnome has an expunged/ folder, which is not part of the spec and has no directorySizes at time of writing. 
 KDE on the other hand follows it more closely. In-fact they both had their own trashing mechanisms originally before the XDG specification, which is why there are differences.
-
-1.4. The design intention is to be platform agnostic and provide enough metadata that can be narrowed or expanded to another format.
 
 ## 2. Why not use an existing trash cli program.
 2.1. I made this program for my own use cases as nothing suitable at the time existed. I found it useful and shared it.
