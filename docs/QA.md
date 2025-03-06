@@ -26,12 +26,12 @@ KDE on the other hand follows it more closely. In-fact they both had their own t
 'trashy' doesn't support Mac. \
 https://github.com/oberblastmeister/trashy
 
-'gtrash' doesn't support windows and is TUI oriented. \
+'gtrash' doesn't support windows. \
 https://github.com/umlx5h/gtrash
 
 'gio trash', doesn't support Windows or Mac, also the requirements on operating systems like FreeBSD require over 600mb worth of dependencies. I.E gvfs. This is significantly smaller in size and adds more features. For one you can just use literal SQL to query files. Instead of using POSIX file utilities, which otherwise wouldn't exist on Windows.
 
-'gomi' would have been the closest option. It works on all major operating systems, including FreeBSD. Even has a config implemented. It's also mature and actively developed. However it's TUI oriented.
+'gomi' would have been the closest option. I recommend using this if your focus is around XDG-Trash and TUIs. It works on all major operating systems, including FreeBSD. Even has a config implemented. It's also mature and actively developed.
 
 ## 3. Why use build2 instead of defacto cmake. 
 3.1. I like build2 because it's better in almost every way except for the lack of IDE integration.
