@@ -1,10 +1,9 @@
 # Q&A:
-The goal behind this project is to create an independent cross-platform CLI file recycling implementation. 
+The goal behind this project is to create an independent cross-platform CLI file recycling implementation with a focus around scripting. 
 
 Prospective: In the future it can optionally interact with a given OS's native trash implementation through the use of a helper program,
 which will act as a bridge between rcb and the OS specific implementation. 
 This will allow rcb to remain independent and make the helper program entirely optional.
-
 
 ## 1. Why not follow the [XDG Trash Specification](https://specifications.freedesktop.org/trash-spec/latest/)?
 
@@ -17,19 +16,22 @@ And not a CLI program. Albeit can be made to work reasonably well, but not fully
 E.G Gnome has an expunged/ folder, which is not part of the spec and has no directorySizes at time of writing. 
 KDE on the other hand follows it more closely. In-fact they both had their own trashing mechanisms originally before the XDG specification, which is why there are differences.
 
-1.4. The design intention is to be platform agnostic. XDG's specs generally assume linux.
-As it currently stands v1 is POSIX compliant, however there is no guarantee if a newer version in the future decides to change its behavior to something linux specific. This program works on Windows too.
-
+1.4. The design intention is to be platform agnostic and provide enough metadata that can be narrowed or expanded to another format.
 
 ## 2. Why not use an existing trash cli program.
 2.1. I made this program for my own use cases as nothing suitable at the time existed. I found it useful and shared it.
 
-trash-cli is non-native with a requirement on python and follows the XDG trash specification. Closest alternatives would have been 'trashy' or 'gtrash', but they have their own issues. 
-E.G mac or windows support:\
-https://github.com/oberblastmeister/trashy \
+'trash-cli' is non-native with a requirement on python with limited portability. 
+
+'trashy' doesn't support Mac. \
+https://github.com/oberblastmeister/trashy
+
+'gtrash' doesn't support windows and is TUI oriented. \
 https://github.com/umlx5h/gtrash
 
-There also 'gio trash', but it doesn't exist on Windows or Mac, also the requirements on operating systems like FreeBSD require over 600mb worth of dependencies. I.E gvfs. This is significantly smaller in size and adds more features. For one you can just use literal SQL to query files. Instead of using POSIX file utilities, which otherwise wouldn't exist on Windows.
+'gio trash', doesn't support Windows or Mac, also the requirements on operating systems like FreeBSD require over 600mb worth of dependencies. I.E gvfs. This is significantly smaller in size and adds more features. For one you can just use literal SQL to query files. Instead of using POSIX file utilities, which otherwise wouldn't exist on Windows.
+
+'gomi' would have been the closest option. It works on all major operating systems, including FreeBSD. Even has a config implemented. It's also mature and actively developed. However it's TUI oriented.
 
 ## 3. Why use build2 instead of defacto cmake. 
 3.1. I like build2 because it's better in almost every way except for the lack of IDE integration.
