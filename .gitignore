@@ -2,13 +2,9 @@
 # Now, whitelist anything that's a directory
 !*/
 
-!pkg-managers/
-!pkg-managers/*
-!pkg-managers/**
-
-!overlays/
-!overlays/*
-!overlays/**
+!rcb-utility/
+!rcb-utility/*
+!rcb-utility/**
 
 !README.md
 !.gitignore
