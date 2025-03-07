@@ -1,0 +1,1 @@
+File recycling utility for the terminal that can delete, restore, erase, list and validate files.
