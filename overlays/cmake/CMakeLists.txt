@@ -23,8 +23,8 @@ file(GLOB_RECURSE SRCS
 
 # Exclude files in upstream/tests
 list(REMOVE_ITEM SRCS
-	${CMAKE_SOURCE_DIR}/upstream/tests/tests/tests.cxx
-	${CMAKE_SOURCE_DIR}/upstream/tests/tests/*.cxx
+	${CMAKE_SOURCE_DIR}/upstream/rcb/tests/tests/tests.cxx
+	${CMAKE_SOURCE_DIR}/upstream/rcb/tests/tests/*.cxx
 )
 
 # Add the executable target

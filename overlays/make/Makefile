@@ -8,7 +8,7 @@ override CXXFLAGS += -std=c++23 -stdlib=libc++ -Iupstream
 override LDFLAGS += -lsqlite3
 
 # Find all C++ source files with .cxx extension recursively. Excluding tests/
-SRCS := $(shell find . -type f -name "*.cxx" ! -path "./upstream/tests/*")
+SRCS := $(shell find . -type f -name "*.cxx" ! -path "./upstream/rcb/tests/*")
 
 # Generate object files for each source file
 OBJS := $(SRCS:.cxx=.o)
