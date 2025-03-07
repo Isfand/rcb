@@ -14,7 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 
 # Add the include directories
-include_directories(upstream)
+include_directories(upstream/rcb)
 
 # Manually find and add source files, explicitly excluding the tests directory
 file(GLOB_RECURSE SRCS
