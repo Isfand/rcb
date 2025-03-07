@@ -42,7 +42,7 @@ FreeBSD port is provided inside pkg-managers branch.
 **`mkdir rcb.d`** \
 **`cd rcb.d`** \
 **`git clone https://github.com/Isfand/rcb.git`** \
-**`cd rcb`**
+**`cd rcb/rcb`**
 
 POSIX: **`./config_init.sh`**\
 WIN32: **`.\config_init.ps1`**
