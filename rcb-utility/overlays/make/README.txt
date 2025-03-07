@@ -10,5 +10,5 @@ git clone https://github.com/Isfand/rcb.git upstream
 make CXXFLAGS="-O2 -DNDEBUG" LDFLAGS="-s"
 
 #Debug build
-make make CXXFLAGS="-O0 -g -Wall -Wextra -Wshadow -fno-inline -fno-omit-frame-pointer -fno-unroll-loops -fno-vectorize"
+make CXXFLAGS="-O0 -g -Wall -Wextra -Wshadow -fno-inline -fno-omit-frame-pointer -fno-unroll-loops -fno-vectorize"
 
