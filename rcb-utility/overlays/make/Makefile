@@ -21,15 +21,15 @@ all: $(TARGET)
 
 # Linking
 $(TARGET): $(OBJS)
-        $(CXX) $(CXXFLAGS) $(LDFLAGS) -o $(TARGET) $(OBJS)
+		$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $(TARGET) $(OBJS)
 
 # Compilation rule
 %.o: %.cxx
-        $(CXX) $(CXXFLAGS) -c $< -o $@
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Clean build files
 clean:
-        rm -f $(OBJS) $(TARGET)
+		rm -f $(OBJS) $(TARGET)
 
 # Phony targets
 .PHONY: all clean
