@@ -1,5 +1,5 @@
 PORTNAME=       rcb
-DISTVERSION=    0.12.1
+DISTVERSION=    0.12.2
 CATEGORIES=     sysutils
 
 MAINTAINER=     ports@FreeBSD.org
@@ -25,7 +25,7 @@ B_CMD=          ${LOCALBASE}/bin/b
 B_ARGS=         -V -j ${MAKE_JOBS_NUMBER} -J ${MAKE_JOBS_NUMBER}
 
 do-build:
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${B_CMD} configure ${B_ARGS} \
+	@cd ${WRKSRC}/rcb && ${SETENV} ${MAKE_ENV} ${B_CMD} configure ${B_ARGS} \
 		config.cxx=${CXX} \
 		config.cxx.coptions="${CXXFLAGS}" \
 		config.cxx.loptions="${LDFLAGS} ${STRIP}" \
