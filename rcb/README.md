@@ -10,7 +10,7 @@
 	- [**Install**](#install)
 		- [POSIX:](#posix)
 		- [WIN32:](#win32)
-	- [**Primary commands**](#primary-commands)
+	- [**Sub-commands**](#sub-commands)
 	- [**Basic usage:**](#basic-usage)
 		- [Deleting files:](#deleting-files)
 		- [Listing files:](#listing-files)
@@ -72,7 +72,7 @@ This should work on any POSIX compliant platform.
 ### WIN32:
 WIP
 
-## **Primary commands**
+## **Sub-commands**
 
 <pre>
 delete   | d
@@ -83,7 +83,7 @@ validate | v
 </pre>
 
 ## **Basic usage:**
-*Note, '--help' option changes message when applied after a primary command:
+*Note, '--help' option changes message when applied after a sub-command:
 <pre>
 rcb --version | 
 rcb --help    | -h
