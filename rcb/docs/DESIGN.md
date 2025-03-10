@@ -78,11 +78,11 @@ get/set+workingUsername    | Environment variable $USER
 </pre>
 
 # Commands
-The primary commands should be parsed **independently**, every command should be parsed by their respective parsers that set options that are **local** to the commands, with the **exception** of having internal shared utilities, global environment for **directories**, **config** and the **user** who executed the program. The general idea is to make the program have usable utilities, like, for example, BusyBox.
+The top-level sub-commands should be parsed **independently**, every command should be parsed by their respective parsers that set options that are **local** to the commands, with the **exception** of having internal shared utilities, global environment for **directories**, **config** and the **user** who executed the program. The general idea is to make the program have usable utilities, like, for example, BusyBox.
 
-Parsing the arguments from the **main entry point** should involve **redirecting** the arguments depending on what **command** is entered. As you should only use one primary command per program execution.
+Parsing the arguments from the **main entry point** should involve **redirecting** the arguments depending on what **command** is entered. As you should only use one top-level sub-command command per program execution.
 
-As the primary commands themselves have their own argument parsers to set options. Once the parser has **completely** parsed all arguments, it should **invoke** the primary command object itself as the **last** action, passing the options as an object. The primary commands then change their **behavior** depending on what options are **enabled**.
+As the sub-commands themselves have their own argument parsers to set options. Once the parser has **completely** parsed all arguments, it should **invoke** the sub-command object itself as the **last** action, passing the options as an object. The sub-commands then change their **behavior** depending on what options are **enabled**.
 
 Some options such as '--help' are messages displaying parser usage and not behavior changes. They are specific to the parser's implementation and should only be invoked by the parser directly.
 
