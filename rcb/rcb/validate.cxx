@@ -58,7 +58,7 @@ void Validate::file()
 	if(danglingFiles.size() == 0)
 	{
 		if(m_vOpt.verboseOption)
-			std::println("no dangling file(s) found inside file/");
+			std::println("no dangling file(s) found inside {}/", g_singleton->getWorkingProgFileDir().filename().string());
 	}
 	else if(danglingFiles.size() > 0)
 	{
@@ -66,7 +66,7 @@ void Validate::file()
 		
 		if(m_vOpt.verboseOption)
 		{
-			std::println("dangling file(s) found in file/:");
+			std::println("dangling file(s) found in {}/:", g_singleton->getWorkingProgFileDir().filename().string());
 			for(const auto& file : danglingFiles)
 				std::println("{}", file);
 		}
@@ -110,7 +110,7 @@ void Validate::data()
 	if(danglingRecords.size() == 0)
 	{
 		if(m_vOpt.verboseOption)
-			std::println("no dangling record(s) found inside data/");    
+			std::println("no dangling record(s) found inside {}/", g_singleton->getWorkingProgDataDir().filename().string());
 	}
 	else if(danglingRecords.size() > 0)
 	{
@@ -150,7 +150,7 @@ void Validate::wipe()
 	if (danglingFiles.size() == 0)
 	{
 		if(m_vOpt.verboseOption)
-			std::println("no dangling file(s) found inside wipe/");    
+			std::println("no dangling file(s) found inside {}/", g_singleton->getWorkingProgWipeDir().filename().string());
 	}
 	else if(danglingFiles.size() > 0)
 	{   
@@ -158,7 +158,7 @@ void Validate::wipe()
 		
 		if(m_vOpt.verboseOption)
 		{
-			std::println("dangling file(s) found in wipe/:");
+			std::println("dangling file(s) found in {}/:", g_singleton->getWorkingProgWipeDir().filename().string());
 			for(const auto& entry : danglingFiles)
 				std::println("{}", entry.filename().string());
 		}
