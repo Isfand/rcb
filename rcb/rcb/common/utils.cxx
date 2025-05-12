@@ -485,7 +485,7 @@ bool renameDupe(
 		// Print entry is a dupe
 		//if(Opt.verboseOption)
 #ifndef NDEBUG
-		std::println("Existing entry found in {0} DIR: {1}", g_progName, g_singleton->getWorkingProgFileDir().string());
+		std::println("Existing entry found in {0} DIR: {1}", g_kProgName, g_singleton->getWorkingProgFileDir().string());
 #endif
 
 		//Can make this into a else while instead of the else if below? Would have to swap the declaration and definitions inside
@@ -506,7 +506,7 @@ bool renameDupe(
 		//Print if unique
 		//if(Opt.verboseOption)
 #ifndef NDEBUG
-		std::println("Check for target path passed {0} DIR: {1}", g_progName, g_singleton->getWorkingProgFileDir().string());
+		std::println("Check for target path passed {0} DIR: {1}", g_kProgName, g_singleton->getWorkingProgFileDir().string());
 #endif
 		return true;
 	}

@@ -95,7 +95,7 @@ void Delete::file(const std::vector<std::string>& args)
 				{
 					//Insert data failed
 					//FIX. If failed delete the data that was just recently entered. THIS IS NOT IDEAL. Create a more thread safe solution. *Added 2nd try catch above to prevent removing existing data if insertData fails.
-					m_db.executeSQL(std::format("DELETE FROM {0} WHERE id=(SELECT MAX(id) FROM {0});", g_progName));
+					m_db.executeSQL(std::format("DELETE FROM {0} WHERE id=(SELECT MAX(id) FROM {0});", g_kProgName));
 					if(!m_dOpt.silentOption)
 						std::println("cannot move file. insufficient permissions");
 					continue;
@@ -115,7 +115,7 @@ void Delete::file(const std::vector<std::string>& args)
 				{
 					//Insert data failed
 					//FIX. If failed delete the data that was just recently entered. THIS IS NOT IDEAL. Create a more thread safe solution. *Added 2nd try catch above to prevent removing existing data if insertData fails.
-					m_db.executeSQL(std::format("DELETE FROM {0} WHERE id=(SELECT MAX(id) FROM {0});", g_progName));
+					m_db.executeSQL(std::format("DELETE FROM {0} WHERE id=(SELECT MAX(id) FROM {0});", g_kProgName));
 					if(!m_dOpt.silentOption)
 						std::println("cannot move file. insufficient permissions");
 					continue;
@@ -214,7 +214,7 @@ long long unsigned Delete::fileSize(const std::filesystem::directory_entry& file
 std::string Delete::incrementExecutionID()
 {
 	std::string highestExecution{};
-	std::string selectedExecution = m_db.selectData(std::format("SELECT execution FROM {0} WHERE execution=(SELECT max(execution) FROM {0}) AND id=(SELECT max(id) FROM {0});", g_progName));
+	std::string selectedExecution = m_db.selectData(std::format("SELECT execution FROM {0} WHERE execution=(SELECT max(execution) FROM {0}) AND id=(SELECT max(id) FROM {0});", g_kProgName));
 
 	if (selectedExecution != "") highestExecution = std::to_string(std::stoll(selectedExecution) + 1);
 	else if (selectedExecution == "") highestExecution = "1";

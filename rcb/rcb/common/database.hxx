@@ -24,7 +24,7 @@ public:
 	int executeSQL(const std::string &sql);
 private:
 	sqlite3* m_db;                                          //Shared sqlite3 instance
-	std::string m_dataBaseName           {std::format("{}.sqlite3", g_progName)}; //{"rcb.sqlite3"}; //Database filename
+	std::string m_dataBaseName           {std::format("{}.sqlite3", g_kProgName)}; //{"rcb.sqlite3"}; //Database filename
 
 	const char* m_fileIdColumn           {"id"};            //SQL auto increment
 	const char* m_fileNameColumn         {"file"};          //Refers to filename to be inside of .rcb/file/

@@ -36,7 +36,7 @@ void Env::var()
 	m_workingUsername = user;
 		
 	if(std::getenv("RCB_DIR") == NULL) // Prevent segmentation fault
-		m_workingProgDir = (std::filesystem::path(home) / (std::string(".") + g_progName)).string();
+		m_workingProgDir = (std::filesystem::path(home) / (std::string(".") + g_kProgName)).string();
 	else
 		m_workingProgDir = (std::string(std::getenv("RCB_DIR")));
 }
@@ -56,7 +56,7 @@ void Env::dir()
 	m_workingProgWordDir = m_workingProgDir / word;
 
 #ifndef NDEBUG
-	std::println("{0} working directory is: {1}", g_progName, m_workingProgDir.string());
+	std::println("{0} working directory is: {1}", g_kProgName, m_workingProgDir.string());
 #endif
 
 	//Check if active dir exists. If not then execute the below.

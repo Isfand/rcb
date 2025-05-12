@@ -102,7 +102,7 @@ void Args::init()
 {
 	if(m_args.size() <= 0) // Prevent Segmentation fault
 	{
-		std::println("{0}: missing operand\ntry \'{0} --help\' for more information", g_progName);
+		std::println("{0}: missing operand\ntry \'{0} --help\' for more information", g_kProgName);
 		return;
 	}
 
@@ -110,7 +110,7 @@ void Args::init()
 	{
 		if(std::string(arg) == "") // TEMPORARY. Implement in every command individually.
 		{
-			std::println("{0}: cannot accept empty arguments", g_progName);
+			std::println("{0}: cannot accept empty arguments", g_kProgName);
 			return;
 		}
 
@@ -210,7 +210,7 @@ void Args::init()
 		else if(std::string(arg) == "--version")
 		{
 			//https://stackoverflow.com/questions/4053837/colorizing-text-in-the-console-with-c
-			std::println("\x1B[32m{} {} version ({})\033[0m", "♻", g_progName, g_progVersion);
+			std::println("\x1B[32m{} {} version ({})\033[0m", "♻", g_kProgName, g_kProgVersion);
 			std::println("\x1B[90m{}\033[0m", m_rcb_ASCII_art);
 			return;	
 		}
@@ -219,7 +219,7 @@ void Args::init()
 			if(m_sharedCmdFlag)
 				continue;
 
-			std::println("Incorrect use of command. Enter --help for usage", g_progName);
+			std::println("Incorrect use of command. Enter --help for usage", g_kProgName);
 			return;
 		}
 	}

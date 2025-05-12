@@ -22,7 +22,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 
 	if(args.size() <= 0)
 	{
-		std::println("{0} restore: missing operand\ntry \'{0} --help\' for more information", g_progName);
+		std::println("{0} restore: missing operand\ntry \'{0} --help\' for more information", g_kProgName);
 		return;
 	}
 	
