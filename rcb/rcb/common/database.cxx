@@ -30,7 +30,7 @@ void Database::createTable()
 											  "\t\"{7}\" BIGINT UNSIGNED,\n" 
 											  "\t\"{8}\" varchar(65535),\n" 
 											  "\t\"{9}\" BIGINT UNSIGNED);\n",
-											  g_progName, 
+											  g_kProgName, 
 											  m_fileIdColumn, 
 											  m_fileNameColumn, 
 											  m_filePathColumn, 
@@ -75,7 +75,7 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 										 "{}, {}, {}, {}, {}, {}, {}, {}) "
 										 "VALUES("
 										 "'{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}');",
-										 g_progName, 
+										 g_kProgName, 
 										 m_fileNameColumn,
 										 m_filePathColumn,
 										 m_fileTimestampColumn,

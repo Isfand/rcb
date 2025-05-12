@@ -37,8 +37,8 @@ void Restore::file(const std::vector<std::string>& args)
 	for(const std::string& arg : args)
 	{
 		//TODO. Need to add something accounting for empty values returned from sql.
-		const std::string stagedFile             { m_db.selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_progName, arg)) };
-		const std::filesystem::path originalPath { m_db.selectData(std::format("SELECT path FROM {0} WHERE id='{1}';", g_progName, arg)) };
+		const std::string stagedFile             { m_db.selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_kProgName, arg)) };
+		const std::filesystem::path originalPath { m_db.selectData(std::format("SELECT path FROM {0} WHERE id='{1}';", g_kProgName, arg)) };
 
 		std::string mutFilename              { originalPath.filename().string() };
 		std::filesystem::path mutRestorePath { originalPath.parent_path() / mutFilename };
@@ -125,7 +125,7 @@ void Restore::file(const std::vector<std::string>& args)
 
 				//TODO;
 				//Also check against saveFileData() values to make sure.
-				m_db.executeSQL(std::format("DELETE FROM {0} WHERE id='{1}';", g_progName, arg));
+				m_db.executeSQL(std::format("DELETE FROM {0} WHERE id='{1}';", g_kProgName, arg));
 			}
 			else
 			{
@@ -144,7 +144,7 @@ void Restore::file(const std::vector<std::string>& args)
 					std::println("Path is:{0}", mutRestorePath.string());
 
 				//TODO; //Also check against saveFileData() values to make sure.
-				m_db.executeSQL(std::format("DELETE FROM {0} WHERE id='{1}';", g_progName, arg));
+				m_db.executeSQL(std::format("DELETE FROM {0} WHERE id='{1}';", g_kProgName, arg));
 				
 			}
 
@@ -161,7 +161,7 @@ void Restore::file(const std::vector<std::string>& args)
 void Restore::allFile()
 {
 	//Need to restore files with the lowest depth ascending.
-	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT id FROM {0} ORDER BY depth ASC;", g_progName)) };
+	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT id FROM {0} ORDER BY depth ASC;", g_kProgName)) };
 
 #ifndef NDEBUG
 	std::println("Printing all existing record IDs");
@@ -183,7 +183,7 @@ void Restore::past()
 		
 		if (return_code == 0)
 		{
-			std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT id FROM {0} WHERE timestamp > {1};", g_progName, timestamp)) };
+			std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT id FROM {0} WHERE timestamp > {1};", g_kProgName, timestamp)) };
 			Restore::file(vList);
 		}
 		else if(return_code == 1 && !m_rOpt.silentOption) std::cerr << "error: units not found\n";
@@ -194,7 +194,7 @@ void Restore::past()
 
 void Restore::previous()
 {
-	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT id FROM {0} WHERE execution=(SELECT MAX(execution) FROM {0});", g_progName)) };
+	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT id FROM {0} WHERE execution=(SELECT MAX(execution) FROM {0});", g_kProgName)) };
 	Restore::file(vList);
 }
 

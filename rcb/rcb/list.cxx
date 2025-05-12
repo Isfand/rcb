@@ -38,7 +38,7 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 	//REVISE: This is hard-coded. Create something that dynamically gets the column names.
 	//WIll also need a way to convert size of bytes to other units.
 	//Can pair this problem with --no-format to work with regular queries.
-	if(m_lOpt.humanReadableOption) { m_defaultSQLQuery = std::format("SELECT id, file, path, datetime(timestamp, 'unixepoch') AS timestamp, size, filetype, user, execution FROM {0}", g_progName); }
+	if(m_lOpt.humanReadableOption) { m_defaultSQLQuery = std::format("SELECT id, file, path, datetime(timestamp, 'unixepoch') AS timestamp, size, filetype, user, execution FROM {0}", g_kProgName); }
 
 	if(m_lOpt.defaultOption)   List::allFile();
 	if(m_lOpt.totalSizeOption) List::size();
@@ -79,7 +79,7 @@ void List::past()
 
 		if (return_code == 0)
 		{
-			std::vector<std::string> vList = m_db.selectDataB(std::format("SELECT id FROM {0} WHERE timestamp > {1};", g_progName, timestamp));
+			std::vector<std::string> vList = m_db.selectDataB(std::format("SELECT id FROM {0} WHERE timestamp > {1};", g_kProgName, timestamp));
 			List::file(vList);
 		}
 		else if(return_code == 1) std::cerr << "error: units not found\n";
@@ -90,7 +90,7 @@ void List::past()
 
 void List::previous()
 {
-	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT id FROM {0} WHERE execution=(SELECT MAX(execution) FROM {0});", g_progName)) };
+	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT id FROM {0} WHERE execution=(SELECT MAX(execution) FROM {0});", g_kProgName)) };
 	List::file(vList);
 }
 
@@ -116,7 +116,7 @@ void List::count()
 		for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
 		{
 			std::string stagedFile = entry.path().filename().string();
-			std::string dbProgFileRecord = m_db.selectData(std::format("SELECT file FROM {0} WHERE file='{1}';", g_progName, stagedFile));
+			std::string dbProgFileRecord = m_db.selectData(std::format("SELECT file FROM {0} WHERE file='{1}';", g_kProgName, stagedFile));
 
 			if(stagedFile == dbProgFileRecord)
 				m_validFiles.push_back(stagedFile);
@@ -141,7 +141,7 @@ void List::size()
 		for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
 		{
 			std::string stagedFile { entry.path().filename().string() };
-			std::string dbProgFileRecord { m_db.selectData(std::format("SELECT file FROM {0} WHERE file='{1}';", g_progName, stagedFile)) };
+			std::string dbProgFileRecord { m_db.selectData(std::format("SELECT file FROM {0} WHERE file='{1}';", g_kProgName, stagedFile)) };
 
 			if(stagedFile == dbProgFileRecord)
 				m_validFiles.push_back(stagedFile);
@@ -174,7 +174,7 @@ void List::size()
 
 	for (const auto& de : deduped)
 	{
-		std::string query { m_db.selectData(std::format("SELECT size FROM {0} WHERE file='{1}';", g_progName, std::get<0>(de))) };
+		std::string query { m_db.selectData(std::format("SELECT size FROM {0} WHERE file='{1}';", g_kProgName, std::get<0>(de))) };
 		std::string byte = (query == "NULL") ? "0" : query;
 		size += std::stoull(byte);
 		//WARNING. Be wary of NULL values in size.
