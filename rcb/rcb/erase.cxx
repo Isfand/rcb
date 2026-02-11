@@ -43,7 +43,7 @@ void Erase::file(const std::vector<std::string>& args)
 			std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, g_singleton->getWorkingProgWipeDir() / stagedFile);
 			std::filesystem::remove_all(g_singleton->getWorkingProgWipeDir() / stagedFile);
 		}
-		catch (std::runtime_error& e) 
+		catch (std::filesystem::filesystem_error& e) 
 		{
 			//REVISE: 
 			/* NOTE: Exception likely occurs due to a permissions issue as remove_all recursively removes files, NOT directories, individually.

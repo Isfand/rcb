@@ -178,7 +178,7 @@ void Validate::wipe()
 				{
 					std::filesystem::remove_all(entry.path());
 				}
-				catch (std::runtime_error& e)
+				catch (std::filesystem::filesystem_error& e)
 				{
 					//REVISE: 
 					/* NOTE: Exception likely occurs due to a permissions issue as remove_all recursively removes files, NOT directories, individually.

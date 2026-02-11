@@ -75,7 +75,7 @@ void Delete::file(const std::vector<std::string>& args)
 				auto fileDetails = Delete::saveFileData(mutFilename, systemFilePath);
 				m_db.insertData(fileDetails); // Could make InsertData Return bool for error checking instead of using try/catch
 			}
-			catch(const std::runtime_error& e)
+			catch(const std::filesystem::filesystem_error& e)
 			{
 				if(!m_dOpt.silentOption) std::println("{}", e.what());
 				//Using continue to allow the other args to be processed.
@@ -91,7 +91,7 @@ void Delete::file(const std::vector<std::string>& args)
 				{
 					std::filesystem::rename(systemFilePath, g_singleton->getWorkingProgFileDir() / mutFilename);
 				}
-				catch(const std::runtime_error& e)
+				catch(const std::filesystem::filesystem_error& e)
 				{
 					//Insert data failed
 					//FIX. If failed delete the data that was just recently entered. THIS IS NOT IDEAL. Create a more thread safe solution. *Added 2nd try catch above to prevent removing existing data if insertData fails.
@@ -111,7 +111,7 @@ void Delete::file(const std::vector<std::string>& args)
 					//Get device ID of getWorkingProgDir and compare it to the file argument. If it's not the same. Then you are accessing an external device.
 					externRename(systemFilePath, (g_singleton->getWorkingProgFileDir() / mutFilename));
 				}
-				catch(const std::runtime_error& e)
+				catch(const std::filesystem::filesystem_error& e)
 				{
 					//Insert data failed
 					//FIX. If failed delete the data that was just recently entered. THIS IS NOT IDEAL. Create a more thread safe solution. *Added 2nd try catch above to prevent removing existing data if insertData fails.
