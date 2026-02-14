@@ -145,7 +145,7 @@ void Validate::wipe()
 	std::vector<std::filesystem::path> danglingFiles{};
 
 	for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgWipeDir()))
-		danglingFiles.push_back(entry);
+		danglingFiles.push_back(entry.path());
 
 	if (danglingFiles.size() == 0)
 	{
