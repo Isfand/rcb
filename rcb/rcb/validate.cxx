@@ -7,8 +7,8 @@
 #include <algorithm>
 
 #include "validate.hxx"
-#include "common/database.hxx"
 #include "validate_args.hxx"
+#include "common/database.hxx"
 #include "common/globals.hxx"
 #include "common/utils.hxx"
 
@@ -176,18 +176,12 @@ void Validate::wipe()
 			{
 				try
 				{
-					std::filesystem::remove_all(entry.path());
+					sanitizeRemoveAll(entry.path());
 				}
 				catch (std::filesystem::filesystem_error& e)
 				{
 					//REVISE: 
-					/* NOTE: Exception likely occurs due to a permissions issue as remove_all recursively removes files, NOT directories, individually.
-					It will only remove a directory when it's empty, otherwise it will continue to remove all contents inside.
-					E.G If a directory has another directory that has root ownership with contents inside, they cannot be removed. 
-					This is because the program is executed by a user that is missing the required permissions for the nested directory, but has permissions to remove contents in the top-level directory.
-
-					The exception is then thrown. Executing the program as root allows the operation to finish without throwing any exceptions.
-					*/
+					//remove_all() sometimes fails but rm -rf works because it changes the permissions recursively when needed. remove_all() does not.
 					if(!m_vOpt.silentOption) std::cerr << e.what() << std::endl;
 					continue;
 				}
