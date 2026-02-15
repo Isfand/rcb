@@ -180,8 +180,6 @@ void Validate::wipe()
 				}
 				catch (std::filesystem::filesystem_error& e)
 				{
-					//REVISE: 
-					//remove_all() sometimes fails but rm -rf works because it changes the permissions recursively when needed. remove_all() does not.
 					if(!m_vOpt.silentOption) std::cerr << e.what() << std::endl;
 					continue;
 				}
