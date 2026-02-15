@@ -34,7 +34,6 @@ void Erase::file(const std::vector<std::string>& args)
 	for(const std::string& arg : args)
 	{
 		//TODO, Add a check for "" empty. Then continue the loop.
-		//TODO. check perms before rename and remove_all. Show stderr and then continue; 
 		std::string stagedFile = m_db.selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_kProgName, arg));
 
 		try 
@@ -44,15 +43,6 @@ void Erase::file(const std::vector<std::string>& args)
 		}
 		catch (std::filesystem::filesystem_error& e) 
 		{
-			//REVISE: 
-			/* NOTE: Exception likely occurs due to a permissions issue as remove_all recursively removes files, NOT directories, individually.
-			It will only remove a directory when it's empty, otherwise it will continue to remove all contents inside.
-			E.G If a directory has another directory that has root ownership with contents inside, they cannot be removed. 
-			This is because the program is executed by a user that is missing the required permissions for the nested directory, but has permissions to remove contents in the 
-			top-level directory.
-
-			The exception is then thrown. Executing the program as root allows the operation to finish without throwing any exceptions.
-			*/
 			if(!m_eOpt.silentOption) std::cerr << e.what() << "\n";
 			continue;
 		}
