@@ -462,11 +462,11 @@ void renameFile(std::string& file)
 	// Get stem
 	mutFile = getStem(mutFile);
 
-    // Extract the extension using stringDifference
-    std::string extension = stringDifference(mutFile, originalFile);
+	// Extract the extension using stringDifference
+	std::string extension = stringDifference(mutFile, originalFile);
 
-    // Increment the filename and append the correct extension
-    file = incrementFilename(mutFile) + extension;
+	// Increment the filename and append the correct extension
+	file = incrementFilename(mutFile) + extension;
 }
 
 //TODO. The first two can be passed as a single variable. Needs Revising.
@@ -532,5 +532,52 @@ std::filesystem::path deepestExistingPath(const std::filesystem::path& fullPath)
 	}
 	return fullPath;  // Entire path exists
 }
+
+//Changes permissions before deleting. functionally equivent to rm -rf.
+bool sanitizeRemoveAll(const std::filesystem::path& path)
+{
+	std::error_code ec;
+
+	if (!std::filesystem::exists(path, ec))
+		return true;
+
+	// Recursively iterate bottom-up
+	for (auto it = std::filesystem::recursive_directory_iterator(
+			 path,
+			 std::filesystem::directory_options::skip_permission_denied,
+			 ec);
+		 it != std::filesystem::recursive_directory_iterator();
+		 ++it)
+	{
+		if (ec) return false;
+
+		const std::filesystem::path& p = it->path();
+
+		// Grant owner full permissions to allow deletion
+		std::filesystem::permissions(
+			p,
+			std::filesystem::perms::owner_all,
+			std::filesystem::perm_options::add,
+			ec);
+
+		if (ec) return false;
+	}
+
+	// Make sure root directory is writable
+	std::filesystem::permissions(
+		path,
+		std::filesystem::perms::owner_all,
+		std::filesystem::perm_options::add,
+		ec);
+
+	if (ec) return false;
+
+	// Remove everything recursively
+	std::filesystem::remove_all(path, ec);
+
+	return !ec;
+}
+
+
 
 }//namespace rcb

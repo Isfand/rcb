@@ -4,6 +4,9 @@
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
+- BUGFIX: Fixed a type mismatch causing files in wipe/ to be ignored.
+- BUGFIX: Fixed an issue where permanently erasing files would fail due permissions.
+
 ----------------------------------------------------------------------
  VERSION 0.12.2 (09-03-2025)
 ----------------------------------------------------------------------

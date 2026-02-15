@@ -41,6 +41,7 @@ bool renameDupe(
 	std::string& mutFilename);
 
 std::filesystem::path deepestExistingPath(const std::filesystem::path& fullPath);
+bool sanitizeRemoveAll(const std::filesystem::path& path);
 
 //Add a thread pool here
 

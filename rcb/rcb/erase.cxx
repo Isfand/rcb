@@ -1,6 +1,5 @@
 #include <format>
 #include <iostream>
-#include <stdexcept>
 #include <string>
 #include <vector>
 #include <filesystem>
@@ -41,7 +40,7 @@ void Erase::file(const std::vector<std::string>& args)
 		try 
 		{
 			std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, g_singleton->getWorkingProgWipeDir() / stagedFile);
-			std::filesystem::remove_all(g_singleton->getWorkingProgWipeDir() / stagedFile);
+			sanitizeRemoveAll(g_singleton->getWorkingProgWipeDir() / stagedFile);
 		}
 		catch (std::filesystem::filesystem_error& e) 
 		{
