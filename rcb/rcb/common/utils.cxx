@@ -110,6 +110,7 @@ bool canMvFileChk(const std::filesystem::directory_entry& entry)
 	return false;
 }
 
+//Warning: does not recursively check read permissions.
 bool canReadDirChk(const std::filesystem::directory_entry& entry)
 {
 

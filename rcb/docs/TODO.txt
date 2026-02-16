@@ -1,8 +1,9 @@
 Known issues:
 1. Windows cannot delete broken symlinks due to _stat implementation.
 2. If you move a file out of .rcb/file/ without updating the database it will call "free(): invalid size"
-3. --no-format is only implemented for size and counts.
-4. --human-readable is only implemented for timestamp.
+3. canReadDirChk() does a shallow check instead of a recursive one.
+4. --no-format is only implemented for size and counts.
+5. --human-readable is only implemented for timestamp.
 
 ToDo:
 -In delete_args add --force-save-directorysize for Delete::file(). There is also a comment.
