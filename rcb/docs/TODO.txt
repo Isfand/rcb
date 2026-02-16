@@ -5,6 +5,7 @@ Known issues:
 4. --human-readable is only implemented for timestamp.
 
 ToDo:
+-In delete_args add --force-save-directorysize for Delete::file(). There is also a comment.
 -Fix. When deleting a directory which has a nested unreadable directory the program throws an exception instead of disregarding the directorySize. Or could just add a message saying to use --no-directorysize on the error.
 -ADD an option to recreate .rcb/ folder. Helpful for incompatible versions.
 -ADD a built in option to elevate privileges using an elevation command. E.G sudo/doas. Must enter name of command followed by password.
