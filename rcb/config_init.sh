@@ -16,7 +16,9 @@ if [ "$ARCH" = "x86_64" ] || [ "$ARCH" = "amd64" ]; then
 	sh -c 'bdep init -C @x64-posix-gcc-release cc config.config.load=tools/build-configs/posix-gcc-release.config'
 	echo "Done"
 	if [ "$UNAME" = "Linux" ]; then
-		sh -c 'bdep init -C @x64-linux-mingw-release cc config.config.load=tools/build-configs/linux-mingw-release.config' #WIP
+		sh -c 'bdep init -C @x64-linux-mingw-release cc config.config.load=tools/build-configs/linux-mingw-release.config'
+		echo "Done"
+		sh -c 'bdep init -C @x64-posix-muslgcc-release cc config.config.load=tools/build-configs/x86_64-linux-musl-g++-release.config'
 		echo "Done"
 	fi
 	#if [ "$UNAME" = "Linux" ]; then
