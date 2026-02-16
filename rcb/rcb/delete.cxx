@@ -67,7 +67,7 @@ void Delete::file(const std::vector<std::string>& args)
 					Verity(std::filesystem::directory_entry(systemFilePath)).type ==
 					std::filesystem::file_type::directory) 
 				{
-					//TODO: sanitizeRemoveAll() can be broken down into another function that just changes permissions to create a --force-save-directorysize.
+					//TODO: Can create something that force adds read permissions for the execution user. This can be used to create a --force-save-directorysize.
 					if(!m_dOpt.silentOption && !m_dOpt.forceOption)
 						std::println("cannot save directory size, process execution user {} is missing read permissions for directory {}\nUse --force or explicitly --no-directorysize",
 						g_singleton->getWorkingUsername(), systemFilePath.string());
