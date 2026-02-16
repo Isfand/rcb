@@ -1,6 +1,5 @@
 #include <filesystem>
 #include <chrono>
-#include <stdexcept>
 #include <string>
 #include <print>
 

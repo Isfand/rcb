@@ -54,7 +54,7 @@ void externRename(const std::filesystem::path& filePath, const std::filesystem::
 	if(canMvFileChk(std::filesystem::directory_entry(filePath)))
 	{
 		std::filesystem::copy(filePath, newCopy, cpOpt);
-		std::filesystem::remove_all(filePath); //remove original.
+		sanitizeRemoveAll(filePath); //remove original.
 	}
 	else 
 	{
