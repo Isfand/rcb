@@ -1,6 +1,6 @@
 : 1
 name: rcb
-version: 0.12.3
+version: 0.12.4
 type: exe
 language: c++
 summary: File recycling utility for the terminal

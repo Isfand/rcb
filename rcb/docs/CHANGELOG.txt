@@ -5,7 +5,15 @@
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
 ----------------------------------------------------------------------
- VERSION 0.12.2 (16-02-2026)
+ VERSION 0.12.4 (17-02-2026)
+----------------------------------------------------------------------
+
+Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v0.12.4
+
+- BUGFIX: Fixed an issue which prevented symlinks being ignored during removal due to an early return.
+
+----------------------------------------------------------------------
+ VERSION 0.12.3 (16-02-2026)
 ----------------------------------------------------------------------
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v0.12.3
