@@ -1,5 +1,5 @@
 PORTNAME=       rcb
-DISTVERSION=    0.12.3
+DISTVERSION=    0.12.4
 CATEGORIES=     sysutils
 
 MAINTAINER=     ports@FreeBSD.org
