@@ -536,7 +536,7 @@ std::filesystem::path deepestExistingPath(const std::filesystem::path& fullPath)
 }
 
 //Changes permissions before deleting. functionally equivent to rm -rf.
-bool sanitizeRemoveAll(const std::filesystem::path& path)
+int sanitizeRemoveAll(const std::filesystem::path& path)
 {
 	std::error_code ec;
 
