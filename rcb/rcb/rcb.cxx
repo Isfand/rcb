@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <exception>
-#include <print>
 
 #include "args.hxx"
 #ifndef NDEBUG
