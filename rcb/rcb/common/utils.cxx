@@ -540,8 +540,8 @@ bool sanitizeRemoveAll(const std::filesystem::path& path)
 {
 	std::error_code ec;
 
-	if (!std::filesystem::exists(path, ec))
-		return true;
+	//if (!std::filesystem::exists(path, ec))
+		//return true;
 
 	// Recursively iterate bottom-up
 	for (auto it = std::filesystem::recursive_directory_iterator(
@@ -551,7 +551,7 @@ bool sanitizeRemoveAll(const std::filesystem::path& path)
 		 it != std::filesystem::recursive_directory_iterator();
 		 ++it)
 	{
-		if (ec) return false;
+		//if (ec) return false;
 
 		const std::filesystem::path& p = it->path();
 
@@ -562,7 +562,7 @@ bool sanitizeRemoveAll(const std::filesystem::path& path)
 			std::filesystem::perm_options::add,
 			ec);
 
-		if (ec) return false;
+		//if (ec) return false;
 	}
 
 	// Make sure root directory is writable
@@ -572,7 +572,7 @@ bool sanitizeRemoveAll(const std::filesystem::path& path)
 		std::filesystem::perm_options::add,
 		ec);
 
-	if (ec) return false;
+	//if (ec) return false;
 
 	// Remove everything recursively
 	std::filesystem::remove_all(path, ec);
