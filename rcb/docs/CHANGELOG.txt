@@ -4,6 +4,8 @@
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
+- UPDATE: Added a conditional sequence counter reset for when no record(s)/row(s) exist
+
 ----------------------------------------------------------------------
  VERSION 0.12.4 (17-02-2026)
 ----------------------------------------------------------------------

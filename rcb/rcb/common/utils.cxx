@@ -540,16 +540,18 @@ int sanitizeRemoveAll(const std::filesystem::path& path)
 {
 	std::error_code ec;
 
+	//Note: Use Verity. ::exists ignores symlinks.
 	//if (!std::filesystem::exists(path, ec))
 		//return true;
 
 	// Recursively iterate bottom-up
 	for (auto it = std::filesystem::recursive_directory_iterator(
-			 path,
-			 std::filesystem::directory_options::skip_permission_denied,
-			 ec);
-		 it != std::filesystem::recursive_directory_iterator();
-		 ++it)
+			path,
+			std::filesystem::directory_options::skip_permission_denied,
+			ec
+		);
+		it != std::filesystem::recursive_directory_iterator();
+		++it)
 	{
 		//if (ec) return false;
 
