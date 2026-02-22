@@ -9,10 +9,40 @@
 #include "globals.hxx"
 
 namespace rcb{
-   
+
+//Unused
 void Database::createDB()
 {
 	sqlite3_open((g_singleton->getWorkingProgDataDir() / m_dataBaseName).string().c_str(), &m_db);
+	sqlite3_close(m_db);
+}
+
+//Resets counter if no records exist.
+void Database::resetCounter()
+{
+		sqlite3_open((g_singleton->getWorkingProgDataDir() / m_dataBaseName).string().c_str(), &m_db);
+
+	std::string query = std::format("DELETE FROM sqlite_sequence WHERE name = '{0}' AND NOT EXISTS ( SELECT 1 FROM {0} LIMIT 1);", g_kProgName);
+
+	char* errorMsg{};
+	int exit {sqlite3_exec(m_db, query.c_str(), NULL, 0, &errorMsg)};
+
+	if (exit != SQLITE_OK)
+	{
+		sqlite3_free(&errorMsg);
+			
+#ifndef NDEBUG
+			std::println("Failed to reset sequence counter");
+#endif
+			throw std::invalid_argument("resetCounter() Failed");
+	}
+	else
+	{
+#ifndef NDEBUG
+			std::println("Success from resetCounter()");
+#endif
+	}
+		
 	sqlite3_close(m_db);
 }
 
@@ -54,11 +84,11 @@ void Database::createTable()
 #endif
 			throw std::invalid_argument("createTable() Failed");
 	}
-	else 
+	else
 	{
 #ifndef NDEBUG
 			std::println("Success from default SQL database table creation"); // WILL always return even if exists
-#endif       
+#endif
 	}
 		
 	sqlite3_close(m_db);
@@ -107,7 +137,7 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 	{
 #ifndef NDEBUG
 			std::println("Success from default SQL table data insert"); // WILL always return even if exists
-#endif       
+#endif
 	}
 	
 	sqlite3_close(m_db);

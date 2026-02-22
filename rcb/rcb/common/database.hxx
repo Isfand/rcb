@@ -16,6 +16,7 @@ class Database
 {
 public:
 	void createDB();
+	void resetCounter();
 	void createTable();
 	void insertData(const std::array<std::string, 8>& fileDetails);
 	std::string selectData(const std::string& sql);

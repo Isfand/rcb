@@ -269,6 +269,8 @@ void Args::run()
 
 		Args::runCmd();
 	}
+
+	Database().resetCounter();
 }
 
 } // namespace rcb 

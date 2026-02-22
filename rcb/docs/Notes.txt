@@ -2,6 +2,15 @@ NOTE: NTFS uses UTF16 for filenames not UTF8 like POSIX filesystems. filepath() 
 c_str changes behaviour on string and wstring. Returns normal const char* on string and wchar_t on wstring. filepath() on NTFS is wstring() by default.
 std::println doesn't support wstring or wchar_t. Will require explicit use of .string().
 
+NOTE: 'Unlike rm -rf', remove_all() doesn't recursively change permissions where needed, which can prevent file removals.
+
+NOTE: Conditional reset for ID sequences:
+	DELETE FROM sqlite_sequence
+	WHERE name = 'rcb'
+	AND NOT EXISTS (
+		SELECT 1 FROM rcb LIMIT 1
+	);
+
 Note: When changing version, change version inside:
 	rcb/common/globals.hxx
 	docs/manual/man/*
