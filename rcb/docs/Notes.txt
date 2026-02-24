@@ -11,6 +11,24 @@ NOTE: Conditional reset for ID sequences:
 		SELECT 1 FROM rcb LIMIT 1
 	);
 
+Note: relative_time example in sql:
+WITH now_cte AS (
+  SELECT strftime('%s','now') AS now
+)
+SELECT
+  r.id,
+  r.file,
+  CASE
+    WHEN (now_cte.now - r.timestamp) < 60 THEN 'just now'
+    WHEN (now_cte.now - r.timestamp) < 3600 
+      THEN ((now_cte.now - r.timestamp) / 60) || ' minutes ago'
+    WHEN (now_cte.now - r.timestamp) < 86400 
+      THEN ((now_cte.now - r.timestamp) / 3600) || ' hours ago'
+    ELSE ((now_cte.now - r.timestamp) / 86400) || ' days ago'
+  END AS relative_time
+FROM rcb r
+CROSS JOIN now_cte;
+
 Note: When changing version, change version inside:
 	rcb/common/globals.hxx
 	docs/manual/man/*
