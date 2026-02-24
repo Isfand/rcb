@@ -1,14 +1,13 @@
 #include <algorithm>
-#include <filesystem>
-#include <map>
-#include <print>
-#include <format>
-#include <set>
-#include <map>
-#include <regex>
 #include <array>
 #include <chrono>
 #include <ctime>
+#include <filesystem>
+#include <format>
+#include <map>
+#include <print>
+#include <regex>
+#include <set>
 #include <string>
 #include <unordered_set>
 
@@ -111,11 +110,8 @@ bool canMvFileChk(const std::filesystem::directory_entry& entry)
 }
 
 //Warning: does not recursively check read permissions.
-bool canReadDirChk(const std::filesystem::directory_entry& entry)
+bool canReadDir(const std::filesystem::directory_entry& entry)
 {
-
-	//TODO. throw exception if the entry is not a directory.
-
 	auto perms = getFilePerms(entry.path());
 
 	aci::User user{};
@@ -154,6 +150,31 @@ bool canReadDirChk(const std::filesystem::directory_entry& entry)
 
 	return false;
 }
+
+//Recursive read check
+//Warning: Doesn't work as it keeps resolving symlinks.
+//bool canReadDirRec(const std::filesystem::directory_entry& entry)
+//{
+//	if (!entry.is_directory())
+//		return false;
+//	
+//	if (!canReadDir(entry))
+//		return false;
+//
+//	for (const auto& child : std::filesystem::recursive_directory_iterator(
+//							 entry.path(),
+//							 std::filesystem::directory_options::skip_permission_denied)
+//		)
+//	{
+//		if (child.is_directory())
+//		{
+//			if (!canReadDir(child))
+//				return false;
+//		}
+//	}
+//
+//	return true;
+//}
 
 // Function to extract boolean permissions for owner, group, and others using std::array
 std::array<std::array<bool, 3>, 3> getFilePerms(const std::filesystem::path& file)

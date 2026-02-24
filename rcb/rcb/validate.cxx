@@ -210,7 +210,7 @@ void Validate::fillDirectorySize()
 	for(auto& directoryPathString : nullDirectoriesQuery)
 	{
 		//Check for read perms on directory, which is needed in order to iterate through it.
-		if (!canReadDirChk(std::filesystem::directory_entry(directoryPathString)) &&
+		if (!canReadDir(std::filesystem::directory_entry(directoryPathString)) &&
 			Verity(std::filesystem::directory_entry(directoryPathString)).type == 
 			std::filesystem::file_type::directory) 
 		{

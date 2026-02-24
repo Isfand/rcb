@@ -63,7 +63,7 @@ void Delete::file(const std::vector<std::string>& args)
 				//Checks for read perms on directory, which is needed in order to iterate through it to save its size.
 				//Also checks for noDirSizeOption so the message doesn't print when using the option
 				if (!m_dOpt.noDirSizeOption && 
-					!canReadDirChk(std::filesystem::directory_entry(systemFilePath)) &&
+					!canReadDir(std::filesystem::directory_entry(systemFilePath)) &&
 					Verity(std::filesystem::directory_entry(systemFilePath)).type ==
 					std::filesystem::file_type::directory) 
 				{
@@ -142,7 +142,7 @@ const std::array<std::string, 8> Delete::saveFileData(const std::string& stageFi
 		(m_dOpt.noDirSizeOption && 
 		Verity(std::filesystem::directory_entry(originalPath)).type == 
 		std::filesystem::file_type::directory) || 
-		(!canReadDirChk(std::filesystem::directory_entry(originalPath)) && 
+		(!canReadDir(std::filesystem::directory_entry(originalPath)) && 
 		m_dOpt.forceOption &&
 		Verity(std::filesystem::directory_entry(originalPath)).type == 
 		std::filesystem::file_type::directory) ? 
