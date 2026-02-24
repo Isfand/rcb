@@ -62,6 +62,7 @@ void Delete::file(const std::vector<std::string>& args)
 			{
 				//Checks for read perms on directory, which is needed in order to iterate through it to save its size.
 				//Also checks for noDirSizeOption so the message doesn't print when using the option
+				//TODO. canReadDir/rec check is being called twice in this file. It should only be called once per file entry. Save the result as bool and reuse it.
 				if (!m_dOpt.noDirSizeOption && 
 					!canReadDir(std::filesystem::directory_entry(systemFilePath)) &&
 					Verity(std::filesystem::directory_entry(systemFilePath)).type ==
@@ -142,7 +143,7 @@ const std::array<std::string, 8> Delete::saveFileData(const std::string& stageFi
 		(m_dOpt.noDirSizeOption && 
 		Verity(std::filesystem::directory_entry(originalPath)).type == 
 		std::filesystem::file_type::directory) || 
-		(!canReadDir(std::filesystem::directory_entry(originalPath)) && 
+		(!canReadDirRec(std::filesystem::directory_entry(originalPath)) && 
 		m_dOpt.forceOption &&
 		Verity(std::filesystem::directory_entry(originalPath)).type == 
 		std::filesystem::file_type::directory) ? 
