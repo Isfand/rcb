@@ -157,6 +157,7 @@ const std::array<std::string, 8> Delete::saveFileData(const std::string& stageFi
 	return std::array<std::string, 8>{fileName, filePath, timestamp, fileByteSize, fileType, originalPathDepth, workingUsername, executionID};
 }
 
+//TODO: Move into utils and use in DirectorySize() to reduce duplicate code.
 long long unsigned Delete::fileSize(const std::filesystem::directory_entry& file)
 {
 	unsigned long long size{}; //TODO: does not prevent integer overflow. cap to MAX.

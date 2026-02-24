@@ -10,6 +10,8 @@
 
 namespace rcb{
 
+//TODO: Create a constructor to open DB and a destructor to close it instead of repeating it explicitly.
+
 //Unused
 void Database::createDB()
 {

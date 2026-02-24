@@ -152,6 +152,7 @@ bool canReadDir(const std::filesystem::directory_entry& entry)
 }
 
 //Recursive read dir check
+//TODO: Maybe make this function return which directory path does not have read access as a std::expected return?
 bool canReadDirRec(const std::filesystem::directory_entry& dir)
 {
 	//Early guards to allow recursive_directory_iterator to do it's job
