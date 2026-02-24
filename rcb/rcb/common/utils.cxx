@@ -109,7 +109,7 @@ bool canMvFileChk(const std::filesystem::directory_entry& entry)
 	return false;
 }
 
-//Warning: does not recursively check read permissions.
+//WARNING: does not recursively check read permissions.
 bool canReadDir(const std::filesystem::directory_entry& entry)
 {
 	auto perms = getFilePerms(entry.path());
@@ -151,30 +151,35 @@ bool canReadDir(const std::filesystem::directory_entry& entry)
 	return false;
 }
 
-//Recursive read check
-//Warning: Doesn't work as it keeps resolving symlinks.
-//bool canReadDirRec(const std::filesystem::directory_entry& entry)
-//{
-//	if (!entry.is_directory())
-//		return false;
-//	
-//	if (!canReadDir(entry))
-//		return false;
-//
-//	for (const auto& child : std::filesystem::recursive_directory_iterator(
-//							 entry.path(),
-//							 std::filesystem::directory_options::skip_permission_denied)
-//		)
-//	{
-//		if (child.is_directory())
-//		{
-//			if (!canReadDir(child))
-//				return false;
-//		}
-//	}
-//
-//	return true;
-//}
+//Recursive read dir check
+bool canReadDirRec(const std::filesystem::directory_entry& dir)
+{
+	//Early guards to allow recursive_directory_iterator to do it's job
+	//This is needed to make sure it's only directories that get passed through.
+	if (Verity(std::filesystem::directory_entry(dir)).type != std::filesystem::file_type::directory)
+		return false;
+	
+	//This is also needed to make sure the initial directory is readable or recursive_directory_iterator will fail.
+	if (!canReadDir(dir))
+		return false;
+
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(dir.path())) 
+	{
+		std::filesystem::file_status status = std::filesystem::symlink_status(entry.path());
+		//Note: For some reason is_directory fails on circular symlinks. Which is why this exists. Can't be used on the same if statement.
+		if(!std::filesystem::is_symlink(status)) 
+		{
+			//Is dir for allowing files only of that type.
+			if((std::filesystem::is_directory(entry.path())))
+			{
+				if (!canReadDir(entry))
+					return false;
+			}
+		}
+	}
+
+	return true;
+}
 
 // Function to extract boolean permissions for owner, group, and others using std::array
 std::array<std::array<bool, 3>, 3> getFilePerms(const std::filesystem::path& file)
