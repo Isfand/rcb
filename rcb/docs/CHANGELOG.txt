@@ -4,7 +4,14 @@
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
+----------------------------------------------------------------------
+ VERSION 0.13.0 (??-??-????)
+----------------------------------------------------------------------
+
+Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
+
 - UPDATE: Added a conditional sequence counter reset for when no record(s)/row(s) exist
+- MAJOR: .rcb/word/ is now renamed to .rcb/sign/
 
 ----------------------------------------------------------------------
  VERSION 0.12.4 (17-02-2026)

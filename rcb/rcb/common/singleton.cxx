@@ -16,7 +16,7 @@ std::once_flag Singleton::s_setWorkingProgDirFlag;
 std::once_flag Singleton::s_setWorkingProgFileDirFlag;
 std::once_flag Singleton::s_setWorkingProgDataDirFlag;
 std::once_flag Singleton::s_setWorkingProgWipeDirFlag;
-std::once_flag Singleton::s_setWorkingProgWordDirFlag;
+std::once_flag Singleton::s_setWorkingProgSignDirFlag;
 std::once_flag Singleton::s_setWorkingUsernameFlag;
 
 Singleton* Singleton::instance()
@@ -64,9 +64,9 @@ const std::filesystem::path Singleton::getWorkingProgWipeDir() const
 {
 	return m_workingProgWipeDir;
 }
-const std::filesystem::path Singleton::getWorkingProgWordDir() const
+const std::filesystem::path Singleton::getWorkingProgSignDir() const
 {
-	return m_workingProgWordDir;
+	return m_workingProgSignDir;
 }
 const std::string Singleton::getWorkingUsername() const
 {
@@ -99,9 +99,9 @@ void Singleton::setWorkingProgWipeDir(std::filesystem::path workingProgWipeDir)
 {
 	std::call_once(s_setWorkingProgWipeDirFlag, [&](){ m_workingProgWipeDir = workingProgWipeDir;});
 }
-void Singleton::setWorkingProgWordDir(std::filesystem::path workingProgWordDir)
+void Singleton::setWorkingProgSignDir(std::filesystem::path workingProgSignDir)
 {
-	std::call_once(s_setWorkingProgWordDirFlag, [&](){ m_workingProgWordDir = workingProgWordDir;});
+	std::call_once(s_setWorkingProgSignDirFlag, [&](){ m_workingProgSignDir = workingProgSignDir;});
 }
 void Singleton::setWorkingUsername(std::string workingUsername)
 {

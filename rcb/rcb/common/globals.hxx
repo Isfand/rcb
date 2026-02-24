@@ -8,7 +8,7 @@ namespace rcb{
 
 //Project
 inline const char* g_kProgName{"rcb"};
-inline const char* g_kProgVersion{"0.12.4"};
+inline const char* g_kProgVersion{"0.13.0"};
 
 //Singleton
 inline Singleton* g_singleton = Singleton::instance();

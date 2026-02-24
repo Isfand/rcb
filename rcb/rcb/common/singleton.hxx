@@ -29,7 +29,7 @@ public:
 	const std::filesystem::path getWorkingProgFileDir() const;
 	const std::filesystem::path getWorkingProgDataDir() const;
 	const std::filesystem::path getWorkingProgWipeDir() const;
-	const std::filesystem::path getWorkingProgWordDir() const;
+	const std::filesystem::path getWorkingProgSignDir() const;
 	const std::string getWorkingUsername()               const;
 
 	//Mutators
@@ -40,7 +40,7 @@ public:
 	void setWorkingProgFileDir(std::filesystem::path workingProgFileDir);
 	void setWorkingProgDataDir(std::filesystem::path workingProgDataDir);
 	void setWorkingProgWipeDir(std::filesystem::path workingProgWipeDir);
-	void setWorkingProgWordDir(std::filesystem::path workingProgWordDir);
+	void setWorkingProgSignDir(std::filesystem::path workingProgSignDir);
 	void setWorkingUsername   (std::string workingProgUsername);
 
 	//Assign
@@ -61,7 +61,7 @@ private:
 	static std::once_flag s_setWorkingProgFileDirFlag;
 	static std::once_flag s_setWorkingProgDataDirFlag;
 	static std::once_flag s_setWorkingProgWipeDirFlag;
-	static std::once_flag s_setWorkingProgWordDirFlag;
+	static std::once_flag s_setWorkingProgSignDirFlag;
 	static std::once_flag s_setWorkingUsernameFlag;
 
 	//bool m_verboseOption{};
@@ -71,7 +71,7 @@ private:
 	std::filesystem::path m_workingProgFileDir{};
 	std::filesystem::path m_workingProgDataDir{};
 	std::filesystem::path m_workingProgWipeDir{};
-	std::filesystem::path m_workingProgWordDir{}; 
+	std::filesystem::path m_workingProgSignDir{}; 
 	std::string m_workingUsername{};
 };
 
