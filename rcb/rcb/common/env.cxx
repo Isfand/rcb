@@ -48,12 +48,12 @@ void Env::dir()
 	const char* file {"file"};
 	const char* data {"data"};
 	const char* wipe {"wipe"};
-	const char* word {"word"};
+	const char* sign {"sign"};
 
 	m_workingProgFileDir = m_workingProgDir / file;
 	m_workingProgDataDir = m_workingProgDir / data;
 	m_workingProgWipeDir = m_workingProgDir / wipe;
-	m_workingProgWordDir = m_workingProgDir / word;
+	m_workingProgSignDir = m_workingProgDir / sign;
 
 #ifndef NDEBUG
 	std::println("{0} working directory is: {1}", g_kProgName, m_workingProgDir.string());
@@ -63,16 +63,16 @@ void Env::dir()
 	if(!std::filesystem::exists(m_workingProgFileDir) || 
 	   !std::filesystem::exists(m_workingProgDataDir) || 
 	   !std::filesystem::exists(m_workingProgWipeDir) ||
-	   !std::filesystem::exists(m_workingProgWordDir))
+	   !std::filesystem::exists(m_workingProgSignDir))
 	{
 		for (const auto& dir : {m_workingProgFileDir, 
 								m_workingProgDataDir, 
 								m_workingProgWipeDir, 
-								m_workingProgWordDir})
+								m_workingProgSignDir})
 								std::filesystem::create_directories(dir);
 		
 #ifndef NDEBUG
-		std::println("Directories {0},{1},{2},{3} Created in: {4}", file, data, wipe, word, m_workingProgDir.string());
+		std::println("Directories {0},{1},{2},{3} Created in: {4}", file, data, wipe, sign, m_workingProgDir.string());
 #endif
 	}
 }
@@ -88,7 +88,7 @@ void Env::setSharedEnv()
 	g_singleton->setWorkingProgFileDir(m_workingProgFileDir);
 	g_singleton->setWorkingProgDataDir(m_workingProgDataDir);
 	g_singleton->setWorkingProgWipeDir(m_workingProgWipeDir);
-	g_singleton->setWorkingProgWordDir(m_workingProgWordDir);
+	g_singleton->setWorkingProgSignDir(m_workingProgSignDir);
 	g_singleton->setWorkingUsername   (m_workingUsername);
 	//Add conf env
 }

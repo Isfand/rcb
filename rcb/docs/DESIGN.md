@@ -12,7 +12,7 @@ $HOME/.rcb
 │   └── rcb.sqlite3
 ├── file
 ├── wipe
-└── word
+└── sign
 </pre>
 
 The rcb directory location and name should be changeable through the use of a single environment variable. I.E RCB_DIR.
@@ -55,15 +55,15 @@ E.G 'filename', 'filename.desc.txt' 'filename.tar.gz', if duplicate(s), will be 
 ### **wipe/**
 This is where the files are moved to be permanently removed/wiped. It exists as a way to mark files to be permanently removed by placing them inside a specialized directory. Because using 'unlink()' is faster than 'rename()'. This means if there was a large file that needed to be removed and something cancelled the process, the file would not be removed. But because we have wipe/ we know everything inside this directory is marked for removal.
 
-### **word/**
-Contains files used for IPC (Inter-Process Communication).
+### **sign/**
+Contains files used for IPC (Inter-Process Communication) and configurations or sharing of data.
 
 ## Globals
 
 <pre>
-g_progName    | Program name
-g_progVersion | Program version
-g_singleton   | Forced single class instance
+g_kprogName    | Program name
+g_kprogVersion | Program version
+g_singleton    | Forced single class instance
 </pre>
 
 The following variables have global immutable access after the first assignment via g_singleton. They can only be mutated once and have a single instance of access.
@@ -73,7 +73,7 @@ get/set+workingProgDir     | Defaults to $HOME/.rcb/ or use RCB_DIR
 get/set+workingProgFileDir | file/ location
 get/set+workingProgDataDir | data/ location
 get/set+workingProgWipeDir | wipe/ location
-get/set+workingProgWordDir | word/ location
+get/set+workingProgSignDir | sign/ location
 get/set+workingUsername    | Environment variable $USER 
 </pre>
 

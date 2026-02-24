@@ -20,7 +20,7 @@ private:
 	std::filesystem::path m_workingProgFileDir{};
 	std::filesystem::path m_workingProgDataDir{};
 	std::filesystem::path m_workingProgWipeDir{};
-	std::filesystem::path m_workingProgWordDir{}; 
+	std::filesystem::path m_workingProgSignDir{}; 
 	std::filesystem::path m_workingConfDir{};
 	std::string m_workingUsername{};
 	
