@@ -221,7 +221,7 @@ unsigned long long Pwuid::pw_gid() const
 {
 	return 0;
 }
-//XXX: Broken buffer contents. Figure out why a pre-fixed ? question mark (0x00 I.E a null-terminator) is added to the name.
+
 std::string Pwuid::pw_name() const
 {
 	WCHAR username[UNLEN + 1]; // UNLEN is the max username length
@@ -241,7 +241,22 @@ std::string Pwuid::pw_name() const
 	}
 
 	std::string str(buffer_size, 0);
-	WideCharToMultiByte(CP_UTF8, 0, username, -1, &str[0], buffer_size, nullptr, nullptr);
+
+	if (buffer_size > 0) 
+	{
+		str.resize(buffer_size - 1); // exclude terminating null
+
+		WideCharToMultiByte(
+			CP_UTF8,
+			0,
+			username,
+			-1,
+			str.data(),
+			buffer_size,
+			nullptr,
+			nullptr
+		);
+	}
 
 	return str;
 
