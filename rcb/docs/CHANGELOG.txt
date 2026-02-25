@@ -10,9 +10,11 @@ Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
-- UPDATE: Added a conditional sequence counter reset for when no record(s)/row(s) exist
-- MAJOR: .rcb/word/ is now renamed to .rcb/sign/
+- ADDITION: Added a conditional sequence counter reset for when no record(s)/row(s) exist
+- BREAKING: .rcb/word/ is now renamed to .rcb/sign/
+- BUGFIX: Fixed an issue with 'delete' where an exception was not being thrown in release code which led to renaming of files without file data being saved.
 - BUGFIX: Fixed Windows sided code which would return username with a null-terminator, failing to save records.
+- BUGFIX: Force with delete now ignores directory sizes when lacking permissions.
 
 ----------------------------------------------------------------------
  VERSION 0.12.4 (17-02-2026)
@@ -58,7 +60,7 @@ Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v0.1
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v0.12.0
 
-- BREAKING CHANGE: 'delete' now requires explicit use of --force or --no-directorysize to delete directories with no read access.
+- BREAKING: 'delete' now requires explicit use of --force or --no-directorysize to delete directories with no read access.
 - UPDATE: Added tests/ directory.
 - ADDITION: implemented restore --force-replace
 - ADDITION: implemented restore --force-rename
@@ -70,9 +72,9 @@ Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v0.1
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v0.11.0
 
-- BREAKING CHANGE: Project renamed to rcb.
-- BREAKING CHANGE: Added depth into schema.
-- BREAKING CHANGE: validate --force/-f changed to --yes/-y.
+- BREAKING: Project renamed to rcb.
+- BREAKING: Added depth into schema.
+- BREAKING: validate --force/-f changed to --yes/-y.
 - UPDATE: new pkg-mangers branch.
 - BUGFIX: directorySize() can now determine size of a circular symlink.
 - BUGFIX: restore --all now restores with lowest depth ascending.
