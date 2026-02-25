@@ -103,6 +103,7 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 
 	sqlite3_open((g_singleton->getWorkingProgDataDir() / m_dataBaseName).string().c_str(), &m_db);
 
+	//XXX: Use prepared statements (sqlite3_prepare_v2 + sqlite3_bind_text).
 	std::string recordData = std::format("INSERT INTO {} ("
 										 "{}, {}, {}, {}, {}, {}, {}, {}) "
 										 "VALUES("
@@ -122,8 +123,12 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 										 fileDetails.at(3),
 										 fileDetails.at(4),
 										 fileDetails.at(5),
-										 fileDetails.at(6),
+										 fileDetails.at(6), //XXX: WINDOWS is adding a null-terminator postfixed at the end for usernames.
 										 fileDetails.at(7));
+	
+	//XXX: Windows backslashes are interpreted as special characters which is why the failure for windows happens.
+	//for (unsigned char c : fileDetails.at(6))
+	//	std::println("{:02X}", c);
 	
 	int exit = {sqlite3_exec(m_db, recordData.c_str(), NULL, 0, &errorMsg)};
 	if (exit != SQLITE_OK)
@@ -131,7 +136,7 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 #ifndef NDEBUG
 		std::println("Failed to add record. sqlite3_exec() returned error code: {} with errorMsg: {}", exit, errorMsg);
 #endif
-		sqlite3_free(&errorMsg);
+		sqlite3_free(errorMsg);
 		throw std::invalid_argument("insertData() Failed");
 	}
 	else 

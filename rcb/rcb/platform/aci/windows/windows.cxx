@@ -221,6 +221,7 @@ unsigned long long Pwuid::pw_gid() const
 {
 	return 0;
 }
+//XXX: Broken buffer contents. Figure out why a pre-fixed ? question mark (0x00 I.E a null-terminator) is added to the name.
 std::string Pwuid::pw_name() const
 {
 	WCHAR username[UNLEN + 1]; // UNLEN is the max username length
