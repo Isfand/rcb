@@ -131,9 +131,9 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 		sqlite3_free(&errorMsg);
 			
 #ifndef NDEBUG
-			std::println("Failed to add record");
-			throw std::invalid_argument("insertData() Failed");
+		std::println("Failed to add record");
 #endif
+		throw std::invalid_argument("insertData() Failed");
 	}
 	else 
 	{
