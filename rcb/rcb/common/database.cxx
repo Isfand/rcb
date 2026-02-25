@@ -31,7 +31,7 @@ void Database::resetCounter()
 
 	if (exit != SQLITE_OK)
 	{
-		sqlite3_free(&errorMsg);
+		sqlite3_free(errorMsg);
 			
 #ifndef NDEBUG
 			std::println("Failed to reset sequence counter");
@@ -79,7 +79,7 @@ void Database::createTable()
 
 	if (exit != SQLITE_OK)
 	{
-		sqlite3_free(&errorMsg);
+		sqlite3_free(errorMsg);
 			
 #ifndef NDEBUG
 			std::println("Failed to create default database table");
@@ -127,12 +127,11 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 	
 	int exit = {sqlite3_exec(m_db, recordData.c_str(), NULL, 0, &errorMsg)};
 	if (exit != SQLITE_OK)
-	{
-		sqlite3_free(&errorMsg);
-			
+	{		
 #ifndef NDEBUG
-		std::println("Failed to add record");
+		std::println("Failed to add record. sqlite3_exec() returned error code: {} with errorMsg: {}", exit, errorMsg);
 #endif
+		sqlite3_free(&errorMsg);
 		throw std::invalid_argument("insertData() Failed");
 	}
 	else 
