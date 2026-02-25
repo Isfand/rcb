@@ -12,6 +12,7 @@ Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?
 
 - UPDATE: Added a conditional sequence counter reset for when no record(s)/row(s) exist
 - MAJOR: .rcb/word/ is now renamed to .rcb/sign/
+- BUGFIX: Fixed Windows sided code which would return username with a null-terminator, failing to save records.
 
 ----------------------------------------------------------------------
  VERSION 0.12.4 (17-02-2026)

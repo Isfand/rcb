@@ -123,10 +123,10 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 										 fileDetails.at(3),
 										 fileDetails.at(4),
 										 fileDetails.at(5),
-										 fileDetails.at(6), //XXX: WINDOWS is adding a null-terminator postfixed at the end for usernames.
+										 fileDetails.at(6),
 										 fileDetails.at(7));
 	
-	//XXX: Windows backslashes are interpreted as special characters which is why the failure for windows happens.
+	//WARNING: Windows backslashes are interpreted as special characters which is why the failure for windows might happen.
 	//for (unsigned char c : fileDetails.at(6))
 	//	std::println("{:02X}", c);
 	
