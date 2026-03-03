@@ -30,7 +30,8 @@ See [docs/](docs/) for more information.
 [Release](https://github.com/Isfand/rcb/releases) binaries are provided for Linux & Windows.
 
 ## **Ports:**
-FreeBSD port is provided inside pkg-managers branch.
+FreeBSD port is provided inside pkg-managers branch: rcb-utility/pkg-managers/pkgng \
+Nix package port is provided inside pkg-manager branch: rcb-utility/pkg-managers/nix
 
 ## **Build Pre-requisites:**
 *Requires the build2-toolchain to be pre-installed. See https://build2.org/install.xhtml \
