@@ -44,7 +44,7 @@ std::string fileTypeToString(std::filesystem::file_type ft)
 	return FileTypeMap.at(ft);
 }
 
-//Warning does not explicitly copy permissions and does not preserve ownership.
+//Warning does not explicitly copy permissions and does not preserve ownership. Also doesn't check for free space.
 void externRename(const std::filesystem::path& filePath, const std::filesystem::path& newCopy)
 {
 	auto cpOpt = std::filesystem::copy_options::copy_symlinks |
