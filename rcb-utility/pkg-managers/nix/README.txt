@@ -1,7 +1,7 @@
 #WIP
 
 #Info
-This local port requires build2 hooks from the nix channels, which are automatically added or manually from the official git repo. (nixpkgs/pkgs/by-name/bu/build2-bootstrap/setup-hook.sh
+This local port requires build2 hooks from the nix channel(s), which are automatically added or manually from the official git repo. (nixpkgs/pkgs/by-name/bu/build2-bootstrap/setup-hook.sh
 )
 Assuming you already have nix installed and the nix channel(s) added. E.G:
 nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable
