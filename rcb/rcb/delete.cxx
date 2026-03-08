@@ -95,7 +95,7 @@ void Delete::file(const std::vector<std::string>& args)
 				catch(const std::filesystem::filesystem_error& e)
 				{
 					//Insert data failed
-					//FIX. If failed delete the data that was just recently entered. THIS IS NOT IDEAL. Create a more thread safe solution. *Added 2nd try catch above to prevent removing existing data if insertData fails.
+					//TODO: Instead of just deleting the highest value, check against every detail held in memory with the database record. *Added 2nd try catch above to prevent removing existing data if insertData fails.
 					m_db.executeSQL(std::format("DELETE FROM {0} WHERE id=(SELECT MAX(id) FROM {0});", g_kProgName));
 					if(!m_dOpt.silentOption)
 						std::println("cannot move file. insufficient permissions");
@@ -115,7 +115,7 @@ void Delete::file(const std::vector<std::string>& args)
 				catch(const std::filesystem::filesystem_error& e)
 				{
 					//Insert data failed
-					//FIX. If failed delete the data that was just recently entered. THIS IS NOT IDEAL. Create a more thread safe solution. *Added 2nd try catch above to prevent removing existing data if insertData fails.
+					//TODO: Instead of just deleting the highest value, check against every detail held in memory with the database record. *Added 2nd try catch above to prevent removing existing data if insertData fails.
 					m_db.executeSQL(std::format("DELETE FROM {0} WHERE id=(SELECT MAX(id) FROM {0});", g_kProgName));
 					if(!m_dOpt.silentOption)
 						std::println("cannot move file. insufficient permissions");
