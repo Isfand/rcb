@@ -316,17 +316,17 @@ int formatToTimestamp(const std::string& format, long long& timestamp)
 	//Using year as: 365.2425
 	std::map<std::string, long long> timeMap = 
 	{ 
-		{"t"  , 1LL                     },
-		{"s"  , 1LL                     },
-		{"m"  , 60LL                    },
-		{"h"  , 3'600LL                 },
-		{"d"  , 86'400LL                },
-		{"w"  , 604'800LL               },
-		{"mo" , 2'629'746LL             },
-		{"y"  , 31'556'952LL            },
-		{"dec", 315'569'520LL           },
-		{"c"  , 3'155'695'200LL         },
-		{"k"  , 31'556'952'000LL        },
+		{"t"  , 1LL             },
+		{"s"  , 1LL             },
+		{"m"  , 60LL            },
+		{"h"  , 3'600LL         },
+		{"d"  , 86'400LL        },
+		{"w"  , 604'800LL       },
+		{"mo" , 2'629'746LL     },
+		{"y"  , 31'556'952LL    },
+		{"dec", 315'569'520LL   },
+		{"c"  , 3'155'695'200LL },
+		{"k"  , 31'556'952'000LL},
 	};
 
 	std::regex pattern(R"(^(\d+)([^\d].*)$)");
