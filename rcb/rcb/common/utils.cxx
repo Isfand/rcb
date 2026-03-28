@@ -322,12 +322,11 @@ int formatToTimestamp(const std::string& format, long long& timestamp)
 		{"h"  , 3'600LL                 },
 		{"d"  , 86'400LL                },
 		{"w"  , 604'800LL               },
-		{"mo" , 2'592'000LL             },
+		{"mo" , 2'629'746LL             },
 		{"y"  , 31'556'952LL            },
-		{"dec", 315'619'200LL           },
-		{"c"  , 3'155'692'600LL         },
-		{"k"  , 31'556'926'000LL        },
-		{"ae" , 31'556'926'000'000'000LL},
+		{"dec", 315'569'520LL           },
+		{"c"  , 3'155'695'200LL         },
+		{"k"  , 31'556'952'000LL        },
 	};
 
 	std::regex pattern(R"(^(\d+)([^\d].*)$)");
