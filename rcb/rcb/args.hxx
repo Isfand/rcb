@@ -37,7 +37,7 @@ private:
 	//bool m_tactacFlag{}; //Unused
 	//bool m_tacFlag   {}; //Unused
 	
-	Command m_cmd{-1}; // Shared flag for primary commands. Sentinel Value
+	Command m_cmd{-1}; // Shared flag for sub-commands. Sentinel Value
 	
 	bool m_sharedCmdFlag    {}; // sharedGlobFlag exists to save time to not do string search index if false
 	bool m_sharedGlobFlag   {}; 
@@ -53,7 +53,7 @@ private:
 
 
 	const char* m_helpMsg =
-		"Primary Commands:\n"
+		"Sub-commands:\n"
 		"delete   | d, deletes files.\n"
 		"list     | l, lists files.\n"
 		"restore  | r, restores files.\n"
@@ -61,7 +61,7 @@ private:
 		"validate | v, validate files.\n\n"
 
 		"Shared Options:\n"
-		"--help   | -h, gives help info of the program and a primary command when paired.\n\n"
+		"--help   | -h, gives help info of the program and a sub-command when paired.\n\n"
 
 		"Top-Level Options:\n"
 		"--version, gives program version.\n";
