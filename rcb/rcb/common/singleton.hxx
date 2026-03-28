@@ -49,7 +49,7 @@ public:
 private:
 	Singleton();
 	//int m_state = 1; //Unused
-
+	//NOTE: These are set to static which means they will persist even after object recreation, which can be a problem for tests. An alternative solution for debugging could be later created.
 	static Singleton *s_instance;
 	//Do NOT inline these once_flags. avoid multiple definitions and potential issues with thread synchronization
 	static std::once_flag s_flag;

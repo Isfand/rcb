@@ -38,7 +38,7 @@ private:
 		"list usage:\n" 
 		"list      |  l, lists all records by default.\n"
 		"--help    | -h \n"
-		"--past <n>(unit), t,s,m,h,d,w,mo,y,c,k,ae \n"
+		"--past <n>(unit), t,s,m,h,d,w,mo,y,c,k\n"
 		"--previous\n"
 		"--total-count, list total count of all files\n"
 		"--total-size, list total size of all files\n"

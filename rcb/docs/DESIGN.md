@@ -106,7 +106,6 @@ Reference for units of time:
 | Decade(s)     | dec       |
 | Century(s)    | c         |
 | Millennium(s) | k         |
-| Aeon(s)       | ae        |
 
 ## Delete
 Transfer existing files into the file/ directory. This is done by checking if the filepath exists and checking if the filename already exists or not inside of file/, if it does exist the filename is altered in the format of '\<filename>(n)'. Do not modify any extensions. Store the values for each column which match the 'rcb' table schema in data/. The final action should be to 'rename()' the original path to the new one inside file/.
