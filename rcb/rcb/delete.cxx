@@ -139,6 +139,7 @@ const std::array<std::string, 8> Delete::saveFileData(const std::string& stageFi
 	std::string filePath{originalPath.string()};
 	std::string timestamp{std::to_string(currentTime)};
 	
+	//WARNING: "NULL" is being stored as a literal string and not an actual sqlite NULL.
 	std::string fileByteSize = 
 		(m_dOpt.noDirSizeOption && 
 		Verity(std::filesystem::directory_entry(originalPath)).type == 
