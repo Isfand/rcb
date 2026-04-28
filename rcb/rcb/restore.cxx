@@ -49,6 +49,7 @@ void Restore::file(const std::vector<std::string>& args)
 
 		if(!progFileExists(stagedFile)) continue;
 
+		//NOTE: forceReplaceOption is only used to enter the block. It does not change control flow like the others.
 		if(int pathStatus = (originalPathStatus(originalPath)); 
 		   (pathStatus == 1) 
 		|| (pathStatus == 0 && m_rOpt.forceReplaceOption)           // order 2
@@ -106,6 +107,7 @@ void Restore::file(const std::vector<std::string>& args)
 				continue;
 			}
 
+			//NOTE: rename() cannot rename directories that are not empty. for that remove() needs to be used before it.
 			//Check if the path is internal or external
 			if(aci::Stat(g_singleton->getWorkingProgDir().string().c_str()).st_dev() == aci::Stat(originalPath.parent_path().string().c_str()).st_dev())
 			{
