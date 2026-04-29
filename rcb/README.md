@@ -35,8 +35,7 @@ Nix package port is provided inside pkg-manager branch: rcb-utility/pkg-managers
 
 ## **Build Pre-requisites:**
 *Requires the build2-toolchain to be pre-installed. See https://build2.org/install.xhtml \
-*Requires c++23 supporting compiler. \
-*(Optional)*: For building compilation database use latest [staged](https://stage.build2.org/0/) toolchain.
+*Requires c++23 supporting compiler.
 
 ## **Build Instructions:**
 
