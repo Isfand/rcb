@@ -7,6 +7,7 @@
 #include <format>
 
 #include "list_args.hxx"
+#include "common/globals.hxx"
 #include "common/database.hxx"
 
 namespace rcb{
