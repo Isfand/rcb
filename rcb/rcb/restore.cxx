@@ -242,26 +242,23 @@ Restore::PathStatus Restore::originalPathStatus(const std::filesystem::path& pro
 	//check parent path exists
 	if(Verity(std::filesystem::directory_entry(progDir.parent_path())).exists)
 	{
-		//TODO. --force-replace usage creates a false negative with the failed message being print. Need to prevent this.
-		//If a regular file exists with the same path and --force-replace is used. The below message will print indicating a fail even though it succeeded.
-		//It will not print out "restore failed: {}" Which is when it actually fails.
 		if(Verity(std::filesystem::directory_entry(progDir)).exists)
 		{
 			if(m_rOpt.verboseOption)
-				std::println("failed on file check: \"{0}\"\nexisting file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
+				std::println("Occupied: \"{0}\"\nexisting file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
 			result = PathStatus::Occupied;
 		}
 		else
 		{
 			if(m_rOpt.verboseOption)
-				std::println("success on file check: \"{0}\"\nno existing file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
+				std::println("Free: \"{0}\"\nno existing file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
 			result = PathStatus::Free;
 		}
 	}
 	else
 	{
 		if(m_rOpt.verboseOption)
-		   std::println("failed on file check: \"{0}\"\nparent directory not found: \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
+		   std::println("NoParent: \"{0}\"\nparent directory not found: \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
 		result = PathStatus::NoParent;
 	}
 	
