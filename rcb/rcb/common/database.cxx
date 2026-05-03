@@ -15,14 +15,14 @@ namespace rcb{
 //Unused
 void Database::createDB()
 {
-	sqlite3_open((g_singleton->getWorkingProgDataDir() / m_dataBaseName).string().c_str(), &m_db);
+	sqlite3_open((g_singleton->getWorkingProgDataDir() / g_kDatabaseName).string().c_str(), &m_db);
 	sqlite3_close(m_db);
 }
 
 //Resets counter if no records exist.
 void Database::resetCounter()
 {
-		sqlite3_open((g_singleton->getWorkingProgDataDir() / m_dataBaseName).string().c_str(), &m_db);
+		sqlite3_open((g_singleton->getWorkingProgDataDir() / g_kDatabaseName).string().c_str(), &m_db);
 
 	std::string query = std::format("DELETE FROM sqlite_sequence WHERE name = '{0}' AND NOT EXISTS ( SELECT 1 FROM {0} LIMIT 1);", g_kProgName);
 
@@ -50,7 +50,7 @@ void Database::resetCounter()
 
 void Database::createTable()
 {
-	sqlite3_open((g_singleton->getWorkingProgDataDir() / m_dataBaseName).string().c_str(), &m_db);
+	sqlite3_open((g_singleton->getWorkingProgDataDir() / g_kDatabaseName).string().c_str(), &m_db);
 
 	std::string defaultSQLTable = std::format("CREATE TABLE IF NOT EXISTS \"{0}\" (\n"
 											  "\t\"{1}\" INTEGER PRIMARY KEY AUTOINCREMENT,\n"
@@ -63,15 +63,15 @@ void Database::createTable()
 											  "\t\"{8}\" varchar(65535),\n" 
 											  "\t\"{9}\" BIGINT UNSIGNED);\n",
 											  g_kProgName, 
-											  m_fileIdColumn, 
-											  m_fileNameColumn, 
-											  m_filePathColumn, 
-											  m_fileTimestampColumn, 
-											  m_fileSizeColumn,
-											  m_fileTypeColumn,
-											  m_filePathDepthColumn,
-											  m_fileUserColumn,
-											  m_fileExecutionIDColumn);
+											  g_kSchemaID, 
+											  g_kSchemaFile, 
+											  g_kSchemaPath, 
+											  g_kSchemaTimestamp, 
+											  g_kSchemaSize,
+											  g_kSchemaFiletype,
+											  g_kSchemaPathDepth,
+											  g_kSchemaUser,
+											  g_kSchemaExecutionID);
 											  //sqlite3 does not support UNSIGNED. It is simply ignored. Keep it here for a workaround.
 
 	char* errorMsg{};
@@ -101,7 +101,7 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 {
 	char* errorMsg{};
 
-	sqlite3_open((g_singleton->getWorkingProgDataDir() / m_dataBaseName).string().c_str(), &m_db);
+	sqlite3_open((g_singleton->getWorkingProgDataDir() / g_kDatabaseName).string().c_str(), &m_db);
 
 	//XXX: Use prepared statements (sqlite3_prepare_v2 + sqlite3_bind_text).
 	std::string recordData = std::format("INSERT INTO {} ("
@@ -109,14 +109,14 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 										 "VALUES("
 										 "'{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}');",
 										 g_kProgName, 
-										 m_fileNameColumn,
-										 m_filePathColumn,
-										 m_fileTimestampColumn,
-										 m_fileSizeColumn,
-										 m_fileTypeColumn,
-										 m_filePathDepthColumn,
-										 m_fileUserColumn,
-										 m_fileExecutionIDColumn,
+										 g_kSchemaFile,
+										 g_kSchemaPath,
+										 g_kSchemaTimestamp,
+										 g_kSchemaSize,
+										 g_kSchemaFiletype,
+										 g_kSchemaPathDepth,
+										 g_kSchemaUser,
+										 g_kSchemaExecutionID,
 										 fileDetails.at(0),
 										 fileDetails.at(1),
 										 fileDetails.at(2),
@@ -157,7 +157,7 @@ std::string Database::selectData(const std::string& sql)
 	
 	std::string st{};
 
-	rc = sqlite3_open((g_singleton->getWorkingProgDataDir() / m_dataBaseName).string().c_str(), &m_db);
+	rc = sqlite3_open((g_singleton->getWorkingProgDataDir() / g_kDatabaseName).string().c_str(), &m_db);
 	if (rc != SQLITE_OK) 
 	{
 		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));
@@ -203,7 +203,7 @@ std::string Database::selectDataA(const std::string& sql)
 	int rc;
 	std::string st{};
 
-	rc = sqlite3_open((g_singleton->getWorkingProgDataDir() / m_dataBaseName).string().c_str(), &m_db);
+	rc = sqlite3_open((g_singleton->getWorkingProgDataDir() / g_kDatabaseName).string().c_str(), &m_db);
 	if (rc != SQLITE_OK) 
 	{
 		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));
@@ -249,7 +249,7 @@ std::vector<std::string> Database::selectDataB(const std::string& sql)
 	sqlite3_stmt *stmt;
 	int rc;
 
-	rc = sqlite3_open((g_singleton->getWorkingProgDataDir() / m_dataBaseName).string().c_str(), &m_db);
+	rc = sqlite3_open((g_singleton->getWorkingProgDataDir() / g_kDatabaseName).string().c_str(), &m_db);
 	if (rc != SQLITE_OK) 
 	{
 		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));
@@ -290,7 +290,7 @@ int Database::executeSQL(const std::string &sql)
 	char *errMsg = nullptr;
 	int rc;
 
-	rc = sqlite3_open((g_singleton->getWorkingProgDataDir() / m_dataBaseName).string().c_str(), &m_db);
+	rc = sqlite3_open((g_singleton->getWorkingProgDataDir() / g_kDatabaseName).string().c_str(), &m_db);
 	if (rc != SQLITE_OK) 
 	{
 		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));

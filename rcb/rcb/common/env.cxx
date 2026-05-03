@@ -43,17 +43,10 @@ void Env::var()
 
 void Env::dir()
 {
-	// TODO. Create a config to set dir and internal names that way it can work for any deviated implementation
-	// Prog internal dir names
-	const char* file {"file"};
-	const char* data {"data"};
-	const char* wipe {"wipe"};
-	const char* sign {"sign"};
-
-	m_workingProgFileDir = m_workingProgDir / file;
-	m_workingProgDataDir = m_workingProgDir / data;
-	m_workingProgWipeDir = m_workingProgDir / wipe;
-	m_workingProgSignDir = m_workingProgDir / sign;
+	m_workingProgFileDir = m_workingProgDir / g_kEnvFile;
+	m_workingProgDataDir = m_workingProgDir / g_kEnvData;
+	m_workingProgWipeDir = m_workingProgDir / g_kEnvWipe;
+	m_workingProgSignDir = m_workingProgDir / g_kEnvSign;
 
 #ifndef NDEBUG
 	std::println("{0} working directory is: {1}", g_kProgName, m_workingProgDir.string());
@@ -72,7 +65,7 @@ void Env::dir()
 								std::filesystem::create_directories(dir);
 		
 #ifndef NDEBUG
-		std::println("Directories {0},{1},{2},{3} Created in: {4}", file, data, wipe, sign, m_workingProgDir.string());
+		std::println("Directories {0},{1},{2},{3} Created in: {4}", g_kEnvFile, g_kEnvData, g_kEnvWipe, g_kEnvSign, m_workingProgDir.string());
 #endif
 	}
 }
