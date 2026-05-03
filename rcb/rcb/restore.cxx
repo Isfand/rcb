@@ -235,17 +235,13 @@ bool Restore::progFileExists(const std::string& stagedFile)
 }
 
 //return original path status
-//0 == occupied
-//1 == free
-//2 == missing directory
-//TODO: make this return enums.
 Restore::PathStatus Restore::originalPathStatus(const std::filesystem::path& progDir)
 {
 	PathStatus result{};
 	//check parent path exists
 	if(Verity(std::filesystem::directory_entry(progDir.parent_path())).exists)
 	{
-		//TODO. --force-replace usage create false negative with the failed message being print. Need to prevent this.
+		//TODO. --force-replace usage creates a false negative with the failed message being print. Need to prevent this.
 		//If a regular file exists with the same path and --force-replace is used. The below message will print indicating a fail even though it succeeded.
 		//It will not print out "restore failed: {}" Which is when it actually fails.
 		if(Verity(std::filesystem::directory_entry(progDir)).exists)
