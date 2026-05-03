@@ -17,6 +17,13 @@ public:
 	Restore(const std::vector<std::string>& args, const RestoreOptions& rOpt);
 
 private:
+	enum class PathStatus
+	{
+		Occupied,
+		Free,
+		NoParent
+	};
+
 	const RestoreOptions& m_rOpt;
 	Database m_db;
 	
@@ -24,7 +31,7 @@ private:
 
 	void allFile();
 	bool progFileExists(const std::string& stagedFile);
-	int originalPathStatus(const std::filesystem::path& progDir);
+	PathStatus originalPathStatus(const std::filesystem::path& progDir);
 	void past();
 	void previous();
 	void sqlInjection();

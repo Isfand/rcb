@@ -32,7 +32,7 @@ Restore::Restore(const std::vector<std::string>& args, const RestoreOptions& rOp
 	if(m_rOpt.sqlOption)     Restore::sqlInjection();
 }
 
-//TODO: Refactor all of restore::file. The flow is too complex to read & follow with a convoluted order.
+//TODO: Reading the order is convoluted. Refactor where possible.
 void Restore::file(const std::vector<std::string>& args)
 {
 	for(const std::string& arg : args)
@@ -41,18 +41,20 @@ void Restore::file(const std::vector<std::string>& args)
 		const std::string stagedFile             { m_db.selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_kProgName, arg)) };
 		const std::filesystem::path originalPath { m_db.selectData(std::format("SELECT path FROM {0} WHERE id='{1}';", g_kProgName, arg)) };
 
+		//Early return for if no file exists inside of .rcb/file. Saves time.
+		if(!progFileExists(stagedFile)) continue;
+
+		const std::filesystem::file_type originalPathType = Verity(std::filesystem::directory_entry(originalPath)).type;
+
 		std::string mutFilename              { originalPath.filename().string() };
 		std::filesystem::path mutRestorePath { originalPath.parent_path() / mutFilename };
 
-		//Early return for if no file exists. Saves time.
-		if(!progFileExists(stagedFile)) continue;
-
-		//NOTE: forceReplaceOption is only used to enter the block. It does not change control flow like the others.
-		if(int pathStatus = (originalPathStatus(originalPath)); 
-		   (pathStatus == 1) 
-		|| (pathStatus == 0 && m_rOpt.forceReplaceOption)           // order 2
-		|| (pathStatus == 0 && m_rOpt.forceRenameOption)            // order 1
-		|| (pathStatus == 2 && m_rOpt.forceRecreateDirectoryOption) // order 0
+		//NOTE: forceReplaceOption is only used to enter the block. It does not change control flow like the others because rename() by default replaces regular files.
+		if(PathStatus pathStatus = (originalPathStatus(originalPath)); 
+		   (pathStatus == PathStatus::Free) 
+		|| (pathStatus == PathStatus::Occupied && m_rOpt.forceReplaceOption)           // order 2
+		|| (pathStatus == PathStatus::Occupied && m_rOpt.forceRenameOption)            // order 1
+		|| (pathStatus == PathStatus::NoParent && m_rOpt.forceRecreateDirectoryOption) // order 0
 		)
 		{
 			if(m_rOpt.forceRecreateDirectoryOption)
@@ -87,7 +89,6 @@ void Restore::file(const std::vector<std::string>& args)
 				};
 			}
 
-			//REVISE: We are checking m_rOpt.forceRenameOption twice. Find a way to reduce it to one.
 			if (m_rOpt.forceRenameOption)
 			{
 				//NOTE: .parent_path() when applied to root it will return root itself /.
@@ -105,12 +106,16 @@ void Restore::file(const std::vector<std::string>& args)
 				continue;
 			}
 
-			//NOTE: rename() cannot rename directories that are not empty. for that remove() needs to be used before it.
+			//NOTE: rename() cannot rename directories that are not empty. for that sanitizeRemoveAll() needs to be used before it.
 			//Check if the path is internal or external
 			if(aci::Stat(g_singleton->getWorkingProgDir().string().c_str()).st_dev() == aci::Stat(originalPath.parent_path().string().c_str()).st_dev())
 			{
 				try
 				{
+					//Duplicated #1
+					if(m_rOpt.forceReplaceOption && originalPathType == std::filesystem::file_type::directory && pathStatus == PathStatus::Occupied) 
+						sanitizeRemoveAll(originalPath);
+
 					std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, mutRestorePath);
 				}
 				catch(const std::exception& e)
@@ -130,6 +135,10 @@ void Restore::file(const std::vector<std::string>& args)
 			{
 				try
 				{
+					//Duplicated #1
+					if(m_rOpt.forceReplaceOption && originalPathType == std::filesystem::file_type::directory && pathStatus == PathStatus::Occupied) 
+						sanitizeRemoveAll(originalPath);
+
 					externRename((g_singleton->getWorkingProgFileDir() / stagedFile), mutRestorePath);
 				}
 				catch(const std::exception& e)
@@ -229,31 +238,34 @@ bool Restore::progFileExists(const std::string& stagedFile)
 //0 == occupied
 //1 == free
 //2 == missing directory
-int Restore::originalPathStatus(const std::filesystem::path& progDir)
+//TODO: make this return enums.
+Restore::PathStatus Restore::originalPathStatus(const std::filesystem::path& progDir)
 {
-	int result{};
+	PathStatus result{};
 	//check parent path exists
 	if(Verity(std::filesystem::directory_entry(progDir.parent_path())).exists)
 	{
 		//TODO. --force-replace usage create false negative with the failed message being print. Need to prevent this.
+		//If a regular file exists with the same path and --force-replace is used. The below message will print indicating a fail even though it succeeded.
+		//It will not print out "restore failed: {}" Which is when it actually fails.
 		if(Verity(std::filesystem::directory_entry(progDir)).exists)
 		{
 			if(m_rOpt.verboseOption)
 				std::println("failed on file check: \"{0}\"\nexisting file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
-			result = 0;
+			result = PathStatus::Occupied;
 		}
 		else
 		{
 			if(m_rOpt.verboseOption)
 				std::println("success on file check: \"{0}\"\nno existing file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
-			result = 1;
+			result = PathStatus::Free;
 		}
 	}
 	else
 	{
 		if(m_rOpt.verboseOption)
 		   std::println("failed on file check: \"{0}\"\nparent directory not found: \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
-		result = 2;
+		result = PathStatus::NoParent;
 	}
 	
 	return result;
