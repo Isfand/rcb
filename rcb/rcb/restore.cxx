@@ -38,6 +38,7 @@ void Restore::file(const std::vector<std::string>& args)
 	for(const std::string& arg : args)
 	{
 		//TODO. Need to add something accounting for empty values returned from sql.
+		//TODO. file, path are currently hardcoded.
 		const std::string stagedFile             { m_db.selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_kProgName, arg)) };
 		const std::filesystem::path originalPath { m_db.selectData(std::format("SELECT path FROM {0} WHERE id='{1}';", g_kProgName, arg)) };
 

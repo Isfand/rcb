@@ -15,7 +15,6 @@ public:
 	Env();
 	
 private:
-
 	std::filesystem::path m_workingProgDir{};
 	std::filesystem::path m_workingProgFileDir{};
 	std::filesystem::path m_workingProgDataDir{};
