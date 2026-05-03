@@ -32,6 +32,7 @@ Restore::Restore(const std::vector<std::string>& args, const RestoreOptions& rOp
 	if(m_rOpt.sqlOption)     Restore::sqlInjection();
 }
 
+//TODO: Refactor all of restore::file. The flow is too complex to read & follow with a convoluted order.
 void Restore::file(const std::vector<std::string>& args)
 {
 	for(const std::string& arg : args)
@@ -43,10 +44,7 @@ void Restore::file(const std::vector<std::string>& args)
 		std::string mutFilename              { originalPath.filename().string() };
 		std::filesystem::path mutRestorePath { originalPath.parent_path() / mutFilename };
 
-		//TODO. may need to check for rename and replace coexistence in args parsing.
-		//TODO. make checkProgFile() alone an early return with continue; it only needs to check once per StagedFile.
-		//TODO. Add recreate-directory option here.
-
+		//Early return for if no file exists. Saves time.
 		if(!progFileExists(stagedFile)) continue;
 
 		//NOTE: forceReplaceOption is only used to enter the block. It does not change control flow like the others.
@@ -111,7 +109,6 @@ void Restore::file(const std::vector<std::string>& args)
 			//Check if the path is internal or external
 			if(aci::Stat(g_singleton->getWorkingProgDir().string().c_str()).st_dev() == aci::Stat(originalPath.parent_path().string().c_str()).st_dev())
 			{
-				//TODO. Place inside try catch and skip the current arg with continue:
 				try
 				{
 					std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, mutRestorePath);
@@ -131,7 +128,6 @@ void Restore::file(const std::vector<std::string>& args)
 			}
 			else
 			{
-				//TODO. Place inside try catch and skip the current arg with continue:
 				try
 				{
 					externRename((g_singleton->getWorkingProgFileDir() / stagedFile), mutRestorePath);
@@ -179,7 +175,6 @@ void Restore::past()
 {
 	for(auto format : m_rOpt.timeVec)
 	{
-		//TODO. add silence to guard the return cerr text
 		long long timestamp{};
 		int return_code = formatToTimestamp(format, timestamp);
 		
@@ -256,7 +251,6 @@ int Restore::originalPathStatus(const std::filesystem::path& progDir)
 	}
 	else
 	{
-		//TODO. Add an option to recreate the directory if sufficient permissions are available.
 		if(m_rOpt.verboseOption)
 		   std::println("failed on file check: \"{0}\"\nparent directory not found: \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
 		result = 2;
