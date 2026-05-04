@@ -33,12 +33,10 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 
 	//Order matters
 
-	//TEMPORARY:
-	//WARNING:
-	//REVISE: This is hard-coded. Create something that dynamically gets the column names.
-	//WIll also need a way to convert size of bytes to other units.
+	//TODO: WIll also need a way to convert size of bytes to other units.
 	//Can pair this problem with --no-format to work with regular queries.
-	if(m_lOpt.humanReadableOption) { m_defaultSQLQuery = std::format("SELECT id, file, path, datetime(timestamp, 'unixepoch') AS timestamp, size, filetype, user, execution FROM {0}", g_kProgName); }
+	if(m_lOpt.humanReadableOption) { m_defaultSQLQuery = std::format("SELECT {0}, {1}, {2}, datetime({3}, 'unixepoch') AS {3}, {4}, {5}, {6}, {7} FROM {8}",
+		g_kSchemaID, g_kSchemaFile, g_kSchemaPath, g_kSchemaTimestamp, g_kSchemaSize, g_kSchemaFiletype, g_kSchemaUser, g_kSchemaExecution, g_kProgName); }
 
 	if(m_lOpt.defaultOption)   List::allFile();
 	if(m_lOpt.totalSizeOption) List::size();
@@ -66,7 +64,8 @@ void List::file(const std::vector<std::string>& args)
 	std::println("Results:");
 
 	for(auto& arg : args)
-		std::print("{}", m_db.selectDataA(std::format("{} WHERE id='{}';", m_defaultSQLQuery, arg)));
+		std::print("{}", m_db.selectDataA(std::format("{0} WHERE {1}='{2}';", 
+			m_defaultSQLQuery, g_kSchemaID, arg)));
 }
 
 void List::past()
@@ -79,7 +78,8 @@ void List::past()
 
 		if (return_code == 0)
 		{
-			std::vector<std::string> vList = m_db.selectDataB(std::format("SELECT id FROM {0} WHERE timestamp > {1};", g_kProgName, timestamp));
+			std::vector<std::string> vList = m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} > {3};", 
+				g_kSchemaID, g_kProgName, g_kSchemaTimestamp, timestamp));
 			List::file(vList);
 		}
 		else if(return_code == 1) std::cerr << "error: units not found\n";
@@ -90,7 +90,8 @@ void List::past()
 
 void List::previous()
 {
-	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT id FROM {0} WHERE execution=(SELECT MAX(execution) FROM {0});", g_kProgName)) };
+	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {2} WHERE {1}=(SELECT MAX({1}) FROM {2});", 
+		g_kSchemaID, g_kSchemaExecution, g_kProgName)) };
 	List::file(vList);
 }
 
@@ -116,7 +117,8 @@ void List::count()
 		for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
 		{
 			std::string stagedFile = entry.path().filename().string();
-			std::string dbProgFileRecord = m_db.selectData(std::format("SELECT file FROM {0} WHERE file='{1}';", g_kProgName, stagedFile));
+			std::string dbProgFileRecord = m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", 
+				g_kSchemaFile, g_kProgName, stagedFile));
 
 			if(stagedFile == dbProgFileRecord)
 				m_validFiles.push_back(stagedFile);
@@ -141,7 +143,8 @@ void List::size()
 		for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
 		{
 			std::string stagedFile { entry.path().filename().string() };
-			std::string dbProgFileRecord { m_db.selectData(std::format("SELECT file FROM {0} WHERE file='{1}';", g_kProgName, stagedFile)) };
+			std::string dbProgFileRecord { m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", 
+				g_kSchemaFile, g_kProgName, stagedFile)) };
 
 			if(stagedFile == dbProgFileRecord)
 				m_validFiles.push_back(stagedFile);
@@ -174,7 +177,8 @@ void List::size()
 
 	for (const auto& de : deduped)
 	{
-		std::string query { m_db.selectData(std::format("SELECT size FROM {0} WHERE file='{1}';", g_kProgName, std::get<0>(de))) };
+		std::string query { m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {2}='{3}';", 
+			g_kSchemaSize, g_kProgName, g_kSchemaFile, std::get<0>(de))) };
 		std::string byte = (query == "NULL") ? "0" : query;
 		size += std::stoull(byte);
 		//WARNING. Be wary of NULL values in size.
