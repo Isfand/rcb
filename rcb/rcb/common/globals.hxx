@@ -18,15 +18,15 @@ inline constexpr const char* g_kEnvSign {"sign"};
 
 //Database: WARNING Do NOT change these. Doing so will break compatibility with existing tables with previous schema.
 inline const std::string g_kDatabaseName {std::string(g_kProgName) + ".sqlite3"}; //{"rcb.sqlite3"}; //Database filename
-inline constexpr const char* g_kSchemaID           {"id"};            //SQL auto increment
-inline constexpr const char* g_kSchemaFile         {"file"};          //Refers to filename to be inside of .rcb/file/
-inline constexpr const char* g_kSchemaPath         {"path"};          //Complete filesystem path
-inline constexpr const char* g_kSchemaTimestamp    {"timestamp"};     //Unix Timestamp since epoch
-inline constexpr const char* g_kSchemaSize         {"size"};          //Bytes
-inline constexpr const char* g_kSchemaFiletype     {"filetype"};      //Filesystem file type
-inline constexpr const char* g_kSchemaPathDepth    {"depth"};         //Path depth
-inline constexpr const char* g_kSchemaUser         {"user"};          //The user who executed the command
-inline constexpr const char* g_kSchemaExecution    {"execution"};     //Execution id of all files deleted in the same run
+inline constexpr const char* g_kSchemaID        {"id"};        //SQL auto increment
+inline constexpr const char* g_kSchemaFile      {"file"};      //Refers to filename to be inside of .rcb/file/
+inline constexpr const char* g_kSchemaPath      {"path"};      //Complete filesystem path
+inline constexpr const char* g_kSchemaTimestamp {"timestamp"}; //Unix Timestamp since epoch
+inline constexpr const char* g_kSchemaSize      {"size"};      //Bytes
+inline constexpr const char* g_kSchemaFiletype  {"filetype"};  //Filesystem file type
+inline constexpr const char* g_kSchemaPathDepth {"depth"};     //Path depth
+inline constexpr const char* g_kSchemaUser      {"user"};      //The user who executed the command
+inline constexpr const char* g_kSchemaExecution {"execution"}; //Execution id of all files deleted in the same run
 
 //Singleton
 inline Singleton* g_singleton = Singleton::instance();
