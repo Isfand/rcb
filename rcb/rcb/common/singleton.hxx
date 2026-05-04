@@ -30,7 +30,7 @@ public:
 	const std::filesystem::path getWorkingProgDataDir() const;
 	const std::filesystem::path getWorkingProgWipeDir() const;
 	const std::filesystem::path getWorkingProgSignDir() const;
-	const std::string getWorkingUsername()               const;
+	const std::string getWorkingUsername()              const;
 
 	//Mutators
 	//void setVerboseOption      (bool verboseOption);
