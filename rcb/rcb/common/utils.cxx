@@ -26,22 +26,20 @@ Verity::Verity(const std::filesystem::directory_entry& entry)
 
 std::string fileTypeToString(std::filesystem::file_type ft)
 {
-	std::map<std::filesystem::file_type, std::string> FileTypeMap =
-	{ 
-		{ std::filesystem::file_type::regular,   "regular" }, 
-		{ std::filesystem::file_type::directory, "directory" }, 
-		{ std::filesystem::file_type::symlink,   "symlink" }, 
-		{ std::filesystem::file_type::socket,    "socket" }, 
-		{ std::filesystem::file_type::fifo,      "fifo" }, 
-		{ std::filesystem::file_type::block,     "block" }, 
-		{ std::filesystem::file_type::character, "character" }, 
-		{ std::filesystem::file_type::unknown,   "unknown" }, 
-		{ std::filesystem::file_type::not_found, "not_found" }, 
-		{ std::filesystem::file_type::none,      "none" }, 
-	}; 
-
-	//WARNING. Below can throw an exception if ft is not found inside map. TODO. Handling required like in Restore::present().
-	return FileTypeMap.at(ft);
+	switch (ft)
+	{
+		case std::filesystem::file_type::regular:   return "regular";
+		case std::filesystem::file_type::directory: return "directory";
+		case std::filesystem::file_type::symlink:   return "symlink";
+		case std::filesystem::file_type::socket:    return "socket";
+		case std::filesystem::file_type::fifo:      return "fifo";
+		case std::filesystem::file_type::block:     return "block";
+		case std::filesystem::file_type::character: return "character";
+		case std::filesystem::file_type::unknown:   return "unknown";
+		case std::filesystem::file_type::not_found: return "not_found";
+		case std::filesystem::file_type::none:      return "none";
+		default:                                    return "unrecognized";
+	}
 }
 
 //Warning does not explicitly copy permissions and does not preserve ownership. Also doesn't check for free space.

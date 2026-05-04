@@ -34,7 +34,7 @@ void Erase::file(const std::vector<std::string>& args)
 	for(const std::string& arg : args)
 	{
 		//TODO, Add a check for "" empty. Then continue the loop.
-		std::string stagedFile = m_db.selectData(std::format("SELECT file FROM {0} WHERE id='{1}';", g_kProgName, arg));
+		std::string stagedFile = m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {2}='{3}';", g_kSchemaFile, g_kProgName, g_kSchemaID, arg));
 
 		try 
 		{
@@ -47,14 +47,14 @@ void Erase::file(const std::vector<std::string>& args)
 			continue;
 		}
 		//Once removed then delete from database
-		m_db.executeSQL(std::format("DELETE FROM {0} WHERE id='{1}';", g_kProgName, arg));
+		m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kProgName, g_kSchemaID, arg));
 	}
 }
 
 
 void Erase::allFile()
 {
-	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT id FROM {0};", g_kProgName)) };
+	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1};", g_kSchemaID, g_kProgName)) };
 
 #ifndef NDEBUG
 	std::println("Printing all existing record IDs");
@@ -76,7 +76,7 @@ void Erase::past()
 		
 		if (return_code == 0)
 		{
-			std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT id FROM {0} WHERE timestamp > {1};", g_kProgName, timestamp)) };
+			std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} > {3};", g_kSchemaID, g_kProgName, g_kSchemaTimestamp, timestamp)) };
 			Erase::file(vList);
 		}
 		else if(return_code == 1 && !m_eOpt.silentOption) std::cerr << "error: units not found\n";
@@ -87,7 +87,7 @@ void Erase::past()
 
 void Erase::previous()
 {
-	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT id FROM {0} WHERE execution=(SELECT MAX(execution) FROM {0});", g_kProgName)) };
+	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {2} WHERE {1}=(SELECT MAX({1}) FROM {2});", g_kSchemaID, g_kSchemaExecution, g_kProgName)) };
 	Erase::file(vList);
 }
 

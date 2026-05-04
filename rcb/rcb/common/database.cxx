@@ -71,7 +71,7 @@ void Database::createTable()
 											  g_kSchemaFiletype,
 											  g_kSchemaPathDepth,
 											  g_kSchemaUser,
-											  g_kSchemaExecutionID);
+											  g_kSchemaExecution);
 											  //sqlite3 does not support UNSIGNED. It is simply ignored. Keep it here for a workaround.
 
 	char* errorMsg{};
@@ -116,7 +116,7 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 										 g_kSchemaFiletype,
 										 g_kSchemaPathDepth,
 										 g_kSchemaUser,
-										 g_kSchemaExecutionID,
+										 g_kSchemaExecution,
 										 fileDetails.at(0),
 										 fileDetails.at(1),
 										 fileDetails.at(2),
