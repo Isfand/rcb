@@ -129,7 +129,7 @@ void Restore::file(const std::vector<std::string>& args)
 
 				//TODO;
 				//Also check against saveFileData() values to make sure.
-				m_db.executeSQL(std::format("DELETE FROM {0} WHERE id='{1}';", g_kProgName, arg));
+				m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kProgName, g_kSchemaID, arg));
 			}
 			else
 			{
@@ -151,7 +151,7 @@ void Restore::file(const std::vector<std::string>& args)
 					std::println("Path is:{0}", mutRestorePath.string());
 
 				//TODO; //Also check against saveFileData() values to make sure.
-				m_db.executeSQL(std::format("DELETE FROM {0} WHERE id='{1}';", g_kProgName, arg));
+				m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kProgName, g_kSchemaID, arg));
 				
 			}
 
@@ -168,7 +168,7 @@ void Restore::file(const std::vector<std::string>& args)
 void Restore::allFile()
 {
 	//Need to restore files with the lowest depth ascending.
-	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} ORDER BY depth ASC;", g_kSchemaID, g_kProgName)) };
+	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} ORDER BY {2} ASC;", g_kSchemaID, g_kProgName, g_kSchemaPathDepth)) };
 
 #ifndef NDEBUG
 	std::println("Printing all existing record IDs");
@@ -189,7 +189,7 @@ void Restore::past()
 		
 		if (return_code == 0)
 		{
-			std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE timestamp > {2};", g_kSchemaID, g_kProgName, timestamp)) };
+			std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} > {3};", g_kSchemaID, g_kProgName, g_kSchemaTimestamp, timestamp)) };
 			Restore::file(vList);
 		}
 		else if(return_code == 1 && !m_rOpt.silentOption) std::cerr << "error: units not found\n";
@@ -200,7 +200,7 @@ void Restore::past()
 
 void Restore::previous()
 {
-	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE execution=(SELECT MAX(execution) FROM {1});", g_kSchemaID, g_kProgName)) };
+	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2}=(SELECT MAX({2}) FROM {1});", g_kSchemaID, g_kProgName, g_kSchemaExecution)) };
 	Restore::file(vList);
 }
 
