@@ -22,7 +22,7 @@ Args::Args(int argc, char** argv) : m_argc{argc}, m_argv{argv}
 
 void Args::runCmd()
 {
-	switch (m_cmd)
+	switch (*m_cmd)
 	{
 		case Command::Delete: {
 #ifndef NDEBUG
@@ -119,55 +119,45 @@ void Args::init()
 #ifndef NDEBUG
 			std::println("Delete flag triggered");
 #endif
-			if (m_sharedCmdFlag)
-				continue;
+			if (m_cmd) continue;
 
 			m_cmd = Command::Delete;
-			m_sharedCmdFlag = true;
 		}
 		else if(arg == "erase" || arg == "e")
 		{
 #ifndef NDEBUG
 			std::println("Erase flag triggered");
 #endif
-			if (m_sharedCmdFlag)
-				continue;
+			if (m_cmd) continue;
 
 			m_cmd = Command::Erase;
-			m_sharedCmdFlag = true;
 		}
 		else if(arg == "list" || arg == "l")
 		{
 #ifndef NDEBUG
 			std::println("List flag triggered");
 #endif
-			if (m_sharedCmdFlag)
-				continue;
+			if (m_cmd) continue;
 
 			m_cmd = Command::List;
-			m_sharedCmdFlag = true;
 		}
 		else if(arg == "restore" || arg == "r")
 		{
 #ifndef NDEBUG
 			std::println("Restore flag triggered");
 #endif
-			if (m_sharedCmdFlag)
-				continue;
+			if (m_cmd) continue;
 
 			m_cmd = Command::Restore;
-			m_sharedCmdFlag = true;
 		}
 		else if(arg == "validate" || arg == "v")
 		{
 #ifndef NDEBUG
 			std::println("Validate flag triggered");
 #endif
-			if (m_sharedCmdFlag)
-				continue;
+			if (m_cmd) continue;
 
 			m_cmd = Command::Validate;
-			m_sharedCmdFlag = true;		
 		}
 		else if(arg == "--")
 		{
@@ -179,8 +169,7 @@ void Args::init()
 		}
 		else if(arg == "--help" || arg == "-h")
 		{
-			if(m_sharedCmdFlag)
-				continue;
+			if(m_cmd) continue;
 					 
 			std::println("{0}", m_helpMsg);
 			return;
@@ -210,15 +199,12 @@ void Args::init()
 		}
 		else
 		{
-			if(m_sharedCmdFlag)
-				continue;
+			if(m_cmd) continue;
 
 			std::println("Incorrect use of command. Enter --help for usage", g_kProgName);
 			return;
 		}
 	}
-	m_initFinishedFlag = true;
-
 #ifndef NDEBUG
 	std::println("Ending Args Init");
 	for(auto it : m_args)
@@ -252,7 +238,7 @@ void Args::run()
 	Database().createTable(); // Create default table
 
 	/* EXECUTION */
-	if(m_initFinishedFlag)
+	if(m_cmd)
 	{
 		// Args::deGlob();
 		
