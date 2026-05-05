@@ -31,27 +31,27 @@ void DeleteArgs::run(std::vector<std::string>& args)
 	for(auto i { 0UL }; i < args.size(); i++)
 	{
 	
-		if (std::string(args.at(i)).substr(0, 2) == "--" || std::string(args.at(i)).substr(0, 1) == "-")
+		if (args.at(i).substr(0, 2) == "--" || args.at(i).substr(0, 1) == "-")
 		{
 			//Add Conditional check for '-'. Reads stdin/stdout. E.g cat -
 
-			if(std::string(args.at(i)) == "--help" || std::string(args.at(i)) == "-h")
+			if(args.at(i) == "--help" || args.at(i) == "-h")
 			{
 				std::print("{}", m_deleteHelpMsg);
 				return;
 			} 
-			else if(std::string(args.at(i)) == "--")
+			else if(args.at(i) == "--")
 			{
 				//Remove -- before passing arguments to delete cmd.
 				m_erasePositions.push_back(i);
 				break;
 			} 
-			else if(std::string(args.at(i)) == "--verbose" || std::string(args.at(i)) == "-v")
+			else if(args.at(i) == "--verbose" || args.at(i) == "-v")
 			{
 				m_dOpt.verboseOption = true;
 				m_erasePositions.push_back(i);
 			} 
-			else if(std::string(args.at(i)) == "--force" || std::string(args.at(i)) == "-f")
+			else if(args.at(i) == "--force" || args.at(i) == "-f")
 			{
 				//TODO: Use for critical files/directories such as .rcb/, /*,
 				//Just for '/' Add a 'special' message as default without --force.
@@ -62,12 +62,12 @@ void DeleteArgs::run(std::vector<std::string>& args)
 				m_dOpt.forceOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if(std::string(args.at(i)) == "--silent" || std::string(args.at(i)) == "-s")
+			else if(args.at(i) == "--silent" || args.at(i) == "-s")
 			{
 				m_dOpt.silentOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if(std::string(args.at(i)) == "--no-directorysize")
+			else if(args.at(i) == "--no-directorysize")
 			{
 				m_dOpt.noDirSizeOption = true;
 				m_erasePositions.push_back(i);

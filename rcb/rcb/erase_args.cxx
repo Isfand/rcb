@@ -30,14 +30,14 @@ void EraseArgs::run(std::vector<std::string>& args)
 	for(auto i { 0UL }; i < args.size(); i++)
 	{
 	
-		if (std::string(args.at(i)).substr(0, 2) == "--" || std::string(args.at(i)).substr(0, 1) == "-")
+		if (args.at(i).substr(0, 2) == "--" || args.at(i).substr(0, 1) == "-")
 		{
-			if(std::string(args.at(i)) == "--help" || std::string(args.at(i)) == "-h")
+			if(args.at(i) == "--help" || args.at(i) == "-h")
 			{
 				std::println("{}", m_eraseHelpMsg);
 				return;
 			} 
-			else if (std::string(args.at(i)) == "--all" || std::string(args.at(i)) == "-a")
+			else if (args.at(i) == "--all" || args.at(i) == "-a")
 			{
 #ifndef NDEBUG
 				std::println("all triggered");
@@ -45,7 +45,7 @@ void EraseArgs::run(std::vector<std::string>& args)
 				m_eOpt.allOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--past")
+			else if (args.at(i) == "--past")
 			{
 #ifndef NDEBUG
 				std::println("present triggered");
@@ -64,7 +64,7 @@ void EraseArgs::run(std::vector<std::string>& args)
 					return;
 				}
 			}
-			else if (std::string(args.at(i)) == "--previous")
+			else if (args.at(i) == "--previous")
 			{
 #ifndef NDEBUG
 				std::println("previous triggered");
@@ -72,7 +72,7 @@ void EraseArgs::run(std::vector<std::string>& args)
 				m_eOpt.previousOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--verbose" || std::string(args.at(i)) == "-v")
+			else if (args.at(i) == "--verbose" || args.at(i) == "-v")
 			{
 #ifndef NDEBUG
 				std::println("verbose triggered");
@@ -80,7 +80,7 @@ void EraseArgs::run(std::vector<std::string>& args)
 				m_eOpt.verboseOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--silent" || std::string(args.at(i)) == "-s")
+			else if (args.at(i) == "--silent" || args.at(i) == "-s")
 			{
 #ifndef NDEBUG
 				std::println("silent triggered");
@@ -88,7 +88,7 @@ void EraseArgs::run(std::vector<std::string>& args)
 				m_eOpt.silentOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--sql")
+			else if (args.at(i) == "--sql")
 			{
 #ifndef NDEBUG
 				std::println("sql triggered");

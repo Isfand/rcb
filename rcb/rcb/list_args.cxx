@@ -23,15 +23,15 @@ void ListArgs::run(std::vector<std::string>& args)
 
 	for(auto i { 0UL }; i < args.size(); i++)
 	{
-		if (std::string(args.at(i)).substr(0, 2) == "--" || std::string(args.at(i)).substr(0, 1) == "-")
+		if (args.at(i).substr(0, 2) == "--" || args.at(i).substr(0, 1) == "-")
 		{
-			if(std::string(args.at(i)) == "--help" || std::string(args.at(i)) == "-h")
+			if(args.at(i) == "--help" || args.at(i) == "-h")
 			{
 				std::print("{}", m_listHelpMsg);
 					
 				return;
 			} 
-			else if (std::string(args.at(i)) == "--all" || std::string(args.at(i)) == "-a")
+			else if (args.at(i) == "--all" || args.at(i) == "-a")
 			{
 #ifndef NDEBUG
 				std::println("all triggered");
@@ -42,7 +42,7 @@ void ListArgs::run(std::vector<std::string>& args)
 				m_lOpt.defaultOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--total-size")
+			else if (args.at(i) == "--total-size")
 			{
 #ifndef NDEBUG
 				std::println("total-size triggered");
@@ -50,7 +50,7 @@ void ListArgs::run(std::vector<std::string>& args)
 				m_lOpt.totalSizeOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--total-count")
+			else if (args.at(i) == "--total-count")
 			{
 #ifndef NDEBUG
 				std::println("total-count triggered");
@@ -58,7 +58,7 @@ void ListArgs::run(std::vector<std::string>& args)
 				m_lOpt.totalCountOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--human-readable")
+			else if (args.at(i) == "--human-readable")
 			{
 #ifndef NDEBUG
 				std::println("human-readable triggered");
@@ -66,7 +66,7 @@ void ListArgs::run(std::vector<std::string>& args)
 				m_lOpt.humanReadableOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--no-format")
+			else if (args.at(i) == "--no-format")
 			{
 #ifndef NDEBUG
 				std::println("no-format triggered");
@@ -74,7 +74,7 @@ void ListArgs::run(std::vector<std::string>& args)
 				m_lOpt.noFormatOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--past")
+			else if (args.at(i) == "--past")
 			{
 #ifndef NDEBUG
 				std::println("present triggered");
@@ -93,7 +93,7 @@ void ListArgs::run(std::vector<std::string>& args)
 					return;
 				}
 			}
-			else if (std::string(args.at(i)) == "--previous")
+			else if (args.at(i) == "--previous")
 			{
 #ifndef NDEBUG
 				std::println("previous triggered");
@@ -101,7 +101,7 @@ void ListArgs::run(std::vector<std::string>& args)
 				m_lOpt.previousOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--verbose" || std::string(args.at(i)) == "-v")
+			else if (args.at(i) == "--verbose" || args.at(i) == "-v")
 			{
 #ifndef NDEBUG
 				std::println("verbose triggered");
@@ -109,7 +109,7 @@ void ListArgs::run(std::vector<std::string>& args)
 				m_lOpt.verboseOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--sql")
+			else if (args.at(i) == "--sql")
 			{
 #ifndef NDEBUG
 				std::println("sql triggered");

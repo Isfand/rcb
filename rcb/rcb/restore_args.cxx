@@ -28,15 +28,15 @@ void RestoreArgs::run(std::vector<std::string>& args)
 	
 	for(auto i { 0UL }; i < args.size(); i++)
 	{
-		if (std::string(args.at(i)).substr(0, 2) == "--" || std::string(args.at(i)).substr(0, 1) == "-")
+		if (args.at(i).substr(0, 2) == "--" || args.at(i).substr(0, 1) == "-")
 		{
-			if(std::string(args.at(i)) == "--help" || std::string(args.at(i)) == "-h")
+			if(args.at(i) == "--help" || args.at(i) == "-h")
 			{
 				std::print("{}", m_restoreHelpMsg);
 					
 				return;
 			} 
-			else if (std::string(args.at(i)) == "--all" || std::string(args.at(i)) == "-a")
+			else if (args.at(i) == "--all" || args.at(i) == "-a")
 			{
 #ifndef NDEBUG
 				std::println("restore all triggered");
@@ -44,7 +44,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 				m_rOpt.allOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--verbose" || std::string(args.at(i)) == "-v")
+			else if (args.at(i) == "--verbose" || args.at(i) == "-v")
 			{
 #ifndef NDEBUG
 				std::println("restore verbose triggered");
@@ -52,7 +52,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 				m_rOpt.verboseOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--force" || std::string(args.at(i)) == "-f")
+			else if (args.at(i) == "--force" || args.at(i) == "-f")
 			{
 #ifndef NDEBUG
 				std::println("restore force triggered");
@@ -60,7 +60,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 				m_rOpt.forceOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--force-replace")
+			else if (args.at(i) == "--force-replace")
 			{
 #ifndef NDEBUG
 				std::println("restore force-replace triggered");
@@ -68,7 +68,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 				m_rOpt.forceReplaceOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--force-rename")
+			else if (args.at(i) == "--force-rename")
 			{
 #ifndef NDEBUG
 				std::println("restore force-rename triggered");
@@ -76,7 +76,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 				m_rOpt.forceRenameOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--force-recreate-directory")
+			else if (args.at(i) == "--force-recreate-directory")
 			{
 #ifndef NDEBUG
 				std::println("restore force-recreate-directory triggered");
@@ -84,7 +84,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 				m_rOpt.forceRecreateDirectoryOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--silent" || std::string(args.at(i)) == "-s")
+			else if (args.at(i) == "--silent" || args.at(i) == "-s")
 			{
 #ifndef NDEBUG
 				std::println("restore silent triggered");
@@ -92,7 +92,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 				m_rOpt.silentOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--past")
+			else if (args.at(i) == "--past")
 			{
 #ifndef NDEBUG
 				std::println("restore present triggered");
@@ -112,7 +112,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 					return;
 				}
 			}
-			else if (std::string(args.at(i)) == "--previous")
+			else if (args.at(i) == "--previous")
 			{
 #ifndef NDEBUG
 				std::println("restore previous triggered");
@@ -120,7 +120,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 				m_rOpt.previousOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (std::string(args.at(i)) == "--sql")
+			else if (args.at(i) == "--sql")
 			{
 #ifndef NDEBUG
 				std::println("sql triggered");
