@@ -2,6 +2,7 @@
 #ifndef DATABASE_HXX
 #define DATABASE_HXX
 
+//TODO: Use the PIMPL design pattern or a forward declaration of struct sqlite3 to hide this header to prevent C pollution. sqlite3* m_db uses it. 
 #include <sqlite3.h>
 
 #include <string>
