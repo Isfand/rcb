@@ -22,7 +22,7 @@ void Database::createDB()
 //Resets counter if no records exist.
 void Database::resetCounter()
 {
-		sqlite3_open((g_singleton->getWorkingProgDataDir() / g_kDatabaseName).string().c_str(), &m_db);
+	sqlite3_open((g_singleton->getWorkingProgDataDir() / g_kDatabaseName).string().c_str(), &m_db);
 
 	std::string query = std::format("DELETE FROM sqlite_sequence WHERE name = '{0}' AND NOT EXISTS ( SELECT 1 FROM {0} LIMIT 1);", g_kProgName);
 
@@ -34,14 +34,14 @@ void Database::resetCounter()
 		sqlite3_free(errorMsg);
 			
 #ifndef NDEBUG
-			std::println("Failed to reset sequence counter");
+		std::println("Failed to reset sequence counter");
 #endif
-			throw std::invalid_argument("resetCounter() Failed");
+		throw std::invalid_argument("resetCounter() Failed");
 	}
 	else
 	{
 #ifndef NDEBUG
-			std::println("Success from resetCounter()");
+		std::println("Success from resetCounter()");
 #endif
 	}
 		
@@ -82,14 +82,14 @@ void Database::createTable()
 		sqlite3_free(errorMsg);
 			
 #ifndef NDEBUG
-			std::println("Failed to create default database table");
+		std::println("Failed to create default database table");
 #endif
-			throw std::invalid_argument("createTable() Failed");
+		throw std::invalid_argument("createTable() Failed");
 	}
 	else
 	{
 #ifndef NDEBUG
-			std::println("Success from default SQL database table creation"); // WILL always return even if exists
+		std::println("Success from default SQL database table creation"); // WILL always return even if exists
 #endif
 	}
 		

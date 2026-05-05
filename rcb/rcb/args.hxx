@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <optional>
 
 namespace rcb{
 
@@ -37,12 +38,10 @@ private:
 	//bool m_tactacFlag{}; //Unused
 	//bool m_tacFlag   {}; //Unused
 	
-	Command m_cmd{-1}; // Shared flag for sub-commands. Sentinel Value
+	std::optional<Command> m_cmd; // Shared flag for sub-commands.
 	
-	bool m_sharedCmdFlag    {}; // sharedGlobFlag exists to save time to not do string search index if false
 	bool m_sharedGlobFlag   {}; 
-	bool m_initFinishedFlag {}; //Checks if init function has reached the end of its scope and not done an early exit.
-
+	
 	std::vector<std::string> m_args{};
 	std::vector<std::string> m_argsToRemove{};
 
