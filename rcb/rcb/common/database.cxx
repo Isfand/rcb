@@ -142,7 +142,7 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 	else 
 	{
 #ifndef NDEBUG
-			std::println("Success from default SQL table data insert"); // WILL always return even if exists
+		std::println("Success from default SQL table data insert"); // WILL always return even if exists
 #endif
 	}
 	

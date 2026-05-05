@@ -108,13 +108,13 @@ void Args::init()
 
 	for(auto arg : m_args)
 	{
-		if(std::string(arg) == "") // TEMPORARY. Implement in every command individually.
+		if(arg == "") // TEMPORARY. Implement in every command individually.
 		{
 			std::println("{0}: cannot accept empty arguments", g_kProgName);
 			return;
 		}
 
-		if(std::string(arg) == "delete" || std::string(arg) == "d")
+		if(arg == "delete" || arg == "d")
 		{
 #ifndef NDEBUG
 			std::println("Delete flag triggered");
@@ -124,9 +124,8 @@ void Args::init()
 
 			m_cmd = Command::Delete;
 			m_sharedCmdFlag = true;
-
 		}
-		else if(std::string(arg) == "erase" || std::string(arg) == "e")
+		else if(arg == "erase" || arg == "e")
 		{
 #ifndef NDEBUG
 			std::println("Erase flag triggered");
@@ -136,10 +135,8 @@ void Args::init()
 
 			m_cmd = Command::Erase;
 			m_sharedCmdFlag = true;
-
-
 		}
-		else if(std::string(arg) == "list" || std::string(arg) == "l")
+		else if(arg == "list" || arg == "l")
 		{
 #ifndef NDEBUG
 			std::println("List flag triggered");
@@ -149,9 +146,8 @@ void Args::init()
 
 			m_cmd = Command::List;
 			m_sharedCmdFlag = true;
-
 		}
-		else if(std::string(arg) == "restore" || std::string(arg) == "r")
+		else if(arg == "restore" || arg == "r")
 		{
 #ifndef NDEBUG
 			std::println("Restore flag triggered");
@@ -161,9 +157,8 @@ void Args::init()
 
 			m_cmd = Command::Restore;
 			m_sharedCmdFlag = true;
-					
 		}
-		else if(std::string(arg) == "validate" || std::string(arg) == "v")
+		else if(arg == "validate" || arg == "v")
 		{
 #ifndef NDEBUG
 			std::println("Validate flag triggered");
@@ -172,10 +167,9 @@ void Args::init()
 				continue;
 
 			m_cmd = Command::Validate;
-			m_sharedCmdFlag = true;
-					
+			m_sharedCmdFlag = true;		
 		}
-		else if(std::string(arg) == "--")
+		else if(arg == "--")
 		{
 			// if (m_tactacFlag)
 			//     continue;
@@ -183,7 +177,7 @@ void Args::init()
 			// m_tactacFlag = true;
 			break;
 		}
-		else if(std::string(arg) == "--help" || std::string(arg) == "-h")
+		else if(arg == "--help" || arg == "-h")
 		{
 			if(m_sharedCmdFlag)
 				continue;
@@ -191,23 +185,23 @@ void Args::init()
 			std::println("{0}", m_helpMsg);
 			return;
 		}
-		else if(std::string(arg) == "--verbose" || std::string(arg) == "-v")
+		else if(arg == "--verbose" || arg == "-v")
 		{
-			// std::string(arg) == ("--verbose") ? m_argsToRemove.push_back("--verbose") : m_argsToRemove.push_back("-v");
+			// arg == ("--verbose") ? m_argsToRemove.push_back("--verbose") : m_argsToRemove.push_back("-v");
 
 			m_verboseOption = true;
 			// m_sharedGlobFlag = m_verboseOption;
 			//return;
 		}
-		else if(std::string(arg) == "--force" || std::string(arg) == "-f")
+		else if(arg == "--force" || arg == "-f")
 		{
-			// std::string(arg) == ("--force") ? m_argsToRemove.push_back("--force") : m_argsToRemove.push_back("-f");
+			// arg == ("--force") ? m_argsToRemove.push_back("--force") : m_argsToRemove.push_back("-f");
 
 			m_forceOption = true;
 			// m_sharedGlobFlag = m_forceOption;
 			//return;
 		}
-		else if(std::string(arg) == "--version")
+		else if(arg == "--version")
 		{
 			//https://stackoverflow.com/questions/4053837/colorizing-text-in-the-console-with-c
 			std::println("\x1B[32m{} {} version ({})\033[0m", "♻", g_kProgName, g_kProgVersion);
@@ -232,7 +226,6 @@ void Args::init()
 		std::println("{0}", it);
 	}
 #endif
-	
 }
 
 //Unused
@@ -269,7 +262,6 @@ void Args::run()
 
 		Args::runCmd();
 	}
-
 	Database().resetCounter();
 }
 
