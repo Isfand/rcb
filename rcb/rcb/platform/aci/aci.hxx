@@ -3,7 +3,7 @@
 #define PLATFORM_ACI_HXX
 
 //TODO: Use the PIMPL design pattern or a forward declaration to hide this header to prevent C pollution.
-//Or Just wait for C++ Modules to be fully implemented.
+//Or just wait for C++ Modules to be fully implemented.
 #if defined(__unix__) || defined(__APPLE__)
 #include "posix/posix.hxx"
 #elif defined(_WIN32) && !defined(__CYGWIN__)
