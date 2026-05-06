@@ -3,12 +3,11 @@
 #define DATABASE_HXX
 
 //TODO: Use the PIMPL design pattern or a forward declaration of struct sqlite3 to hide this header to prevent C pollution. sqlite3* m_db uses it.
-//Or Just wait for C++ Modules to be fully implemented. 
+//Or just wait for C++ Modules to be fully implemented.
 #include <sqlite3.h>
 
 #include <string>
 #include <vector>
-
 
 namespace rcb{
 

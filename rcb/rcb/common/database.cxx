@@ -299,10 +299,11 @@ int Database::executeSQL(const std::string &sql)
 	rc = sqlite3_exec(m_db, sql.c_str(), nullptr, nullptr, &errMsg);
 	if (rc != SQLITE_OK) 
 	{
+		std::string sqliteErrorMsg = errMsg;
 		sqlite3_free(errMsg); // Free the error message memory
 		sqlite3_close(m_db);  // Close the database connection
 
-		throw std::runtime_error(std::format("SQL error: {}\n", errMsg));
+		throw std::runtime_error(std::format("SQL error: {}\n", sqliteErrorMsg));
 	}
 
 	sqlite3_close(m_db);
