@@ -17,7 +17,7 @@ inline constexpr const char* g_kEnvWipe {"wipe"};
 inline constexpr const char* g_kEnvSign {"sign"};
 
 //Database: WARNING Do NOT change these. Doing so will break compatibility with existing tables with previous schema.
-inline const std::string g_kDatabaseName {std::string(g_kProgName) + ".sqlite3"}; //{"rcb.sqlite3"}; //Database filename
+inline const std::string     g_kDatabaseName    {std::string(g_kProgName) + ".sqlite3"}; //{"rcb.sqlite3"}; //Database filename
 inline constexpr const char* g_kSchemaID        {"id"};        //SQL auto increment
 inline constexpr const char* g_kSchemaFile      {"file"};      //Refers to filename to be inside of .rcb/file/
 inline constexpr const char* g_kSchemaPath      {"path"};      //Complete filesystem path
