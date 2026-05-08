@@ -155,24 +155,26 @@ bool canReadDirRec(const std::filesystem::directory_entry& dir)
 {
 	//Early guards to allow recursive_directory_iterator to do it's job
 	//This is needed to make sure it's only directories that get passed through.
-	if (Verity(std::filesystem::directory_entry(dir)).type != std::filesystem::file_type::directory)
+	if (Verity(dir).type != std::filesystem::file_type::directory)
 		return false;
 	
 	//This is also needed to make sure the initial directory is readable or recursive_directory_iterator will fail.
-	if (!canReadDir(dir))
-		return false;
+	if (!canReadDir(dir)) return false;
 
 	for (const auto& entry : std::filesystem::recursive_directory_iterator(dir.path())) 
 	{
-		std::filesystem::file_status status = std::filesystem::symlink_status(entry.path());
+		std::error_code ec;
+		std::filesystem::file_status status = std::filesystem::symlink_status(entry.path(), ec);
+
+		if (ec) return false;
+
 		//Note: For some reason is_directory fails on circular symlinks. Which is why this exists. Can't be used on the same if statement.
 		if(!std::filesystem::is_symlink(status)) 
 		{
 			//Is dir for allowing files only of that type.
 			if((std::filesystem::is_directory(entry.path())))
 			{
-				if (!canReadDir(entry))
-					return false;
+				if (!canReadDir(entry)) return false;
 			}
 		}
 	}
@@ -605,7 +607,5 @@ int sanitizeRemoveAll(const std::filesystem::path& path)
 
 	return !ec;
 }
-
-
 
 }//namespace rcb
