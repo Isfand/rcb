@@ -1,0 +1,68 @@
+= RCB-ERASE(1)
+include::_rcb-shared.adoc[tags=header]
+
+== NAME
+
+rcb-erase - erase files from rcb
+
+== SYNOPSIS
+*rcb erase* [_options_] [_arguments_] +
+*rcb erase* [_arguments_] [_options_] +
+*rcb erase* [_options_] +
+*rcb erase* [_arguments_] +
+ 
+== DESCRIPTION
+The erase command allows for permanent file removal. This action is not reversible.
+ 
+== ERASE OPTIONS
+*rcb erase* _<id>_ +
+[.indent]
+Erase file(s) by record id.
+ 
+*--help*, *-h* +
+[.indent]
+Prints basic usage of rcb erase.
+ 
+*--all*, *-a* +
+[.indent]
+Permanently remove all files.
+ 
+*--past* _<n>(unit)_ +
+[.indent]
+Erase file(s) by relative past time with units: t,s,m,h,d,w,mo,y,c,k. +
+*Example:* +
+*$ rcb erase* _--past 10m_ +
+Will erase all files that were deleted 10 minutes ago. +
+*Time Reference Table*
+[cols="1,1"]
+|===
+|Unit           |shorthand
+ 
+|Posixtime      |t
+|Second(s)      |s
+|Minute(s)      |m
+|Hour(s)        |h
+|Day(s)         |d
+|Week(s)        |w
+|Month(s)       |mo
+|Year(s)        |y
+|Decade(s)      |dec
+|Century(s)     |c
+|Millennium(s)  |k
+|===
+ 
+*--previous* +
+[.indent]
+Erase file(s) by highest execution. Execution is the order in which files were deleted together under the same process.
+ 
+*--silent*, *-s* +
+[.indent]
+Silences output to console
+ 
+*--sql* _<s>_ +
+[.indent]
+_WARNING UNSAFE:_ Insert sql statement directly for erase. Must return ID. +
+*Example:* +
+*$ rcb erase* _--sql "SELECT id FROM rcb WHERE file='filename'"_
+
+include::_rcb-shared.adoc[tags=footer]

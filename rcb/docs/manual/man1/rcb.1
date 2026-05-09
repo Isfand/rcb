@@ -1,8 +1,36 @@
+'\" t
+.\"     Title: rcb
+.\"    Author: [see the "AUTHOR(S)" section]
+.\" Generator: Asciidoctor 2.0.26
+.\"      Date: 2026-05-09
+.\"    Manual: User Manuals
+.\"    Source: RCB v0.13.0
+.\"  Language: English
+.\"
+.TH "RCB" "1" "2026-05-09" "RCB v0.13.0" "User Manuals"
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.ss \n[.ss] 0
 .nh
-.TH RCB 1 "0.13.0" RCB "User Manuals"
-.SH \fBNAME\fR
-rcb
-.SH \fBSYNOPSIS\fR
+.ad l
+.de URL
+\fI\\$2\fP <\\$1>\\$3
+..
+.als MTO URL
+.if \n[.g] \{\
+.  mso www.tmac
+.  am URL
+.    ad l
+.  .
+.  am MTO
+.    ad l
+.  .
+.  LINKSTYLE blue R < >
+.\}
+.SH "NAME"
+rcb \- file recycling utility
+.SH "SYNOPSIS"
+.sp
 \fBrcb\fP [\fIcommand\fP] [\fIoptions\fP] [\fIarguments\fP]
 .br
 \fBrcb\fP [\fIcommand\fP] [\fIarguments\fP] [\fIoptions\fP]
@@ -13,58 +41,94 @@ rcb
 .br
 \fBrcb\fP [\fIoptions\fP]
 .br
-.SH \fBDESCRIPTION\fR
+.SH "DESCRIPTION"
+.sp
 File recycling utility for the terminal that can delete, restore, erase, list and validate files.
-.SH \fBRCB OPTIONS\fR
-.PP
-\fB$ rcb\fP \fI--help, -h\fP
+.SH "RCB OPTIONS"
+.sp
+\fB$ rcb\fP \fI\-\-help\fP, \fI\-h\fP
 .br
-Gives you basic usage information for the program.
-.br
-When paired with a command it will change the output of basic usage.
-
+Gives basic usage information for the program. When paired with a command it changes the output of basic usage.
+.sp
 For example these two will have different usage outputs:
-.br 
-\fB$ rcb\fP \fIdelete --help\fP
 .br
-\fB$ rcb\fP \fI--help\fP
-
-\fB$ rcb\fP \fI--version\fR
+\fB$ rcb\fP \fIdelete\fP \fI\-\-help\fP
 .br
-Gives you the version of the rcb program
-.SH \fBSUB COMMANDS\fR
-\fBdelete   | d\fR
+\fB$ rcb\fP \fI\-\-help\fP
 .br
-\fBlist     | l\fR
+.sp
+\fB$ rcb\fP \fI\-\-version\fP
 .br
-\fBrestore  | r\fR
+Gives the version of the rcb program.
+.SH "SUB COMMANDS"
+.TS
+allbox tab(:);
+lt lt.
+T{
+.sp
+\fBdelete\fP
+T}:T{
+.sp
+\fBd\fP
+T}
+T{
+.sp
+\fBlist\fP
+T}:T{
+.sp
+\fBl\fP
+T}
+T{
+.sp
+\fBrestore\fP
+T}:T{
+.sp
+\fBr\fP
+T}
+T{
+.sp
+\fBerase\fP
+T}:T{
+.sp
+\fBe\fP
+T}
+T{
+.sp
+\fBvalidate\fP
+T}:T{
+.sp
+\fBv\fP
+T}
+.TE
+.sp
+.SH "ENVIRONMENT"
+.sp
+\fBRCB_DIR\fP
 .br
-\fBerase    | e\fR
-.br
-\fBvalidate | v\fR
-.SH \fBENVIRONMENT\fR
-\fB$RCB_DIR\fR
-.br
-The directory where the rcb/ folder will be located. Defaults to \fI$HOME/.rcb/\fP\&. The directory filename before the last delimiter will be used as the root of the rcb directory name.
-.PP
-E.G:
-\fIexport RCB_DIR=/home/user/.local/shared/.rcbAlt/\fP\&, will make .rcbAlt/ become the rcb directory name.
-.PP
-.SH \fBMANUAL ENTRIES\fR
+The directory where the \fIrcb/\fP folder will be located. Defaults to \fI$HOME/.rcb/\fP. The directory filename before the last delimiter will be used as the root of the rcb directory name.
+.sp
+E.G: \fB$ export RCB_DIR=/home/user/.local/shared/.rcbAlt/\fP, will make \fI.rcbAlt/\fP become the rcb directory name.
+.SH "MANUAL ENTRIES"
+.sp
 rcb
 .br
-rcb-delete
+rcb\-delete
 .br
-rcb-list
+rcb\-list
 .br
-rcb-restore
+rcb\-restore
 .br
-rcb-erase
+rcb\-erase
 .br
-rcb-validate
-.SH SEE ALSO
-Public repository available at: https://github.com/Isfand/rcb
-.SH AUTHOR
+rcb\-validate
+.br
+.SH "SEE ALSO"
+.sp
+Public repository available at: \c
+.URL "https://github.com/Isfand/rcb" "" ""
+.SH "AUTHOR"
+.sp
 Written by Isfand Mirza.
-.SH COPYRIGHT
-Copyright © 2024-2026, Isfand Mirza.
+.SH "COPYRIGHT"
+.sp
+Copyright © 2024–2026, Isfand Mirza.

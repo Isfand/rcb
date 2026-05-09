@@ -1,0 +1,79 @@
+= RCB-LIST(1)
+include::_rcb-shared.adoc[tags=header]
+
+== NAME
+
+rcb-list - list files in rcb
+
+== SYNOPSIS
+*rcb list* [_options_] [_arguments_] +
+*rcb list* [_options_] +
+*rcb list* +
+ 
+== DESCRIPTION
+The list command allows for listing file data inside _.rcb/data/rcb.sqlite3_
+ 
+== LIST OPTIONS
+*rcb list* +
+[.indent]
+List everything in record.
+ 
+*--help*, *-h* +
+[.indent]
+Prints basic usage of rcb list.
+ 
+*--all*, *-a* +
+[.indent]
+List everything in record along with total count and total size.
+ 
+*--past* _<n>(unit)_ +
+[.indent]
+List file(s) by relative past time with units: t,s,m,h,d,w,mo,y,c,k,ae. +
+*Example:* +
+*$ rcb list* _--past 10m_ +
+Will list all files that were deleted 10 minutes ago. +
+*Time Reference Table*
+[cols="1,1"]
+|===
+|Unit           |shorthand
+ 
+|Posixtime      |t
+|Second(s)      |s
+|Minute(s)      |m
+|Hour(s)        |h
+|Day(s)         |d
+|Week(s)        |w
+|Month(s)       |mo
+|Year(s)        |y
+|Decade(s)      |dec
+|Century(s)     |c
+|Millennium(s)  |k
+|===
+ 
+*--previous* +
+[.indent]
+List file(s) by highest execution. Execution is the order in which files were deleted together under the same process.
+ 
+*--total-count* +
+[.indent]
+List total count of all files in rcb
+ 
+*--total-size* +
+[.indent]
+List total size of all files in rcb
+ 
+*--human-readable* +
+[.indent]
+List timestamp as date/time
+ 
+*--no-format* +
+[.indent]
+Remove formatting
+ 
+*--sql* _<s>_ +
+[.indent]
+_WARNING UNSAFE:_ Insert sql statement directly for list. +
+*Example:* +
+*$ rcb list* _--sql "SELECT id FROM rcb WHERE file='filename'"_
+
+include::_rcb-shared.adoc[tags=footer]

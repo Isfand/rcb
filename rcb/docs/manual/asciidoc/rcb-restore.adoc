@@ -1,0 +1,84 @@
+= RCB-RESTORE(1)
+include::_rcb-shared.adoc[tags=header]
+
+== NAME
+
+rcb-restore - restore files from rcb
+
+== SYNOPSIS
+*rcb restore* [_options_] [_arguments_] +
+*rcb restore* [_arguments_] [_options_] +
+*rcb restore* [_options_] +
+*rcb restore* [_arguments_] +
+ 
+== DESCRIPTION
+The restore command allows for file restoration back into its original path.
+ 
+== RESTORE OPTIONS
+*rcb restore* _<id>_ +
+[.indent]
+Restore file(s) by record id.
+ 
+*--help*, *-h* +
+[.indent]
+Prints basic usage of rcb restore.
+ 
+*--verbose*, *-v* +
+[.indent]
+Provides verbose information to console.
+ 
+*--all*, *-a* +
+[.indent]
+Restore every file in record.
+ 
+*--force-replace* +
+[.indent]
+Force restore by replacing existing file.
+ 
+*--force-rename* +
+[.indent]
+Force restore by renaming file to restore.
+ 
+*--force-recreate-directory* +
+[.indent]
+Force restore by recreating any directories leading up-to the original filepath
+ 
+*--past* _<n>(unit)_ +
+[.indent]
+Restore file(s) by relative past time with units: t,s,m,h,d,w,mo,y,c,k,ae. +
+*Example:* +
+*$ rcb restore* _--past 10m_ +
+Will restore all files that were deleted 10 minutes ago. +
+*Time Reference Table*
+[cols="1,1"]
+|===
+|Unit           |shorthand
+ 
+|Posixtime      |t
+|Second(s)      |s
+|Minute(s)      |m
+|Hour(s)        |h
+|Day(s)         |d
+|Week(s)        |w
+|Month(s)       |mo
+|Year(s)        |y
+|Decade(s)      |dec
+|Century(s)     |c
+|Millennium(s)  |k
+|===
+ 
+*--previous* +
+[.indent]
+Restore file(s) by highest execution. Execution is the order in which files were deleted together under the same process.
+ 
+*--silent*, *-s* +
+[.indent]
+Silences output to console
+ 
+*--sql* _<s>_ +
+[.indent]
+_WARNING UNSAFE:_ Insert sql statement directly for restore. Must return ID. +
+*Example:* +
+*$ rcb restore* _--sql "SELECT id FROM rcb WHERE file='filename'"_
+
+include::_rcb-shared.adoc[tags=footer]
