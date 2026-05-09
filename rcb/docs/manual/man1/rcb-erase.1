@@ -1,8 +1,36 @@
+'\" t
+.\"     Title: rcb-erase
+.\"    Author: [see the "AUTHOR(S)" section]
+.\" Generator: Asciidoctor 2.0.26
+.\"      Date: 2026-05-09
+.\"    Manual: User Manuals
+.\"    Source: RCB v0.13.0
+.\"  Language: English
+.\"
+.TH "RCB\-ERASE" "1" "2026-05-09" "RCB v0.13.0" "User Manuals"
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.ss \n[.ss] 0
 .nh
-.TH RCB 1 "0.13.0" RCB "User Manuals"
-.SH \fBNAME\fR
-rcb-erase
-.SH \fBSYNOPSIS\fR
+.ad l
+.de URL
+\fI\\$2\fP <\\$1>\\$3
+..
+.als MTO URL
+.if \n[.g] \{\
+.  mso www.tmac
+.  am URL
+.    ad l
+.  .
+.  am MTO
+.    ad l
+.  .
+.  LINKSTYLE blue R < >
+.\}
+.SH "NAME"
+rcb-erase \- erase files from rcb
+.SH "SYNOPSIS"
+.sp
 \fBrcb erase\fP [\fIoptions\fP] [\fIarguments\fP]
 .br
 \fBrcb erase\fP [\fIarguments\fP] [\fIoptions\fP]
@@ -11,92 +39,151 @@ rcb-erase
 .br
 \fBrcb erase\fP [\fIarguments\fP]
 .br
-.SH \fBDESCRIPTION\fR
+.SH "DESCRIPTION"
+.sp
 The erase command allows for permanent file removal. This action is not reversible.
-.SH \fBERASE OPTIONS\fR
-.PP
-\fBrcb erase \<id\>
+.SH "ERASE OPTIONS"
+.sp
+\fBrcb erase\fP \fI<id>\fP
 .br
-.RS
+.sp
 Erase file(s) by record id.
-.RE
+.sp
+\fB\-\-help\fP, \fB\-h\fP
 .br
-\fB--help, -h\fP 
-.br
-.RS
+.sp
 Prints basic usage of rcb erase.
-.RE
+.sp
+\fB\-\-all\fP, \fB\-a\fP
 .br
-\fB--all, -a\fP
-.br
-.RS
+.sp
 Permanently remove all files.
-.RE
+.sp
+\fB\-\-past\fP \fI<n>(unit)\fP
 .br
-\fB--past \<n\>(unit)\fP
-.br
-.RS
+.sp
 Erase file(s) by relative past time with units: t,s,m,h,d,w,mo,y,c,k.
-
+.br
 \fBExample:\fP
 .br
-\fB$ rcb erase\fP \fI--past 10m\fP
-
+\fB$ rcb erase\fP \fI\-\-past 10m\fP
+.br
 Will erase all files that were deleted 10 minutes ago.
-
+.br
 \fBTime Reference Table\fP
-
-| Unit          | shorthand |
+.TS
+allbox tab(:);
+ltB ltB.
+T{
+.sp
+Unit
+T}:T{
+.sp
+shorthand
+T}
+.T&
+lt lt.
+T{
+.sp
+Posixtime
+T}:T{
+.sp
+t
+T}
+T{
+.sp
+Second(s)
+T}:T{
+.sp
+s
+T}
+T{
+.sp
+Minute(s)
+T}:T{
+.sp
+m
+T}
+T{
+.sp
+Hour(s)
+T}:T{
+.sp
+h
+T}
+T{
+.sp
+Day(s)
+T}:T{
+.sp
+d
+T}
+T{
+.sp
+Week(s)
+T}:T{
+.sp
+w
+T}
+T{
+.sp
+Month(s)
+T}:T{
+.sp
+mo
+T}
+T{
+.sp
+Year(s)
+T}:T{
+.sp
+y
+T}
+T{
+.sp
+Decade(s)
+T}:T{
+.sp
+dec
+T}
+T{
+.sp
+Century(s)
+T}:T{
+.sp
+c
+T}
+T{
+.sp
+Millennium(s)
+T}:T{
+.sp
+k
+T}
+.TE
+.sp
+.sp
+\fB\-\-previous\fP
 .br
-| ------------- | --------- |
-.br
-| Posixtime     | t         |
-.br
-| Second(s)     | s         |
-.br
-| Minute(s)     | m         |
-.br
-| Hour(s)       | h         |
-.br
-| Day(s)        | d         |
-.br
-| Week(s)       | w         |
-.br
-| Month(s)      | mo        |
-.br
-| Year(s)       | y         |
-.br
-| Decade(s)     | dec       |
-.br
-| Century(s)    | c         |
-.br
-| Millennium(s) | k         |
-.br
-.RE
-.br
-
-\fB--previous\fP
-.br
-.RS
+.sp
 Erase file(s) by highest execution. Execution is the order in which files were deleted together under the same process.
-.RE
+.sp
+\fB\-\-silent\fP, \fB\-s\fP
 .br
-\fB--silent, -s\fP
-.br
-.RS
+.sp
 Silences output to console
-.RE
+.sp
+\fB\-\-sql\fP \fI<s>\fP
 .br
-\fB--sql \<s\>\fP
-.br
-.RS
+.sp
 \fIWARNING UNSAFE:\fP Insert sql statement directly for erase. Must return ID.
-
+.br
 \fBExample:\fP
 .br
-\fB$ rcb erase\fP \fI--sql \(dqSELECT id FROM rcb WHERE file=\[aq]filename\[aq]\(dq\fP
-.RE
-.SH AUTHOR
+\fB$ rcb erase\fP \fI\-\-sql "SELECT id FROM rcb WHERE file=\*(Aqfilename\*(Aq"\fP
+.SH "AUTHOR"
+.sp
 Written by Isfand Mirza.
-.SH COPYRIGHT
-Copyright © 2024-2026, Isfand Mirza.
+.SH "COPYRIGHT"
+.sp
+Copyright © 2024–2026, Isfand Mirza.

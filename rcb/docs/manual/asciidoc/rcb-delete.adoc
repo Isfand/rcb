@@ -1,0 +1,46 @@
+= RCB-DELETE(1)
+include::_rcb-shared.adoc[tags=header]
+
+== NAME
+
+rcb-delete - delete files into rcb
+
+== SYNOPSIS
+*rcb delete* [_options_] [_arguments_] +
+*rcb delete* [_arguments_] [_options_] +
+*rcb delete* [_options_] +
+*rcb delete* [_arguments_] +
+ 
+== DESCRIPTION
+The delete command allows for file deletion. Upon use it will save essential details into _.rcb/data/rcb.sqlite3_ about the file before moving it into the _.rcb/file/_ directory. If an existing file entry is found with the same filename it will automatically increment it with a number to prevent filename collisions before moving.
+ 
+== DELETE OPTIONS
+*delete* _<filename>_ +
+[.indent]
+Delete file(s) by filename
+ 
+*--* +
+[.indent]
+Options end after this point.
+ 
+*--help*, *-h* +
+[.indent]
+Prints basic usage of rcb delete.
+ 
+*--verbose*, *-v* +
+[.indent]
+Provides verbose information to console.
+ 
+*--silent*, *-s* +
+[.indent]
+Silences output to console.
+ 
+*--force*, *-f* +
+[.indent]
+Forces file deletion.
+ 
+*--no-directorysize* +
+[.indent]
+Don't save size for filetype of directory.
+
+include::_rcb-shared.adoc[tags=footer]

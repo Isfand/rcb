@@ -1,0 +1,15 @@
+// _rcb-shared.adoc
+// tag::header[]
+:doctype: manpage
+:man manual: User Manuals
+:rcb-version: x.y.z
+:man source: RCB {rcb-version}
+// end::header[]
+
+// tag::footer[]
+== AUTHOR
+Written by Isfand Mirza.
+
+== COPYRIGHT
+Copyright © 2024–{localyear}, Isfand Mirza.
+// end::footer[]

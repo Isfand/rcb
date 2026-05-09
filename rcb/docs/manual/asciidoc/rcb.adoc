@@ -1,0 +1,61 @@
+= RCB(1)
+include::_rcb-shared.adoc[tags=header]
+
+== NAME
+
+rcb - file recycling utility
+
+== SYNOPSIS
+
+*rcb* [_command_] [_options_] [_arguments_] +
+*rcb* [_command_] [_arguments_] [_options_] +
+*rcb* [_command_] [_options_] +
+*rcb* [_command_] [_arguments_] +
+*rcb* [_options_] +
+
+== DESCRIPTION
+
+File recycling utility for the terminal that can delete, restore, erase, list and validate files.
+
+== RCB OPTIONS
+
+*$ rcb* _--help_, _-h_ +
+Gives basic usage information for the program. When paired with a command it changes the output of basic usage.
+
+For example these two will have different usage outputs: +
+*$ rcb* _delete_ _--help_ +
+*$ rcb* _--help_ +
+
+*$ rcb* _--version_ +
+Gives the version of the rcb program.
+
+== SUB COMMANDS
+[cols="1,1"]
+|===
+|*delete*   | *d*
+|*list*     | *l*
+|*restore*  | *r*
+|*erase*    | *e*
+|*validate* | *v*
+|===
+== ENVIRONMENT
+
+*RCB_DIR* +
+The directory where the _rcb/_ folder will be located. Defaults to _$HOME/.rcb/_. The directory filename before the last delimiter will be used as the root of the rcb directory name.
+
+E.G: *$ export RCB_DIR=/home/user/.local/shared/.rcbAlt/*, will make _.rcbAlt/_ become the rcb directory name.
+
+== MANUAL ENTRIES
+
+xref:rcb.adoc[rcb] +
+xref:rcb-delete.adoc[rcb-delete] +
+xref:rcb-list.adoc[rcb-list] +
+xref:rcb-restore.adoc[rcb-restore] +
+xref:rcb-erase.adoc[rcb-erase] +
+xref:rcb-validate.adoc[rcb-validate] +
+
+== SEE ALSO
+
+Public repository available at: https://github.com/Isfand/rcb
+
+include::_rcb-shared.adoc[tags=footer]

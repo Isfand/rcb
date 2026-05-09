@@ -1,0 +1,51 @@
+= RCB-VALIDATE(1)
+include::_rcb-shared.adoc[tags=header]
+
+== NAME
+
+rcb-validate - validate files in rcb
+
+== SYNOPSIS
+*rcb validate* [_options_] +
+ 
+== DESCRIPTION
+The validate command allows for missing data correction or removal of dangling files or data.
+ 
+== VALIDATE OPTIONS
+*--help*, *-h* +
+[.indent]
+Prints basic usage of rcb validate.
+ 
+*--verbose*, *-v* +
+[.indent]
+Provides verbose information to console.
+ 
+*--yes*, *-y* +
+[.indent]
+Forces action(s) without user prompts
+ 
+*--silent*, *-s* +
+[.indent]
+Silences output to console
+ 
+*--all*, *-a* +
+[.indent]
+Executes all validations.
+ 
+*--file*, *-F* +
+[.indent]
+Removes dangling file(s) inside file/ with no corresponding record inside data/
+ 
+*--data*, *-D* +
+[.indent]
+Removes dangling record(s) inside wipe/ with no corresponding file inside file/
+ 
+*--wipe*, *-W* +
+[.indent]
+Removes dangling file(s) left inside wipe/
+ 
+*--fill-directorysize* +
+[.indent]
+Evaluates size:NULL of filetype:directory of record(s) inside data/
+
+include::_rcb-shared.adoc[tags=footer]
