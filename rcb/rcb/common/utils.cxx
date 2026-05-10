@@ -9,7 +9,6 @@
 #include <regex>
 #include <set>
 #include <string>
-#include <unordered_set>
 
 #include "utils.hxx"
 #include "rcb/platform/aci/aci.hxx"
@@ -392,109 +391,42 @@ std::string dataUnitConversion()
 	return "";
 }
 
-//DESCRIPTION: renameFile renames the filename(string) by first getting the stem()
-//Getting the extension by checking stringDifference() between the stem() and the originalFile's filename.
-//Incrementing the filename in format *(n)
-//Finally combining the the incremented filename with the extension.
+//Rename a file as (.)filename(n).*
+//Multi-part extensions exist. They can also be generated. This is the safest option.
+//Note: This does does ignore negative values and will just append (1).
 void renameFile(std::string& file)
 {
-	const std::string originalFile = file;
-	std::string mutFile = file;
+	std::string_view view(file);
 
-	// Set of known multi-part extensions
-	// Can make these into regexs instead of hard-coded values. E.G .tar.*, .7z.* or .tar.xz.* for any extension.
-	const std::unordered_set<std::string> knownMultiPartExtensions =
-	{
-		".tar.gz", ".tar.bz2", ".tar.xz", ".tar.zst", ".tar.lz", ".tar.lzma"
-	};
+	// Split by position — no hardcoded extensions needed
+	std::size_t name_start = (!view.empty() && view[0] == '.') ? 1 : 0; // skip hidden dot
+	auto ext_dot            = view.find('.', name_start);                // first real extension dot
 
-	// Function to remove known multi-part extensions & single extensions
-	auto getStem = [&knownMultiPartExtensions](const std::filesystem::path& filePath) -> std::string
+	const std::string_view leading = view.substr(0, name_start);        // "" or "."
+	std::string            base    = std::string(view.substr(name_start, ext_dot - name_start));
+	const std::string_view ext     = (ext_dot == std::string_view::npos) ? "" : view.substr(ext_dot);
+
+	// Increment (n) counter in base name
+	if (base.size() >= 3 && base.back() == ')')
 	{
-		std::filesystem::path temp = filePath;
-		std::string ext = temp.extension().string(); //unused
-	
-		// Check if the full known extension exists
-		for (const std::string& knownExt : knownMultiPartExtensions)
+		std::size_t open = base.rfind('(');
+		if (open != std::string::npos && open < base.size() - 2)
 		{
-			if (temp.string().size() > knownExt.size() && 
-				temp.string().substr(temp.string().size() - knownExt.size()) == knownExt)
+			std::string_view num_str(base.c_str() + open + 1, base.size() - open - 2);
+			bool all_digits = !num_str.empty() && std::all_of(num_str.begin(), num_str.end(), ::isdigit);
+
+			if (all_digits)
 			{
-				// Remove full known extension
-				return temp.string().substr(0, temp.string().size() - knownExt.size());
+				int n = std::stoi(std::string(num_str)) + 1;
+				base  = base.substr(0, open + 1) + std::to_string(n) + ")";
+				file  = std::string(leading) + base + std::string(ext);
+				return;
 			}
 		}
+	}
 
-		// If no known multi-part extension, just return regular stem()
-		return temp.stem().string();
-	};
-
-	//Used for getting extension.
-	auto stringDifference = [](const std::string& str1, const std::string& str2) -> std::string
-	{
-		auto [it1, it2] = std::mismatch(str1.begin(), str1.end(), str2.begin(), str2.end());
-		return (str1.size() > str2.size()) ? std::string(it1, str1.end()) : std::string(it2, str2.end());
-	};
-	
-	auto incrementFilename = [](std::string& filename) -> std::string
-	{
-		// Check if the filename is long enough to have "(n)" at the end
-		if (filename.size() < 4)
-		{
-			return filename + "(1)";  // Too short, so just append (1)
-		}
-	
-		// Check if the filename ends with ')'
-		if (filename[filename.size() - 1] != ')')
-		{
-			return filename + "(1)";  // No parentheses at the end, so append (1)
-		}
-	
-		// Find the position of the last '(' before ')'
-		size_t openParenPos = filename.rfind('(');
-		if (openParenPos == std::string::npos || openParenPos == filename.size() - 2)
-		{
-			return filename + "(1)";  // No '(' or no digits between parentheses
-		}
-	
-		// Check if the characters between '(' and ')' are digits
-		bool isValidNumber = true;
-		for (size_t i = openParenPos + 1; i < filename.size() - 1; ++i)
-		{
-			if (!std::isdigit(filename[i])) {
-				isValidNumber = false;
-				break;
-			}
-		}
-	
-		if (isValidNumber)
-		{
-			// Extract the number between parentheses and increment it
-			size_t startPos = openParenPos + 1;
-			size_t endPos = filename.size() - 1;
-			int number = std::stoll(filename.substr(startPos, endPos - startPos)) + 1;
-			
-			// Create new filename with incremented number
-			filename = filename.substr(0, openParenPos + 1) + std::to_string(number) + ")";
-		}
-		else
-		{
-			// If the parentheses don't contain a valid number, append (1)
-			filename = filename + "(1)";
-		}
-	
-		// Return the modified filename with the original extension
-		return filename;
-	};
-
-	// Get stem
-	mutFile = getStem(mutFile);
-
-	// Extract the extension using stringDifference
-	std::string extension = stringDifference(mutFile, originalFile);
-
-	// Increment the filename and append the correct extension
-	file = incrementFilename(mutFile) + extension;
+	// No (n) suffix yet — append (1)
+	file = std::string(leading) + base + "(1)" + std::string(ext);
 }
 
 //TODO. The first two can be passed as a single variable. Needs Revising.
