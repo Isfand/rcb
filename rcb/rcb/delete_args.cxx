@@ -53,12 +53,6 @@ void DeleteArgs::run(std::vector<std::string>& args)
 			} 
 			else if(args.at(i) == "--force" || args.at(i) == "-f")
 			{
-				//TODO: Use for critical files/directories such as .rcb/, /*,
-				//Just for '/' Add a 'special' message as default without --force.
-				//Make the prompt red to get their attention.
-				//Add a \a sound as-well for the non-force in case they are colour blind.
-				
-				//unused
 				m_dOpt.forceOption = true;
 				m_erasePositions.push_back(i);
 			}
