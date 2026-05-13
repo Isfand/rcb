@@ -7,6 +7,8 @@
 namespace rcb{
 
 Singleton* Singleton::s_instance = nullptr;
+
+//Note: consider using atomic<bool> for deallocated recreations
 std::once_flag Singleton::s_flag;
 
 //std::once_flag Singleton::s_setVerboseOptionFlag;
