@@ -14,4 +14,4 @@ url: https://github.com/Isfand/rcb
 requires: c++23
 depends: * build2 >= 0.16.0
 depends: * bpkg >= 0.16.0
-depends: libsqlite3 ^3.45.3+1
+depends: libsqlite3 ^3.51.3+1
