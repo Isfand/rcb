@@ -6,6 +6,6 @@ import libs += libsqlite3%lib{sqlite3}
 info "detected: $cc.target.class"
 
 exe{rcb}: {hxx ixx txx cxx}{** -***/platform/aci/posix/**} $libs: include = ($cc.target.class == 'windows')
-exe{rcb}: {hxx ixx txx cxx}{** -***/platform/aci/windows/**} $libs: include = ($cc.target.class != 'windows')
+exe{rcb}: {hxx ixx txx cxx}{** -***/platform/aci/win32/**} $libs: include = ($cc.target.class != 'windows')
 
 cxx.poptions =+ "-I$out_root" "-I$src_root"

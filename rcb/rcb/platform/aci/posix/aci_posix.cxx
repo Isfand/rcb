@@ -16,7 +16,7 @@
 #include <sys/sysmacros.h>
 #endif
 
-#include "posix.hxx"
+#include "aci_posix.hxx"
 
 namespace aci{
 
