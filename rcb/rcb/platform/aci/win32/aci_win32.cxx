@@ -15,7 +15,7 @@
 #include <shobjidl.h>
 #include <sddl.h>
 
-#include "windows.hxx"
+#include "aci_win32.hxx"
 
 namespace aci{
 

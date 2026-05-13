@@ -5,9 +5,9 @@
 //TODO: Use the PIMPL design pattern or a forward declaration to hide this header to prevent C pollution.
 //Or just wait for C++ Modules to be fully implemented.
 #if defined(__unix__) || defined(__APPLE__)
-#include "posix/posix.hxx"
+#include "posix/aci_posix.hxx"
 #elif defined(_WIN32) && !defined(__CYGWIN__)
-#include "windows/windows.hxx"
+#include "win32/aci_win32.hxx"
 #endif
 
 //Access Control Interface
