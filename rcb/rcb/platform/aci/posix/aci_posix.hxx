@@ -1,7 +1,8 @@
 #if defined(__unix__) || defined(__APPLE__)
+
 #pragma once
-#ifndef POSIX_HXX
-#define POSIX_HXX
+#ifndef ACI_POSIX_HXX
+#define ACI_POSIX_HXX
 
 #include <vector>
 #include <string>
@@ -104,6 +105,6 @@ private:
 
 }//namespace aci
 
-#endif //UNIX_HXX
+#endif //ACI_POSIX_HXX
 
 #endif //#if defined(__unix__) || defined(__APPLE__)

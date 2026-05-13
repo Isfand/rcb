@@ -1,8 +1,8 @@
 #if defined(_WIN32) && !defined(__CYGWIN__)
 
 #pragma once
-#ifndef WINDOWS_HXX
-#define WINDOWS_HXX
+#ifndef ACI_WIN32_HXX
+#define ACI_WIN32_HXX
 
 #include <string>
 #include <vector>
@@ -102,6 +102,6 @@ private:
 
 }//namespace aci
 
-#endif //WINDOWS_HXX
+#endif //ACI_WIN32_HXX
 
 #endif //#if defined(_WIN32) && !defined(__CYGWIN__)
