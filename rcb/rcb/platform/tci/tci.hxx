@@ -11,7 +11,7 @@
 //Terminal Control Interface
 namespace tci{
 
-using termsize = termsize;
+using Termsize = Termsize;
 
 }//namespace tci
 
