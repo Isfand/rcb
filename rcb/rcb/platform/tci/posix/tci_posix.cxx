@@ -9,7 +9,7 @@
 namespace tci{
 
 
-termsize::termsize()
+Termsize::Termsize()
 {
 	winsize w;
 

@@ -7,7 +7,7 @@
 
 namespace tci{
 
-termsize::termsize()
+Termsize::Termsize()
 {
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);

@@ -6,11 +6,11 @@
 
 namespace tci{
 
-struct termsize
+struct Termsize
 {
 	unsigned short row;
 	unsigned short col;
-	termsize();
+	Termsize();
 };
 
 }//namespace tci
