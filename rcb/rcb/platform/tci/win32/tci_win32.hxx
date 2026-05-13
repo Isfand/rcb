@@ -6,6 +6,13 @@
 
 namespace tci{
 
+struct termsize
+{
+	unsigned short row;
+	unsigned short col;
+	termsize();
+};
+
 }//namespace tci
 
 #endif //TCI_WIN32_HXX
