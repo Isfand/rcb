@@ -1,5 +1,6 @@
 #if defined(_WIN32) && !defined(__CYGWIN__)
 
+#include <iostream>
 #include <stdexcept>
 #include <vector>
 #include <string>
