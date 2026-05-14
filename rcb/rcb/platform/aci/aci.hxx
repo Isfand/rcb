@@ -21,6 +21,11 @@ using User      = User;
 using Pwuid     = Pwuid;
 using Pwnam     = Pwnam;
 
+using Termsize = Termsize;
+
+//TODO: add isatty() from unistd.h. 
+//Need to know if the program is called in a terminal or is being piped. Pass in kernel fds
+
 }//namespace aci
 
 #endif //PLATFORM_ACI_HXX
