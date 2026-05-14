@@ -69,6 +69,7 @@ void Erase::allFile()
 	Erase::file(vList);
 }
 
+//TODO: past() is very similar across erase, list, restore. Find a way to share past()
 void Erase::past()
 {
 	//TODO. add silence to guard the return cerr text
@@ -79,7 +80,7 @@ void Erase::past()
 		
 		if (return_code == 0)
 		{
-			std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} > {3};", 
+			std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} >= {3};", 
 				g_kSchemaID, g_kProgName, g_kSchemaTimestamp, timestamp)) };
 			Erase::file(vList);
 		}

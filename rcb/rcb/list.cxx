@@ -68,6 +68,7 @@ void List::file(const std::vector<std::string>& args)
 			m_defaultSQLQuery, g_kSchemaID, arg)));
 }
 
+//TODO: past() is very similar across erase, list, restore. Find a way to share past()
 void List::past()
 {
 	//TODO. add silence to guard the return cerr text
@@ -78,7 +79,7 @@ void List::past()
 
 		if (return_code == 0)
 		{
-			std::vector<std::string> vList = m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} > {3};", 
+			std::vector<std::string> vList = m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} >= {3};", 
 				g_kSchemaID, g_kProgName, g_kSchemaTimestamp, timestamp));
 			List::file(vList);
 		}
