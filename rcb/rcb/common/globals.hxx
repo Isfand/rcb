@@ -8,7 +8,7 @@ namespace rcb{
 
 //Project
 inline constexpr const char* g_kProgName        {"rcb"};
-inline constexpr const char* g_kProgVersion     {"0.13.0"};
+inline constexpr const char* g_kProgVersion     {"0.14.0"};
 
 //Env: Currently only used in env.cxx
 inline constexpr const char* g_kEnvFile         {"file"};
