@@ -39,9 +39,6 @@ void ValidateArgs::run(std::vector<std::string>& args)
 			}
 			else if (args.at(i) == "--all" || args.at(i) == "-a")
 			{
-#ifndef NDEBUG
-				std::println("validate all triggered");
-#endif
 				m_vOpt.fileOption = true;
 				m_vOpt.dataOption = true;
 				m_vOpt.wipeOption = true;
@@ -49,51 +46,26 @@ void ValidateArgs::run(std::vector<std::string>& args)
 			}
 			else if (args.at(i) == "--verbose" || args.at(i) == "-v")
 			{
-#ifndef NDEBUG
-				std::println("validate verbose triggered");
-#endif
 				m_vOpt.verboseOption = true;
 			}
 			else if (args.at(i) == "--yes" || args.at(i) == "-y")
 			{
-#ifndef NDEBUG
-				std::println("validate yes triggered");
-#endif
 				m_vOpt.yesOption = true;
-			}
-			else if (args.at(i) == "--silent" || args.at(i) == "-s")
-			{
-#ifndef NDEBUG
-				std::println("validate silent triggered");
-#endif
-				m_vOpt.silentOption = true;
 			}
 			else if (args.at(i) == "--file" || args.at(i) == "-F")
 			{
-#ifndef NDEBUG
-				std::println("validate file triggered");
-#endif
 				m_vOpt.fileOption = true;
 			}
 			else if (args.at(i) == "--data" || args.at(i) == "-D")
 			{
-#ifndef NDEBUG
-				std::println("validate data triggered");
-#endif
 				m_vOpt.dataOption = true;
 			}
 			else if (args.at(i) == "--wipe" || args.at(i) == "-W")
 			{
-#ifndef NDEBUG
-				std::println("validate wipe triggered");
-#endif
 				m_vOpt.wipeOption = true;
 			}
 			else if (args.at(i) == "--fill-directorysize")
 			{
-#ifndef NDEBUG
-				std::println("fill directory size triggered");
-#endif
 				m_vOpt.fillDirSizeOption = true;
 			}
 			else

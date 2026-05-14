@@ -16,7 +16,6 @@ struct RestoreOptions
 	bool forceReplaceOption{};
 	bool forceRenameOption{};
 	bool forceRecreateDirectoryOption{};
-	bool silentOption{};
 	bool previousOption{};
 
 	bool pastOption{};

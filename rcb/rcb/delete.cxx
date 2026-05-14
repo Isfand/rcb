@@ -17,7 +17,6 @@ Delete::Delete(const std::vector<std::string>& args, const DeleteOptions& dOpt) 
 #ifndef NDEBUG
 	std::println("verboseOption is:   {}", m_dOpt.verboseOption);
 	std::println("forceOption is:     {}", m_dOpt.forceOption); //Unused
-	std::println("silentOption is:    {}", m_dOpt.silentOption);
 	std::println("noDirSizeOption is: {}", m_dOpt.noDirSizeOption);
 #endif
 	m_currentExecutionID = incrementExecutionID();
@@ -40,8 +39,7 @@ void Delete::file(const std::vector<std::string>& args)
 			//Need to use systemFilePath for the full path. Relativity creates issues.
 			if (!canMvFileChk(std::filesystem::directory_entry(systemFilePath)))
 			{
-				if(!m_dOpt.silentOption)
-					std::println("process execution user {} is missing write/execute permissions for parent directory of {} ", g_singleton->getWorkingUsername(), systemFilePath.string());
+				std::println("process execution user {} is missing write/execute permissions for parent directory of {} ", g_singleton->getWorkingUsername(), systemFilePath.string());
 				continue;
 			}
 
@@ -69,7 +67,7 @@ void Delete::file(const std::vector<std::string>& args)
 					std::filesystem::file_type::directory) 
 				{
 					//TODO: Can create something that force adds read permissions for the execution user. This can be used to create a --force-save-directorysize.
-					if(!m_dOpt.silentOption && !m_dOpt.forceOption)
+					if(!m_dOpt.forceOption)
 						std::println("cannot save directory size, process execution user {} is missing read permissions for directory {}\nUse --force or explicitly --no-directorysize",
 						g_singleton->getWorkingUsername(), systemFilePath.string());
 				}
@@ -78,7 +76,7 @@ void Delete::file(const std::vector<std::string>& args)
 			}
 			catch(const std::filesystem::filesystem_error& e)
 			{
-				if(!m_dOpt.silentOption) std::println("{}", e.what());
+				std::println("{}", e.what());
 				//Using continue to allow the other args to be processed.
 				continue;
 			}
@@ -97,8 +95,7 @@ void Delete::file(const std::vector<std::string>& args)
 					//Insert data failed
 					//TODO: Instead of just deleting the highest value, check against every detail held in memory with the database record. *Added 2nd try catch above to prevent removing existing data if insertData fails.
 					m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}=(SELECT MAX({1}) FROM {0});", g_kProgName, g_kSchemaID));
-					if(!m_dOpt.silentOption)
-						std::println("cannot move file. insufficient permissions");
+					std::println("cannot move file. insufficient permissions");
 					continue;
 				}
 			}
@@ -117,16 +114,14 @@ void Delete::file(const std::vector<std::string>& args)
 					//Insert data failed
 					//TODO: Instead of just deleting the highest value, check against every detail held in memory with the database record. *Added 2nd try catch above to prevent removing existing data if insertData fails.
 					m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}=(SELECT MAX({1}) FROM {0});", g_kProgName, g_kSchemaID));
-					if(!m_dOpt.silentOption)
-						std::println("cannot move file. insufficient permissions");
+					std::println("cannot move file. insufficient permissions");
 					continue;
 				}
 			}
 		}
 		else
 		{
-			if(!m_dOpt.silentOption)
-				std::println("path doesn't exist: {0}", systemFilePath.string());
+			std::println("path doesn't exist: {0}", systemFilePath.string());
 		}
 	}
 }

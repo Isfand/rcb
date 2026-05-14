@@ -68,7 +68,7 @@ void List::file(const std::vector<std::string>& args)
 			m_defaultSQLQuery, g_kSchemaID, arg)));
 }
 
-//TODO: past() is very similar across erase, list, restore. Find a way to share past()
+//TODO: past() is the same across erase, list, restore. Reduce to one.
 void List::past()
 {
 	//TODO. add silence to guard the return cerr text

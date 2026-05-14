@@ -107,7 +107,7 @@ bool canMvFileChk(const std::filesystem::directory_entry& entry)
 }
 
 //WARNING: does not recursively check read permissions.
-//Note: access() can do the same thing
+//Note: faccessat() can do the same thing. It can also optionally not follow symlinks with AT_SYMLINK_NOFOLLOW
 bool canReadDir(const std::filesystem::directory_entry& entry)
 {
 	auto perms = getFilePerms(entry.path());

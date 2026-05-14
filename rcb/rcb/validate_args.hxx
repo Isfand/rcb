@@ -11,7 +11,6 @@ struct ValidateOptions
 {
 	bool verboseOption{};
 	bool yesOption{};
-	bool silentOption{};
 	bool fileOption{};
 	bool dataOption{};
 	bool wipeOption{};

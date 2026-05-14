@@ -116,8 +116,6 @@ For files inside external devices you cannot use 'rename()'. Instead use 'copy_f
 Managed by parser. Options end after this point \
 **--verbose** \
 Print extra information on program state \
-**--silent** \
-Prevent printing anything with auto default(s). \
 **--force** \
 Force file deletion if possible. \
 **--no-directorysize** \
@@ -144,8 +142,6 @@ Restore by replacing any existing file from original path. \
 Restore by renaming any existing file from original path by incrementing filename. \
 **--force-recreate-directory**\
 Restore by recreating any directories leading up-to the original filepath. \
-**--silent** \
-Prevent printing anything with auto default(s). \
 **--previous** \
 Restores file(s) with record(s) with the highest execution number. \
 **--past \<n>(unit)** \
@@ -183,8 +179,6 @@ Remove the files by record id number(s) entered \
 Remove every file recorded inside data/ by id. Check against 'file' column for matching values that correspond to a file inside file/ \
 **--verbose** \
 Print extra information on program state. \
-**--silent** \
-Prevent printing anything with auto default(s). \
 **--force** \
 Do not ask the user for input. Perform the action(s) requested. \
 **--previous** \
@@ -210,8 +204,6 @@ Checks for dangling file(s) in wipe/ that exist. \
 Checks for 'NULL' directory sizes and evaluates them. \
 **--verbose** \
 Print extra information on program state. \
-**--silent** \
-Prevent printing anything with auto default(s). \
 **--yes** \
 Do not ask the user for input. Perform the action(s) requested.
 

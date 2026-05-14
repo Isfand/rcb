@@ -38,66 +38,36 @@ void RestoreArgs::run(std::vector<std::string>& args)
 			} 
 			else if (args.at(i) == "--all" || args.at(i) == "-a")
 			{
-#ifndef NDEBUG
-				std::println("restore all triggered");
-#endif
 				m_rOpt.allOption = true;
 				m_erasePositions.push_back(i);
 			}
 			else if (args.at(i) == "--verbose" || args.at(i) == "-v")
 			{
-#ifndef NDEBUG
-				std::println("restore verbose triggered");
-#endif
 				m_rOpt.verboseOption = true;
 				m_erasePositions.push_back(i);
 			}
 			else if (args.at(i) == "--force" || args.at(i) == "-f")
 			{
-#ifndef NDEBUG
-				std::println("restore force triggered");
-#endif
 				m_rOpt.forceOption = true;
 				m_erasePositions.push_back(i);
 			}
 			else if (args.at(i) == "--force-replace")
 			{
-#ifndef NDEBUG
-				std::println("restore force-replace triggered");
-#endif
 				m_rOpt.forceReplaceOption = true;
 				m_erasePositions.push_back(i);
 			}
 			else if (args.at(i) == "--force-rename")
 			{
-#ifndef NDEBUG
-				std::println("restore force-rename triggered");
-#endif
 				m_rOpt.forceRenameOption = true;
 				m_erasePositions.push_back(i);
 			}
 			else if (args.at(i) == "--force-recreate-directory")
 			{
-#ifndef NDEBUG
-				std::println("restore force-recreate-directory triggered");
-#endif
 				m_rOpt.forceRecreateDirectoryOption = true;
-				m_erasePositions.push_back(i);
-			}
-			else if (args.at(i) == "--silent" || args.at(i) == "-s")
-			{
-#ifndef NDEBUG
-				std::println("restore silent triggered");
-#endif
-				m_rOpt.silentOption = true;
 				m_erasePositions.push_back(i);
 			}
 			else if (args.at(i) == "--past")
 			{
-#ifndef NDEBUG
-				std::println("restore present triggered");
-#endif
-
 				if (i + 1 < args.size())
 				{
 					m_rOpt.pastOption = true;
@@ -114,17 +84,11 @@ void RestoreArgs::run(std::vector<std::string>& args)
 			}
 			else if (args.at(i) == "--previous")
 			{
-#ifndef NDEBUG
-				std::println("restore previous triggered");
-#endif
 				m_rOpt.previousOption = true;
 				m_erasePositions.push_back(i);
 			}
 			else if (args.at(i) == "--sql")
 			{
-#ifndef NDEBUG
-				std::println("sql triggered");
-#endif
 				if (i + 1 < args.size())
 				{
 					m_rOpt.sqlOption = true;
