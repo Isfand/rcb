@@ -22,7 +22,6 @@ Restore::Restore(const std::vector<std::string>& args, const RestoreOptions& rOp
 	std::println("forceReplaceOption is:     {}", m_rOpt.forceReplaceOption);
 	std::println("forceRenameOption is:      {}", m_rOpt.forceRenameOption);
 	std::println("forceRecreateDirectory is: {}", m_rOpt.forceRecreateDirectoryOption);
-	std::println("silentOption is:           {}", m_rOpt.silentOption);
 	std::println("sqlOption is:              {}", m_rOpt.sqlOption);
 #endif
 	Restore::file(args);
@@ -78,13 +77,12 @@ void Restore::file(const std::vector<std::string>& args)
 					}
 					catch(const std::exception& e)
 					{
-						if(!m_rOpt.silentOption) std::cerr << "Error creating directories: " << e.what() << std::endl;
+						std::cerr << "Error creating directories: " << e.what() << std::endl;
 					}
 				}
 				else
 				{
-					if(!m_rOpt.silentOption)
-						std::println("no (w,x) permissions for {0}. cannot force recreate original directory path", dep.string());
+					std::println("no (w,x) permissions for {0}. cannot force recreate original directory path", dep.string());
 					continue;
 				};
 			}
@@ -101,8 +99,7 @@ void Restore::file(const std::vector<std::string>& args)
 			//Check for permissions on the original path
 			if(!canMvFileChk(std::filesystem::directory_entry(originalPath)))
 			{
-				if(!m_rOpt.silentOption)
-					std::println("process execution user {} is missing write/execute permissions for parent directory of {} ", g_singleton->getWorkingUsername(), originalPath.string());
+				std::println("process execution user {} is missing write/execute permissions for parent directory of {} ", g_singleton->getWorkingUsername(), originalPath.string());
 				continue;
 			}
 
@@ -120,7 +117,7 @@ void Restore::file(const std::vector<std::string>& args)
 				}
 				catch(const std::exception& e)
 				{
-					if(!m_rOpt.silentOption) std::cerr << e.what() << std::endl;
+					std::cerr << e.what() << std::endl;
 					continue;
 				}
 
@@ -143,7 +140,7 @@ void Restore::file(const std::vector<std::string>& args)
 				}
 				catch(const std::exception& e)
 				{
-					if(!m_rOpt.silentOption) std::cerr << e.what() << std::endl;
+					std::cerr << e.what() << std::endl;
 					continue;
 				}
 
@@ -158,8 +155,7 @@ void Restore::file(const std::vector<std::string>& args)
 		}
 		else
 		{
-			if(!m_rOpt.silentOption)
-				std::println("restore failed: {0}", arg);
+			std::println("restore failed: {0}", arg);
 			//NOTICE: Add continue; if adding something below this line
 		}
 	}
@@ -180,7 +176,7 @@ void Restore::allFile()
 	Restore::file(vList);
 }
 
-//TODO: past() is very similar across erase, list, restore. Find a way to share past()
+//TODO: past() is the same across erase, list, restore. Reduce to one.
 void Restore::past()
 {
 	for(auto format : m_rOpt.timeVec)
@@ -193,9 +189,9 @@ void Restore::past()
 			std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} >= {3};", g_kSchemaID, g_kProgName, g_kSchemaTimestamp, timestamp)) };
 			Restore::file(vList);
 		}
-		else if(return_code == 1 && !m_rOpt.silentOption) std::cerr << "error: units not found\n";
-		else if(return_code == 2 && !m_rOpt.silentOption) std::cerr << "error: invalid format " << format << "\n";
-		else if(return_code == 3 && !m_rOpt.silentOption) std::cerr << "unexpected failure\n";
+		else if(return_code == 1) std::cerr << "error: units not found\n";
+		else if(return_code == 2) std::cerr << "error: invalid format " << format << "\n";
+		else if(return_code == 3) std::cerr << "unexpected failure\n";
 	}
 }
 
@@ -228,7 +224,7 @@ bool Restore::progFileExists(const std::string& stagedFile)
 
 	bool result = Verity(std::filesystem::directory_entry(filePath)).exists; // ? true : false;
 
-	if(!result && !m_rOpt.silentOption)
+	if(!result)
 		std::println("Failed to restore file: \"{0}\"\nfile to restore is missing in \"{1}\"", stagedFile, g_singleton->getWorkingProgFileDir().string());
 
 	//TODO; Needs semantic correction

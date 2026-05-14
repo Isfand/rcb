@@ -19,7 +19,6 @@ Erase::Erase(const std::vector<std::string>& args, const EraseOptions& eOpt) : m
 	std::println("pastOption is:     {}", m_eOpt.pastOption);
 	std::println("previousOption is: {}", m_eOpt.previousOption);
 	std::println("verboseOption is:  {}", m_eOpt.verboseOption); //Unused
-	std::println("silentOption is:   {}", m_eOpt.silentOption);
 	std::println("sqlOption is:      {}", m_eOpt.sqlOption);
 #endif
 	Erase::file(args);
@@ -44,7 +43,7 @@ void Erase::file(const std::vector<std::string>& args)
 		}
 		catch (std::filesystem::filesystem_error& e) 
 		{
-			if(!m_eOpt.silentOption) std::cerr << e.what() << "\n";
+			std::cerr << e.what() << "\n";
 			continue;
 		}
 		//Once removed then delete from database
@@ -69,7 +68,7 @@ void Erase::allFile()
 	Erase::file(vList);
 }
 
-//TODO: past() is very similar across erase, list, restore. Find a way to share past()
+//TODO: past() is the same across erase, list, restore. Reduce to one.
 void Erase::past()
 {
 	//TODO. add silence to guard the return cerr text
@@ -84,9 +83,9 @@ void Erase::past()
 				g_kSchemaID, g_kProgName, g_kSchemaTimestamp, timestamp)) };
 			Erase::file(vList);
 		}
-		else if(return_code == 1 && !m_eOpt.silentOption) std::cerr << "error: units not found\n";
-		else if(return_code == 2 && !m_eOpt.silentOption) std::cerr << "error: invalid format " << format << "\n";
-		else if(return_code == 3 && !m_eOpt.silentOption) std::cerr << "unexpected failure\n";
+		else if(return_code == 1) std::cerr << "error: units not found\n";
+		else if(return_code == 2) std::cerr << "error: invalid format " << format << "\n";
+		else if(return_code == 3) std::cerr << "unexpected failure\n";
 	}
 }
 

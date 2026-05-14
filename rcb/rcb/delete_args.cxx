@@ -56,11 +56,6 @@ void DeleteArgs::run(std::vector<std::string>& args)
 				m_dOpt.forceOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if(args.at(i) == "--silent" || args.at(i) == "-s")
-			{
-				m_dOpt.silentOption = true;
-				m_erasePositions.push_back(i);
-			}
 			else if(args.at(i) == "--no-directorysize")
 			{
 				m_dOpt.noDirSizeOption = true;
