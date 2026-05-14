@@ -23,11 +23,7 @@ Provides verbose information to console.
 *--yes*, *-y* +
 [.indent]
 Forces action(s) without user prompts
- 
-*--silent*, *-s* +
-[.indent]
-Silences output to console
- 
+
 *--all*, *-a* +
 [.indent]
 Executes all validations.

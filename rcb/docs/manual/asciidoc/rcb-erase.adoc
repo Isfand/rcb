@@ -55,10 +55,6 @@ Will erase all files that were deleted 10 minutes ago. +
 [.indent]
 Erase file(s) by highest execution. Execution is the order in which files were deleted together under the same process.
  
-*--silent*, *-s* +
-[.indent]
-Silences output to console
- 
 *--sql* _<s>_ +
 [.indent]
 _WARNING UNSAFE:_ Insert sql statement directly for erase. Must return ID. +

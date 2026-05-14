@@ -31,10 +31,6 @@ Prints basic usage of rcb delete.
 [.indent]
 Provides verbose information to console.
  
-*--silent*, *-s* +
-[.indent]
-Silences output to console.
- 
 *--force*, *-f* +
 [.indent]
 Forces file deletion.
