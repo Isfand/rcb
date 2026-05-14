@@ -180,6 +180,7 @@ void Restore::allFile()
 	Restore::file(vList);
 }
 
+//TODO: past() is very similar across erase, list, restore. Find a way to share past()
 void Restore::past()
 {
 	for(auto format : m_rOpt.timeVec)
@@ -189,7 +190,7 @@ void Restore::past()
 		
 		if (return_code == 0)
 		{
-			std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} > {3};", g_kSchemaID, g_kProgName, g_kSchemaTimestamp, timestamp)) };
+			std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} >= {3};", g_kSchemaID, g_kProgName, g_kSchemaTimestamp, timestamp)) };
 			Restore::file(vList);
 		}
 		else if(return_code == 1 && !m_rOpt.silentOption) std::cerr << "error: units not found\n";
