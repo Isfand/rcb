@@ -1,5 +1,6 @@
 #if defined(__unix__) || defined(__APPLE__)
 
+#include <iostream>
 #include <stdexcept>
 #include <cstring>
 #include <vector>
@@ -11,6 +12,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/ioctl.h>
 
 // For GNU libc & musl this provides the proper macros.
 #if __has_include(<sys/sysmacros.h>)
@@ -25,6 +27,7 @@ namespace aci{
 //TODO: Add overloads for std::string for all. Or use a template.
 //TODO: For readability create new aliases that resemble the posix ones as close as possible.
 
+/* STAT */
 Stat::Stat(const char* filePath)
 {
 	//stat will follow symlinks. lstat will not.
@@ -104,6 +107,7 @@ unsigned long long Stat::st_uid()     const
 	return m_stat.st_uid;
 };
 
+/* CHOWN */
 Chown::Chown(const char* path, unsigned long long new_uid, unsigned long long new_gid)
 {
 	if (change_owner(path, new_uid, new_gid) == -1ULL) throw std::runtime_error("Failed to change owner");
@@ -113,6 +117,7 @@ unsigned long long Chown::change_owner(const char* path, unsigned long long new_
 	return chown(path, new_uid, new_gid);
 }
 
+/* UTIME */
 Utime::Utime(const char* path, long long new_atime, long long new_mtime)
 {
 	if (change_times(path, new_atime, new_mtime) == -1ULL) throw std::runtime_error("Failed to change time");
@@ -137,6 +142,7 @@ unsigned long long Utime::change_times(const char* path, long long new_atime, lo
 //	return utimensat(AT_FDCWD, path, times, 0);
 //}
 
+/* USER */
 unsigned long long User::uid()
 {
 	return getuid();
@@ -162,6 +168,7 @@ std::vector<unsigned long long> User::groups()
 	return groups;
 }
 
+/* PWUID */
 Pwuid::Pwuid(unsigned long long id) : m_id{id}
 {
 	m_pwuid = getpwuid(m_id);
@@ -195,6 +202,7 @@ unsigned long long Pwuid::pw_uid() const
 	return m_pwuid->pw_uid;
 }
 
+/* PWNAM */
 Pwnam::Pwnam(const char* name) : m_name{name}
 {
 	m_pwnam = getpwnam(m_name);
@@ -226,6 +234,24 @@ std::string Pwnam::pw_shell() const
 unsigned long long Pwnam::pw_uid() const
 {
 	return m_pwnam->pw_uid;
+}
+
+/* TERMSIZE */
+Termsize::Termsize()
+{
+	winsize w;
+
+	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == -1)
+	{
+		std::cerr << "ioctl failed\n";
+		this->row = 0;
+		this->col = 0;
+		return; //return 1;
+	}
+	//return 0;
+
+	this->col = w.ws_col;
+	this->row = w.ws_row;
 }
 
 }//namespace aci

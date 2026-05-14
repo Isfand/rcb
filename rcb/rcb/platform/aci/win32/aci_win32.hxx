@@ -100,6 +100,13 @@ private:
 	struct passwd* m_pwnam;
 };
 
+struct Termsize
+{
+	unsigned short row;
+	unsigned short col;
+	Termsize();
+};
+
 }//namespace aci
 
 #endif //ACI_WIN32_HXX

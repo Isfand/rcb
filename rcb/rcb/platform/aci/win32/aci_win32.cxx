@@ -19,6 +19,7 @@
 
 namespace aci{
 
+/* STAT */
 Stat::Stat(const char* filePath)
 {
 	//HANDLE handleFile = CreateFileA(
@@ -107,6 +108,7 @@ unsigned long long Stat::st_uid()     const
 	return 0;
 };
 
+/* CHOWN */
 Chown::Chown(const char* path, unsigned long long new_uid, unsigned long long new_gid)
 {
 
@@ -125,6 +127,7 @@ unsigned long long Utime::change_times(const char* path, long long new_atime, lo
 	return 0;
 }
 
+/* USER */
 User::User()
 {
 	HANDLE hToken;
@@ -183,6 +186,7 @@ std::vector<unsigned long long> User::groups()
 	return s;
 }
 
+/* PWUID */
 Pwuid::Pwuid(unsigned long long id) : m_id{id}
 {
 
@@ -277,6 +281,7 @@ unsigned long long Pwuid::pw_uid() const
 	return 0;
 }
 
+/* PWNAM */
 Pwnam::Pwnam(const char* name) : m_name{name}
 {
 
@@ -308,6 +313,24 @@ std::string Pwnam::pw_shell() const
 unsigned long long Pwnam::pw_uid() const
 {
 	return 0;
+}
+
+/* TERMSIZE */
+Termsize::Termsize()
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	if (!GetConsoleScreenBufferInfo(h, &csbi))
+	{
+		std::cerr << "GetConsoleScreenBufferInfo failed\n";
+		this->row = 0;
+		this->col = 0;
+		return; //return 1;
+	}
+	//return 0;
+	this->row = csbi.srWindow.Bottom - csbi.srWindow.Top  + 1;
+	this->col = csbi.srWindow.Right  - csbi.srWindow.Left + 1;
 }
 
 }//namespace aci
