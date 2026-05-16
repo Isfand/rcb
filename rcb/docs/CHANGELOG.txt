@@ -10,6 +10,7 @@ Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
+- CHANGE: pkg-managers branch is now recipes and rcb-utility/pkg-managers/ is rcb-utility/packages/.
 - CHANGE: cppget sqlite3 dependency version is now 3.51.3+1.
 - CHANGE: Duplicate file renaming now increments at the end of the first filename found.
 - ADDITION: Added new asciidoc(s) that are now used to generate formats.

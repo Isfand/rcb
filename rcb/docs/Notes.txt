@@ -35,7 +35,7 @@ Note: When changing version, change version inside:
 	docs/manual/help/*
 	manifest
 	update docs/CHANGELOG.txt
-	and pkg-managers/* && Also update distinfo/* with makesum
+	and recipes/* && Also update distinfo/* with makesum
 
 Note: To install use 'b install config.cxx.loptions="-L/usr/local/lib -Wl,-rpath,/usr/local/lib" config.install.root="/usr/local/" config.install.sudo="sudo"'
 
