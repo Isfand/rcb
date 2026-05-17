@@ -49,8 +49,8 @@ CREATE TABLE IF NOT EXISTS "rcb" (
 "execution" is the relative execution order which the files where deleted in. 
 
 ### **file/**
-Contains deleted files that can be restored. The name is modified if needed to prevent overwriting existing ones.
-E.G 'filename', 'filename.desc.txt' 'filename.tar.gz', if duplicate(s), will be incremented to 'filename(1)', filename.desc(1).txt, filename(1).tar.gz. This format must be followed with the intension of still allowing the file to be accessible, because of this the extension(s) cannot be altered, nor can you add the increment at the start as POSIX compliant filesystems list files in alphanumerical order. Special exceptions have to be made for known multi-part extensions such as .tar.gz formats. This is how browsers like FireFox also deal with duplicate filenames.
+Contains deleted files that can be restored. The name is modified from end of the first filename found if needed to prevent overwriting existing ones. This is due to the existence of multi-part extensions.
+E.G 'filename', 'filename.desc.txt' 'filename.tar.gz', if duplicate(s), will be incremented to 'filename(1)', filename(1).desc.txt, filename(1).tar.gz. This format must be followed with the intension of still allowing the file to be accessible, because of this the extension(s) cannot be altered, nor can you add the increment at the start of the filename as POSIX compliant filesystems list files in alphanumerical order, which can create a minor hassle if someone chooses to manually read and query files.
 
 ### **wipe/**
 This is where the files are moved to be permanently removed/wiped. It exists as a way to mark files to be permanently removed by placing them inside a specialized directory. Because using 'unlink()' is faster than 'rename()'. This means if there was a large file that needed to be removed and something cancelled the process, the file would not be removed. But because we have wipe/ we know everything inside this directory is marked for removal.
@@ -61,8 +61,8 @@ Contains files used for IPC (Inter-Process Communication) and configurations or 
 ## Globals
 
 <pre>
-g_kprogName    | Program name
-g_kprogVersion | Program version
+g_kProgName    | Program name
+g_kProgVersion | Program version
 g_singleton    | Forced single class instance
 </pre>
 
@@ -108,9 +108,9 @@ Reference for units of time:
 | Millennium(s) | k         |
 
 ## Delete
-Transfer existing files into the file/ directory. This is done by checking if the filepath exists and checking if the filename already exists or not inside of file/, if it does exist the filename is altered in the format of '\<filename>(n)'. Do not modify any extensions. Store the values for each column which match the 'rcb' table schema in data/. The final action should be to 'rename()' the original path to the new one inside file/.
+Transfer existing files into the file/ directory. This is done by checking if the filepath exists and checking if the filename already exists or not inside of file/, if it does exist the filename is altered in the format of '\<filename>(n)'. Do not modify any extension(s). Store the values for each column which match the 'rcb' table schema in data/. The final action should be to 'rename()' the original path to the new one inside file/.
 
-For files inside external devices you cannot use 'rename()'. Instead use 'copy_file_range()', followed by 'unlink()' to the original path. In other words copy and remove the original.
+For files inside external devices you cannot use 'rename()'. Instead use 'copy_file_range()', followed by 'unlink()' to the original path. In other words copy and remove the original. You may need to change permissions recursively for directories in order to remove them.
 ### Options:
 **--** \
 Managed by parser. Options end after this point \
@@ -171,7 +171,7 @@ Allows for SQL passthrough. AKA SQL injection.
 
 
 ## Erase
-Permanently removes files by reading table records inside data/, matching the corresponding filename(s) to the file(s) inside file/, moving them into wipe/ and then finally permanently removing them.
+Permanently removes files by reading table records inside data/, matching the corresponding filename(s) to the file(s) inside file/, moving them into wipe/ and then finally permanently removing them. For directories you may need to change file permissions recursively to allow for removal.
 ### Options:
 **\<n>**... \
 Remove the files by record id number(s) entered \
