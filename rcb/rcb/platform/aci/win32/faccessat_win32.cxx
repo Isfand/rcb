@@ -8,10 +8,12 @@
 #endif
 
 #include <windows.h>
+#include <aclapi.h>   // GetNamedSecurityInfoW, SE_FILE_OBJECT
 #include <io.h>       // _get_osfhandle
 #include <cerrno>
 #include <expected>
 #include <filesystem>
+#include <memory>
 #include <string_view>
 
 #include "faccessat_win32.hxx"
@@ -42,6 +44,22 @@ namespace {
 		default:                            return EIO;
 	}
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+struct HandleDeleter {
+	void operator()(HANDLE h) const noexcept {
+		if (h && h != INVALID_HANDLE_VALUE) CloseHandle(h);
+	}
+};
+using UniqueHandle = std::unique_ptr<std::remove_pointer_t<HANDLE>, HandleDeleter>;
+
+struct LocalDeleter {
+	void operator()(void* p) const noexcept { if (p) LocalFree(p); }
+};
+using UniqueSD = std::unique_ptr<void, LocalDeleter>;
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 [[nodiscard]] std::expected<std::filesystem::path, int>
 path_from_handle(HANDLE h)
@@ -82,6 +100,9 @@ resolve_path(int dirfd, const char* pathname)
 	});
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+
+// X_OK on a file: check executable extension (mirrors _wstat64 behaviour).
 [[nodiscard]] bool is_executable_ext(const std::filesystem::path& path) noexcept
 {
 	std::wstring ext = path.extension().wstring();
@@ -97,19 +118,119 @@ resolve_path(int dirfd, const char* pathname)
 }
 
 [[nodiscard]] std::expected<void, int>
-check_access(const std::filesystem::path& path, int mode)
+check_access(const std::filesystem::path& path, int mode, bool follow_symlinks)
 {
+	// F_OK — existence only, no access rights needed.
+	if (mode == F_OK) {
+		const DWORD attrs = GetFileAttributesW(path.c_str());
+		if (attrs == INVALID_FILE_ATTRIBUTES)
+			return std::unexpected{win_error_to_errno(GetLastError())};
+		return {};
+	}
+
 	const DWORD attrs = GetFileAttributesW(path.c_str());
 	if (attrs == INVALID_FILE_ATTRIBUTES)
 		return std::unexpected{win_error_to_errno(GetLastError())};
 
-	if (mode == F_OK)
-		return {};
+	const bool is_dir = (attrs & FILE_ATTRIBUTE_DIRECTORY) != 0;
 
-	if ((mode & W_OK) && (attrs & FILE_ATTRIBUTE_READONLY))
+	// X_OK on a plain file: extension-based heuristic.
+	if ((mode & X_OK) && !is_dir && !is_executable_ext(path))
 		return std::unexpected{EACCES};
 
-	if ((mode & X_OK) && !is_executable_ext(path))
+	// ── Build the desired access mask ─────────────────────────────────────────
+	DWORD desired = 0;
+	if (mode & R_OK)
+		desired |= is_dir ? FILE_LIST_DIRECTORY    : FILE_GENERIC_READ;
+	if (mode & W_OK)
+		desired |= is_dir ? (FILE_ADD_FILE | FILE_ADD_SUBDIRECTORY | FILE_DELETE_CHILD)
+		                  : FILE_GENERIC_WRITE;
+	// X_OK on a directory = traverse permission.
+	if ((mode & X_OK) && is_dir)
+		desired |= FILE_TRAVERSE;
+
+	if (desired == 0)
+		return {};
+
+	// ── Fetch security descriptor by path (no handle needed) ─────────────────
+	// GetNamedSecurityInfoW avoids opening the file with READ_CONTROL, which
+	// would fail for paths where the process only has traverse permission.
+	// AT_SYMLINK_NOFOLLOW: append a trailing backslash to prevent auto-follow
+	// on symlinks — GetNamedSecurityInfoW follows by default.
+	std::wstring wpath = follow_symlinks
+		? path.wstring()
+		: path.wstring();
+
+	// For AT_SYMLINK_NOFOLLOW, open the reparse point directly to get its
+	// security descriptor via a handle instead of the path-based API.
+	PSECURITY_DESCRIPTOR pRawSD{};
+	if (!follow_symlinks) {
+		UniqueHandle hReparse{CreateFileW(
+			path.c_str(), READ_CONTROL,
+			FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+			nullptr, OPEN_EXISTING,
+			FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT,
+			nullptr)};
+
+		if (!hReparse || hReparse.get() == INVALID_HANDLE_VALUE)
+			return std::unexpected{win_error_to_errno(GetLastError())};
+
+		if (const DWORD rc = GetSecurityInfo(
+				hReparse.get(), SE_FILE_OBJECT,
+				OWNER_SECURITY_INFORMATION |
+				GROUP_SECURITY_INFORMATION |
+				DACL_SECURITY_INFORMATION,
+				nullptr, nullptr, nullptr, nullptr, &pRawSD);
+			rc != ERROR_SUCCESS)
+			return std::unexpected{win_error_to_errno(rc)};
+	} else {
+		if (const DWORD rc = GetNamedSecurityInfoW(
+				wpath.data(), SE_FILE_OBJECT,
+				OWNER_SECURITY_INFORMATION |
+				GROUP_SECURITY_INFORMATION |
+				DACL_SECURITY_INFORMATION,
+				nullptr, nullptr, nullptr, nullptr, &pRawSD);
+			rc != ERROR_SUCCESS)
+			return std::unexpected{win_error_to_errno(rc)};
+	}
+
+	UniqueSD pSD{pRawSD};
+
+	// ── Duplicate process token for AccessCheck ───────────────────────────────
+	HANDLE hRawToken{};
+	if (!OpenProcessToken(GetCurrentProcess(),
+			TOKEN_QUERY | TOKEN_DUPLICATE | TOKEN_IMPERSONATE,
+			&hRawToken))
+		return std::unexpected{win_error_to_errno(GetLastError())};
+
+	UniqueHandle hToken{hRawToken};
+
+	HANDLE hRawImp{};
+	if (!DuplicateToken(hToken.get(), SecurityImpersonation, &hRawImp))
+		return std::unexpected{win_error_to_errno(GetLastError())};
+
+	UniqueHandle hImp{hRawImp};
+
+	// ── Run the ACL-based access check ────────────────────────────────────────
+	GENERIC_MAPPING mapping{
+		FILE_GENERIC_READ,
+		FILE_GENERIC_WRITE,
+		FILE_GENERIC_EXECUTE,
+		FILE_ALL_ACCESS};
+
+	MapGenericMask(&desired, &mapping);
+
+	PRIVILEGE_SET privSet{};
+	DWORD         privSetLen   = sizeof(privSet);
+	DWORD         grantedAccess{};
+	BOOL          accessStatus{FALSE};
+
+	if (!AccessCheck(
+			pSD.get(), hImp.get(), desired, &mapping,
+			&privSet, &privSetLen, &grantedAccess, &accessStatus))
+		return std::unexpected{win_error_to_errno(GetLastError())};
+
+	if (!accessStatus)
 		return std::unexpected{EACCES};
 
 	return {};
@@ -131,13 +252,13 @@ Faccessat::Faccessat(int dirfd, const char* pathname, int mode, int flags) noexc
 	if (mode  & ~kValidMode)  { errno = EINVAL; result_ = -1; return; }
 	if (flags & ~kValidFlags) { errno = EINVAL; result_ = -1; return; }
 
-	// AT_EACCESS          — no-op (no real vs. effective UID split on Windows).
-	// AT_SYMLINK_NOFOLLOW — no-op (GetFileAttributesW never follows the leaf).
+	// AT_EACCESS — no-op (no real vs. effective UID split on Windows).
+	const bool follow_symlinks = !(flags & AT_SYMLINK_NOFOLLOW);
 
 	auto path = resolve_path(dirfd, pathname);
 	if (!path) { errno = path.error(); result_ = -1; return; }
 
-	auto res = check_access(*path, mode);
+	auto res = check_access(*path, mode, follow_symlinks);
 	if (!res)  { errno = res.error();  result_ = -1; return; }
 
 	result_ = 0;

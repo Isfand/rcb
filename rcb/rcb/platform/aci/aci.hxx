@@ -26,6 +26,7 @@ using Pwnam     = Pwnam;
 
 using Termsize  = Termsize;
 
+//WIP: Do NOT use.
 using Faccessat = Faccessat;
 
 //TODO: add isatty() from unistd.h. 
