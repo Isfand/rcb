@@ -4,6 +4,8 @@ std::println doesn't support wstring or wchar_t. Will require explicit use of .s
 
 NOTE: 'Unlike rm -rf', remove_all() doesn't recursively change permissions where needed, which can prevent file removals.
 
+NOTE: TOCTOU risk exists with the current implementation. No OS/FS fully fixes it, you can only mitigate it.
+
 NOTE: Conditional reset for ID sequences:
 	DELETE FROM sqlite_sequence
 	WHERE name = 'rcb'
