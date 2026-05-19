@@ -23,5 +23,5 @@ private:
 	bool m_running;  
 };
 
-} //namespace rcb
-#endif //STOPWATCH_HXX
+} // namespace rcb
+#endif // STOPWATCH_HXX

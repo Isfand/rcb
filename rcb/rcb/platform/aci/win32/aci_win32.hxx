@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include <sys/stat.h> //Needed for mingw
+#include <sys/stat.h> // Needed for mingw
 #include <windows.h>
 
 namespace aci{
@@ -33,8 +33,8 @@ public:
 	unsigned long long st_size()      const;
 	unsigned long long st_uid()       const;
 private:
-	//WIN32_FILE_ATTRIBUTE_DATA m_fileAttributeInfo; //stat
-	//BY_HANDLE_FILE_INFORMATION m_fileHandleInfo; //device
+	// WIN32_FILE_ATTRIBUTE_DATA m_fileAttributeInfo; // stat
+	// BY_HANDLE_FILE_INFORMATION m_fileHandleInfo; // device
 
 	struct _stat m_stat;
 };
@@ -107,8 +107,8 @@ struct Termsize
 	Termsize();
 };
 
-}//namespace aci
+}// namespace aci
 
-#endif //ACI_WIN32_HXX
+#endif // ACI_WIN32_HXX
 
 #endif //#if defined(_WIN32) && !defined(__CYGWIN__)

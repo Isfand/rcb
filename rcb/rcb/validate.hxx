@@ -16,20 +16,20 @@ private:
 	const ValidateOptions& m_vOpt;
 	Database m_db;
 	
-	//Unused
+	// Unused
 	void allFile();
 
-	//removes dangling files in file/ by checking data/.
+	// removes dangling files in file/ by checking data/.
 	void file();
-	//removes dangling & duplicate records in data/ by checking file/.
+	// removes dangling & duplicate records in data/ by checking file/.
 	void data();
-	//removes dangling files in wipe/.
+	// removes dangling files in wipe/.
 	void wipe();
-	//evaluate size:NULL of filetype:directory
+	// evaluate size:NULL of filetype:directory
 	void fillDirectorySize();
 };
 
 	
-}//namespace rcb
+}// namespace rcb
 
 #endif

@@ -18,7 +18,7 @@ Erase::Erase(const std::vector<std::string>& args, const EraseOptions& eOpt) : m
 	std::println("allOption is:      {}", m_eOpt.allOption);
 	std::println("pastOption is:     {}", m_eOpt.pastOption);
 	std::println("previousOption is: {}", m_eOpt.previousOption);
-	std::println("verboseOption is:  {}", m_eOpt.verboseOption); //Unused
+	std::println("verboseOption is:  {}", m_eOpt.verboseOption); // Unused
 	std::println("sqlOption is:      {}", m_eOpt.sqlOption);
 #endif
 	Erase::file(args);
@@ -32,7 +32,7 @@ void Erase::file(const std::vector<std::string>& args)
 {
 	for(const std::string& arg : args)
 	{
-		//TODO, Add a check for "" empty. Then continue the loop.
+		// TODO, Add a check for "" empty. Then continue the loop.
 		std::string stagedFile = m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {2}='{3}';", 
 			g_kSchemaFile, g_kProgName, g_kSchemaID, arg));
 
@@ -46,7 +46,7 @@ void Erase::file(const std::vector<std::string>& args)
 			std::cerr << e.what() << "\n";
 			continue;
 		}
-		//Once removed then delete from database
+		// Once removed then delete from database
 		m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", 
 			g_kProgName, g_kSchemaID, arg));
 	}
@@ -68,10 +68,10 @@ void Erase::allFile()
 	Erase::file(vList);
 }
 
-//TODO: past() is the same across erase, list, restore. Reduce to one.
+// TODO: past() is the same across erase, list, restore. Reduce to one.
 void Erase::past()
 {
-	//TODO. add silence to guard the return cerr text
+	// TODO. add silence to guard the return cerr text
 	for(auto format : m_eOpt.timeVec)
 	{
 		long long timestamp{};
@@ -96,7 +96,7 @@ void Erase::previous()
 	Erase::file(vList);
 }
 
-//Must return id. E.G "SELECT id FROM rcb WHERE file='.hiddenfile';" 
+// Must return id. E.G "SELECT id FROM rcb WHERE file='.hiddenfile';" 
 void Erase::sqlInjection()
 {
 	for(auto sql : m_eOpt.sqlVec)
@@ -109,9 +109,9 @@ void Erase::sqlInjection()
 	}
 }
 
-//MOVE all files to wipe/ These will now be marked for being permanently erased as with anything inside wipe/
-//Have the rcb file names be saved in RAM. And check against it before deleting
-//When CONFIRMED. Then delete them. unlink()
-//Then finally DELETE from database
+// MOVE all files to wipe/ These will now be marked for being permanently erased as with anything inside wipe/
+// Have the rcb file names be saved in RAM. And check against it before deleting
+// When CONFIRMED. Then delete them. unlink()
+// Then finally DELETE from database
 	
-}//namespace rcb
+}// namespace rcb

@@ -41,7 +41,7 @@ std::string fileTypeToString(std::filesystem::file_type ft)
 	}
 }
 
-//Warning does not explicitly copy permissions and does not preserve ownership. Also doesn't check for free space.
+// Warning does not explicitly copy permissions and does not preserve ownership. Also doesn't check for free space.
 void externRename(const std::filesystem::path& filePath, const std::filesystem::path& newCopy)
 {
 	auto cpOpt = std::filesystem::copy_options::copy_symlinks |
@@ -51,34 +51,34 @@ void externRename(const std::filesystem::path& filePath, const std::filesystem::
 	if(canMvFileChk(std::filesystem::directory_entry(filePath)))
 	{
 		std::filesystem::copy(filePath, newCopy, cpOpt);
-		sanitizeRemoveAll(filePath); //remove original.
+		sanitizeRemoveAll(filePath); // remove original.
 	}
 	else 
 	{
-		//TODO. Nothing in this file should print out anything. Change to return type bool for success or fail
-		//std::println("missing write/execute permissions from parent directory");
+		// TODO. Nothing in this file should print out anything. Change to return type bool for success or fail
+		// std::println("missing write/execute permissions from parent directory");
 	}
 }
 
-//Checks if you have move access to the file's directory
+// Checks if you have move access to the file's directory
 bool canMvFileChk(const std::filesystem::directory_entry& entry)
 {	
-	//Reference of ownership in nested array 0(r),1(w),2(x)
-	//perms.at(0); //owner
-	//perms.at(1); //group
-	//perms.at(2); //other
-	//Currently assumes entry has a parent path.
-	//The parent directory of the file determins if you can move a file. Therefor we get perms of parent directory.
+	// Reference of ownership in nested array 0(r),1(w),2(x)
+	// perms.at(0); // owner
+	// perms.at(1); // group
+	// perms.at(2); // other
+	// Currently assumes entry has a parent path.
+	// The parent directory of the file determins if you can move a file. Therefor we get perms of parent directory.
 	auto perms = getFilePerms(entry.path().parent_path());
 	aci::User user{};
 	aci::Stat stat { entry.path().parent_path().string().c_str() };
 
-	//Early check for root user which has unrestricted access to everything. The root groupID doesn't count.
+	// Early check for root user which has unrestricted access to everything. The root groupID doesn't count.
 	if (user.uid() == 0ULL)
 		return true;
 
-	//Check if any of user's groups match the file GID. 
-	//User & Stat GID Match
+	// Check if any of user's groups match the file GID. 
+	// User & Stat GID Match
 	auto usgm = [&](aci::User& user, aci::Stat& stat) -> bool
 	{
 		for(auto& group : user.groups())
@@ -88,17 +88,17 @@ bool canMvFileChk(const std::filesystem::directory_entry& entry)
 		return false;
 	};
 
-	if(user.uid() == stat.st_uid()) //Check if 'owner' perms allow for move access.
+	if(user.uid() == stat.st_uid()) // Check if 'owner' perms allow for move access.
 	{
 		if(perms.at(0).at(1) && perms.at(0).at(2))
 			return true;
 	}
-	else if(usgm(user, stat)) //Check if 'group' perms allow for move access
+	else if(usgm(user, stat)) // Check if 'group' perms allow for move access
 	{
 		if(perms.at(1).at(1) && perms.at(1).at(2))
 			return true;
 	}
-	else //Check if 'other' perms allow for move access
+	else // Check if 'other' perms allow for move access
 	{
 		if(perms.at(2).at(1) && perms.at(2).at(2))
 			return true;
@@ -106,9 +106,9 @@ bool canMvFileChk(const std::filesystem::directory_entry& entry)
 	return false;
 }
 
-//WARNING: does not recursively check read permissions.
-//Note: faccessat() can do the same thing. It can also optionally not follow symlinks with AT_SYMLINK_NOFOLLOW
-//However it doesn't exist on windows and there is no functional equivalent. It will require a custom implementation.
+// WARNING: does not recursively check read permissions.
+// Note: faccessat() can do the same thing. It can also optionally not follow symlinks with AT_SYMLINK_NOFOLLOW
+// However it doesn't exist on windows and there is no functional equivalent. It will require a custom implementation.
 bool canReadDir(const std::filesystem::directory_entry& entry)
 {
 	auto perms = getFilePerms(entry.path());
@@ -116,12 +116,12 @@ bool canReadDir(const std::filesystem::directory_entry& entry)
 	aci::User user{};
 	aci::Stat stat { entry.path().string().c_str() };
 
-	//Early check for root user which has unrestricted access to everything. The root groupID doesn't count.
+	// Early check for root user which has unrestricted access to everything. The root groupID doesn't count.
 	if (user.uid() == 0ULL)
 		return true;
 
-	//Check if any of user's groups match the file GID. 
-	//User & Stat GID Match
+	// Check if any of user's groups match the file GID. 
+	// User & Stat GID Match
 	auto usgm = [&](aci::User& user, aci::Stat& stat) -> bool
 	{
 		for(auto& group : user.groups())
@@ -131,17 +131,17 @@ bool canReadDir(const std::filesystem::directory_entry& entry)
 		return false;
 	};
 
-	if(user.uid() == stat.st_uid()) //Check if 'owner' perms allow for read access
+	if(user.uid() == stat.st_uid()) // Check if 'owner' perms allow for read access
 	{
 		if(perms.at(0).at(0))
 			return true;
 	}
-	else if(usgm(user, stat)) //Check if 'group' perms allow for read access
+	else if(usgm(user, stat)) // Check if 'group' perms allow for read access
 	{
 		if(perms.at(1).at(0))
 			return true;
 	}
-	else //Check if 'other' perms allow for read access
+	else // Check if 'other' perms allow for read access
 	{
 		if(perms.at(2).at(0))
 			return true;
@@ -150,16 +150,16 @@ bool canReadDir(const std::filesystem::directory_entry& entry)
 	return false;
 }
 
-//Recursive read dir check
-//TODO: Maybe make this function return which directory path does not have read access as a std::expected return?
+// Recursive read dir check
+// TODO: Maybe make this function return which directory path does not have read access as a std::expected return?
 bool canReadDirRec(const std::filesystem::directory_entry& dir)
 {
-	//Early guards to allow recursive_directory_iterator to do it's job
-	//This is needed to make sure it's only directories that get passed through.
+	// Early guards to allow recursive_directory_iterator to do it's job
+	// This is needed to make sure it's only directories that get passed through.
 	if (Verity(dir).type != std::filesystem::file_type::directory)
 		return false;
 	
-	//This is also needed to make sure the initial directory is readable or recursive_directory_iterator will fail.
+	// This is also needed to make sure the initial directory is readable or recursive_directory_iterator will fail.
 	if (!canReadDir(dir)) return false;
 
 	for (const auto& entry : std::filesystem::recursive_directory_iterator(dir.path())) 
@@ -169,10 +169,10 @@ bool canReadDirRec(const std::filesystem::directory_entry& dir)
 
 		if (ec) return false;
 
-		//Note: For some reason is_directory fails on circular symlinks. Which is why this exists. Can't be used on the same if statement.
+		// Note: For some reason is_directory fails on circular symlinks. Which is why this exists. Can't be used on the same if statement.
 		if(!std::filesystem::is_symlink(status)) 
 		{
-			//Is dir for allowing files only of that type.
+			// Is dir for allowing files only of that type.
 			if((std::filesystem::is_directory(entry.path())))
 			{
 				if (!canReadDir(entry)) return false;
@@ -188,7 +188,7 @@ std::array<std::array<bool, 3>, 3> getFilePerms(const std::filesystem::path& fil
 {
 	std::filesystem::perms p { std::filesystem::symlink_status(file).permissions() };
 
-	//Keep K&R indent
+	// Keep K&R indent
 	// Extract owner permissions
 	std::array<bool, 3> ownerPerms = {
 		(p& std::filesystem::perms::owner_read)   != std::filesystem::perms::none,
@@ -213,7 +213,7 @@ std::array<std::array<bool, 3>, 3> getFilePerms(const std::filesystem::path& fil
 	return {ownerPerms, groupPerms, othersPerms};
 }
 
-//XXX. You cannot recursive_directory_iterator the directory if you cannot read it. Can fail on dirs with no read access.
+// XXX. You cannot recursive_directory_iterator the directory if you cannot read it. Can fail on dirs with no read access.
 unsigned long long directorySize(const std::filesystem::directory_entry& directory)
 {
 	unsigned long long size{};
@@ -224,10 +224,10 @@ unsigned long long directorySize(const std::filesystem::directory_entry& directo
 	for (const auto& entry : std::filesystem::recursive_directory_iterator(directory.path())) 
 	{
 		std::filesystem::file_status status = std::filesystem::symlink_status(entry.path());
-		//Note: For some reason is_directory fails on circular symlinks. Which is why this exists. Can't be used on the same if statement.
+		// Note: For some reason is_directory fails on circular symlinks. Which is why this exists. Can't be used on the same if statement.
 		if(!std::filesystem::is_symlink(status)) 
 		{
-			//Is not dir is for preventing dir duplication.
+			// Is not dir is for preventing dir duplication.
 			if(!std::filesystem::is_directory(entry.path()))
 			{
 				aci::Stat stat = entry.path().string().c_str();
@@ -236,7 +236,7 @@ unsigned long long directorySize(const std::filesystem::directory_entry& directo
 		}
 		else
 		{
-			//if(!std::filesystem::is_directory(status)) continue;
+			// if(!std::filesystem::is_directory(status)) continue;
 			aci::Stat stat = entry.path().string().c_str();
 			directoryEntries.push_back(std::make_tuple(entry, stat.st_ino(), stat.st_dev()));
 		}
@@ -310,11 +310,11 @@ unsigned long long directorySize(const std::filesystem::directory_entry& directo
 
 int formatToTimestamp(const std::string& format, long long& timestamp)
 {
-	//TODO. allow negative posix timestamps using '-' for before 1970. Need to account for time travelers. Can utilize '--'
+	// TODO. allow negative posix timestamps using '-' for before 1970. Need to account for time travelers. Can utilize '--'
 	auto currentTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
-	//May run into Y:292,277,026,596 problem. I.E integer overflow.
-	//Using year as: 365.2425
+	// May run into Y:292,277,026,596 problem. I.E integer overflow.
+	// Using year as: 365.2425
 	std::map<std::string, long long> timeMap = 
 	{ 
 		{"t"  , 1LL             },
@@ -354,20 +354,20 @@ int formatToTimestamp(const std::string& format, long long& timestamp)
 		} 
 		else 
 		{
-			//std::cerr << "error: unit " << units << " not found\n";
+			// std::cerr << "error: unit " << units << " not found\n";
 			return 1;
 		}
 	} 
 	else 
 	{
-		//std::cerr << "error: invalid format " << format;
+		// std::cerr << "error: invalid format " << format;
 		return 2;
 	}
 
 	return 3;
 }
 
-//Unused
+// Unused
 std::string posixTimeToDateTime(std::chrono::seconds timestamp)
 {
 	std::chrono::system_clock::time_point tp(timestamp);
@@ -376,7 +376,7 @@ std::string posixTimeToDateTime(std::chrono::seconds timestamp)
 
 	std::tm *tm_info = std::localtime(&time);
 
-	//ISO 8601 format
+	// ISO 8601 format
 	return std::format("{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}",
 		tm_info->tm_year + 1900,   // tm_year is years since 1900
 		tm_info->tm_mon + 1,       // tm_mon is months since January (0-11)
@@ -386,16 +386,16 @@ std::string posixTimeToDateTime(std::chrono::seconds timestamp)
 		tm_info->tm_sec);          // Second (0-59)
 }
 
-//Unimplemented
+// Unimplemented
 std::string dataUnitConversion()
 {
-	//Data Unit Scaling
+	// Data Unit Scaling
 	return "";
 }
 
-//Rename a file as (.)filename(n).*
-//Multi-part extensions exist. They can also be generated. This is the safest option.
-//Note: This does does ignore negative values and will just append (1).
+// Rename a file as (.)filename(n).*
+// Multi-part extensions exist. They can also be generated. This is the safest option.
+// Note: This does does ignore negative values and will just append (1).
 void renameFile(std::string& file)
 {
 	std::string_view view(file);
@@ -431,26 +431,26 @@ void renameFile(std::string& file)
 	file = std::string(leading) + base + "(1)" + std::string(ext);
 }
 
-//TODO. The first two can be passed as a single variable. Needs Revising.
-//directory is where the checks will be made for recursive searching. This is immutable.
-//stagePath is the entire filepath for where the file actually is. This is internal
+// TODO. The first two can be passed as a single variable. Needs Revising.
+// directory is where the checks will be made for recursive searching. This is immutable.
+// stagePath is the entire filepath for where the file actually is. This is internal
 
-//mutFilename is the filename that will be renamed if a dupe is found. Passed as mutable reference.
+// mutFilename is the filename that will be renamed if a dupe is found. Passed as mutable reference.
 bool renameDupe(
 	const std::filesystem::path& directory, 
 	std::filesystem::directory_entry stagePath,
 	std::string& mutFilename)
 {
-//To improve time. Reverse the logic of these two. if and else ifs. As the second is more common
+// To improve time. Reverse the logic of these two. if and else ifs. As the second is more common
 	if(Verity stageEntryItem(stagePath); stageEntryItem.exists)
 	{
 		// Print entry is a dupe
-		//if(Opt.verboseOption)
+		// if(Opt.verboseOption)
 #ifndef NDEBUG
 		std::println("Existing entry found in {0} DIR: {1}", g_kProgName, g_singleton->getWorkingProgFileDir().string());
 #endif
 
-		//Can make this into a else while instead of the else if below? Would have to swap the declaration and definitions inside
+		// Can make this into a else while instead of the else if below? Would have to swap the declaration and definitions inside
 		do
 		{
 			renameFile(mutFilename);
@@ -459,14 +459,14 @@ bool renameDupe(
 			std::println("Checking new name in DIR: {}", stagePath.path().string());
 #endif
 		}
-		while(Verity(stagePath).exists); //Needs to recheck with new instance. Cannot use same instance. WARNING: can create infinite loop.
+		while(Verity(stagePath).exists); // Needs to recheck with new instance. Cannot use same instance. WARNING: can create infinite loop.
 
 		return true;
 	}
 	else if(!(stageEntryItem.exists))
 	{
-		//Print if unique
-		//if(Opt.verboseOption)
+		// Print if unique
+		// if(Opt.verboseOption)
 #ifndef NDEBUG
 		std::println("Check for target path passed {0} DIR: {1}", g_kProgName, g_singleton->getWorkingProgFileDir().string());
 #endif
@@ -474,7 +474,7 @@ bool renameDupe(
 	}
 	else 
 	{
-		//Path check failed
+		// Path check failed
 		return false;
 	}
 
@@ -495,14 +495,14 @@ std::filesystem::path deepestExistingPath(const std::filesystem::path& fullPath)
 	return fullPath;  // Entire path exists
 }
 
-//Changes permissions before deleting. functionally equivent to rm -rf.
+// Changes permissions before deleting. functionally equivent to rm -rf.
 int sanitizeRemoveAll(const std::filesystem::path& path)
 {
 	std::error_code ec;
 
-	//Note: Use Verity. ::exists ignores symlinks.
-	//if (!std::filesystem::exists(path, ec))
-		//return true;
+	// Note: Use Verity. ::exists ignores symlinks.
+	// if (!std::filesystem::exists(path, ec))
+		// return true;
 
 	// Recursively iterate bottom-up
 	for (auto it = std::filesystem::recursive_directory_iterator(
@@ -513,7 +513,7 @@ int sanitizeRemoveAll(const std::filesystem::path& path)
 		it != std::filesystem::recursive_directory_iterator();
 		++it)
 	{
-		//if (ec) return false;
+		// if (ec) return false;
 
 		const std::filesystem::path& p = it->path();
 
@@ -524,7 +524,7 @@ int sanitizeRemoveAll(const std::filesystem::path& path)
 			std::filesystem::perm_options::add,
 			ec);
 
-		//if (ec) return false;
+		// if (ec) return false;
 	}
 
 	// Make sure root directory is writable
@@ -534,7 +534,7 @@ int sanitizeRemoveAll(const std::filesystem::path& path)
 		std::filesystem::perm_options::add,
 		ec);
 
-	//if (ec) return false;
+	// if (ec) return false;
 
 	// Remove everything recursively
 	std::filesystem::remove_all(path, ec);
@@ -542,4 +542,4 @@ int sanitizeRemoveAll(const std::filesystem::path& path)
 	return !ec;
 }
 
-}//namespace rcb
+}// namespace rcb

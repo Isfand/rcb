@@ -22,8 +22,8 @@ void Env::var()
 	const std::string home = aci::Pwuid().pw_dir();
 	const std::string user = aci::Pwuid().pw_name();
 
-	//FUTURE:
-	//TODO. Optimize this code to use init if statement. Ideally all connected.
+	// FUTURE:
+	// TODO. Optimize this code to use init if statement. Ideally all connected.
 	if(home.empty())
 	{
 		throw std::runtime_error("HOME NOT FOUND");
@@ -52,7 +52,7 @@ void Env::dir()
 	std::println("{0} working directory is: {1}", g_kProgName, m_workingProgDir.string());
 #endif
 
-	//Check if active dir exists. If not then execute the below.
+	// Check if active dir exists. If not then execute the below.
 	if(!std::filesystem::exists(m_workingProgFileDir) || 
 	   !std::filesystem::exists(m_workingProgDataDir) || 
 	   !std::filesystem::exists(m_workingProgWipeDir) ||
@@ -83,7 +83,7 @@ void Env::setSharedEnv()
 	g_singleton->setWorkingProgWipeDir(m_workingProgWipeDir);
 	g_singleton->setWorkingProgSignDir(m_workingProgSignDir);
 	g_singleton->setWorkingUsername   (m_workingUsername);
-	//Add conf env
+	// Add conf env
 }
 
 } // namespace rcb

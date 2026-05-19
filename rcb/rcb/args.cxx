@@ -66,14 +66,14 @@ void Args::runCmd()
 	}
 }
 
-//Unused
+// Unused
 void Args::deGlob()
 {
 	// Globals needs to removed so that primary commands don't see them after being parsed.
 	// E.G: Remove -v and --verbose
 	if (m_sharedGlobFlag)
 	{
-		//Used for tactac argument
+		// Used for tactac argument
 		auto tactac = std::find(m_args.begin(), m_args.end(), "--");
 		tactac = (tactac != m_args.end()) ? tactac : m_args.end();
 		int tactac_index = std::distance(m_args.begin(), tactac);
@@ -180,7 +180,7 @@ void Args::init()
 
 			m_verboseOption = true;
 			// m_sharedGlobFlag = m_verboseOption;
-			//return;
+			// return;
 		}
 		else if(arg == "--force" || arg == "-f")
 		{
@@ -188,11 +188,11 @@ void Args::init()
 
 			m_forceOption = true;
 			// m_sharedGlobFlag = m_forceOption;
-			//return;
+			// return;
 		}
 		else if(arg == "--version")
 		{
-			//https://stackoverflow.com/questions/4053837/colorizing-text-in-the-console-with-c
+			// https:// stackoverflow.com/questions/4053837/colorizing-text-in-the-console-with-c
 			std::println("\x1B[32m{} {} version ({})\033[0m", "♻", g_kProgName, g_kProgVersion);
 			std::println("\x1B[90m{}\033[0m", m_rcb_ASCII_art);
 			return;	
@@ -214,17 +214,17 @@ void Args::init()
 #endif
 }
 
-//Unused
+// Unused
 void Args::setSharedOptions()
 {
-	//Legacy code do NOT use.
-	//singleton->setVerboseOption(m_verboseOption);
-	//singleton->setForceOption(m_forceOption);
+	// Legacy code do NOT use.
+	// singleton->setVerboseOption(m_verboseOption);
+	// singleton->setForceOption(m_forceOption);
 
 	/*TODO: Set shared options that are not part of singleton.
 	  That can be passed into each command's parser as argument strings. With exception to setup and cleanup code classes options can be passed in as a combined object instead.*/
 	
-	//Shared options can only exist IF they apply to EVERY command. E.G something like --jobs or --verbose.
+	// Shared options can only exist IF they apply to EVERY command. E.G something like --jobs or --verbose.
 }
 
 void Args::run()

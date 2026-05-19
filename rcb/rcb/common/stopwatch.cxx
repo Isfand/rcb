@@ -56,5 +56,5 @@ long long Stopwatch::elapsedMilliseconds()
 	}
 }
 
-} //namespace rcb
+} // namespace rcb
 

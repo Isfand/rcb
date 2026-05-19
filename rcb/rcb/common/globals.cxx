@@ -3,4 +3,4 @@
 namespace rcb {
 
 
-} //namespace rcb
+} // namespace rcb

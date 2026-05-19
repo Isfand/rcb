@@ -8,11 +8,11 @@ namespace rcb{
 
 Singleton* Singleton::s_instance = nullptr;
 
-//Note: consider using atomic<bool> for deallocated recreations
+// Note: consider using atomic<bool> for deallocated recreations
 std::once_flag Singleton::s_flag;
 
-//std::once_flag Singleton::s_setVerboseOptionFlag;
-//std::once_flag Singleton::s_setForceOptionFlag;
+// std::once_flag Singleton::s_setVerboseOptionFlag;
+// std::once_flag Singleton::s_setForceOptionFlag;
 
 std::once_flag Singleton::s_setWorkingProgDirFlag;
 std::once_flag Singleton::s_setWorkingProgFileDirFlag;
@@ -41,12 +41,12 @@ Singleton::~Singleton()
 #endif
 }
 
-//Accessors. Get many.
-//const bool Singleton::getVerboseOption() const
+// Accessors. Get many.
+// const bool Singleton::getVerboseOption() const
 //{
 //	return m_verboseOption;
 //}
-//const bool Singleton::getForceOption() const
+// const bool Singleton::getForceOption() const
 //{
 //	return m_forceOption;
 //}
@@ -75,13 +75,13 @@ const std::string Singleton::getWorkingUsername() const
 	return m_workingUsername;
 }
 
-//Mutators. Set once.
-//TODO. Maybe add a runtime or compile time check. E.G Throw exception or static_assert.
-//void Singleton::setVerboseOption(bool verboseOption)
+// Mutators. Set once.
+// TODO. Maybe add a runtime or compile time check. E.G Throw exception or static_assert.
+// void Singleton::setVerboseOption(bool verboseOption)
 //{
 //	std::call_once(s_setVerboseOptionFlag, [&](){ m_verboseOption = verboseOption;});
 //}
-//void Singleton::setForceOption(bool forceOption)
+// void Singleton::setForceOption(bool forceOption)
 //{
 //	std::call_once(s_setForceOptionFlag, [&](){ m_forceOption = forceOption;});
 //}
@@ -112,4 +112,4 @@ void Singleton::setWorkingUsername(std::string workingUsername)
 
 // Singleton* inst;
 
-} //namespace rcb
+} // namespace rcb

@@ -31,16 +31,16 @@ Restore::Restore(const std::vector<std::string>& args, const RestoreOptions& rOp
 	if(m_rOpt.sqlOption)     Restore::sqlInjection();
 }
 
-//TODO: Reading the order is convoluted. Refactor where possible.
+// TODO: Reading the order is convoluted. Refactor where possible.
 void Restore::file(const std::vector<std::string>& args)
 {
 	for(const std::string& arg : args)
 	{
-		//TODO. Need to add something accounting for empty values returned from sql.
+		// TODO. Need to add something accounting for empty values returned from sql.
 		const std::string stagedFile             { m_db.selectData(std::format("SELECT {0} FROM {1} WHERE id='{2}';", g_kSchemaFile, g_kProgName, arg)) };
 		const std::filesystem::path originalPath { m_db.selectData(std::format("SELECT {0} FROM {1} WHERE id='{2}';", g_kSchemaPath, g_kProgName, arg)) };
 
-		//Early return for if no file exists inside of .rcb/file. Saves time.
+		// Early return for if no file exists inside of .rcb/file. Saves time.
 		if(!progFileExists(stagedFile)) continue;
 
 		const std::filesystem::file_type originalPathType = Verity(std::filesystem::directory_entry(originalPath)).type;
@@ -48,7 +48,7 @@ void Restore::file(const std::vector<std::string>& args)
 		std::string mutFilename              { originalPath.filename().string() };
 		std::filesystem::path mutRestorePath { originalPath.parent_path() / mutFilename };
 
-		//NOTE: forceReplaceOption is only used to enter the block. It does not change control flow like the others because rename() by default replaces regular files.
+		// NOTE: forceReplaceOption is only used to enter the block. It does not change control flow like the others because rename() by default replaces regular files.
 		if(PathStatus pathStatus = (originalPathStatus(originalPath)); 
 		   (pathStatus == PathStatus::Free) 
 		|| (pathStatus == PathStatus::Occupied && m_rOpt.forceReplaceOption)           // order 2
@@ -61,7 +61,7 @@ void Restore::file(const std::vector<std::string>& args)
 				if(std::filesystem::path dep = deepestExistingPath(originalPath); 
 					canMvFileChk(std::filesystem::directory_entry(dep)))
 				{
-					//Try catch is here as a just in case. It should never be triggered.
+					// Try catch is here as a just in case. It should never be triggered.
 					try
 					{
 						if (std::filesystem::create_directories(originalPath.parent_path()))
@@ -89,27 +89,27 @@ void Restore::file(const std::vector<std::string>& args)
 
 			if (m_rOpt.forceRenameOption)
 			{
-				//NOTE: .parent_path() when applied to root it will return root itself /.
+				// NOTE: .parent_path() when applied to root it will return root itself /.
 				if(!renameDupe(originalPath.parent_path(), std::filesystem::directory_entry(originalPath), mutFilename)) continue;
 
-				//reassign
+				// reassign
 				mutRestorePath.assign(originalPath.parent_path() / mutFilename);
 			}
 
-			//Check for permissions on the original path
+			// Check for permissions on the original path
 			if(!canMvFileChk(std::filesystem::directory_entry(originalPath)))
 			{
 				std::println("process execution user {} is missing write/execute permissions for parent directory of {} ", g_singleton->getWorkingUsername(), originalPath.string());
 				continue;
 			}
 
-			//NOTE: rename() cannot rename directories that are not empty. for that sanitizeRemoveAll() needs to be used before it.
-			//Check if the path is internal or external
+			// NOTE: rename() cannot rename directories that are not empty. for that sanitizeRemoveAll() needs to be used before it.
+			// Check if the path is internal or external
 			if(aci::Stat(g_singleton->getWorkingProgDir().string().c_str()).st_dev() == aci::Stat(originalPath.parent_path().string().c_str()).st_dev())
 			{
 				try
 				{
-					//Duplicated #1
+					// Duplicated #1
 					if(m_rOpt.forceReplaceOption && originalPathType == std::filesystem::file_type::directory && pathStatus == PathStatus::Occupied) 
 						sanitizeRemoveAll(originalPath);
 
@@ -124,15 +124,15 @@ void Restore::file(const std::vector<std::string>& args)
 				if(m_rOpt.verboseOption)
 					std::println("Path is:{0}", mutRestorePath.string().c_str());
 
-				//TODO;
-				//Also check against saveFileData() values to make sure.
+				// TODO;
+				// Also check against saveFileData() values to make sure.
 				m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kProgName, g_kSchemaID, arg));
 			}
 			else
 			{
 				try
 				{
-					//Duplicated #1
+					// Duplicated #1
 					if(m_rOpt.forceReplaceOption && originalPathType == std::filesystem::file_type::directory && pathStatus == PathStatus::Occupied) 
 						sanitizeRemoveAll(originalPath);
 
@@ -147,7 +147,7 @@ void Restore::file(const std::vector<std::string>& args)
 				if(m_rOpt.verboseOption)
 					std::println("Path is:{0}", mutRestorePath.string());
 
-				//TODO; //Also check against saveFileData() values to make sure.
+				// TODO; // Also check against saveFileData() values to make sure.
 				m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kProgName, g_kSchemaID, arg));
 				
 			}
@@ -156,14 +156,14 @@ void Restore::file(const std::vector<std::string>& args)
 		else
 		{
 			std::println("restore failed: {0}", arg);
-			//NOTICE: Add continue; if adding something below this line
+			// NOTICE: Add continue; if adding something below this line
 		}
 	}
 }
 
 void Restore::allFile()
 {
-	//Need to restore files with the lowest depth ascending.
+	// Need to restore files with the lowest depth ascending.
 	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} ORDER BY {2} ASC;", g_kSchemaID, g_kProgName, g_kSchemaPathDepth)) };
 
 #ifndef NDEBUG
@@ -176,7 +176,7 @@ void Restore::allFile()
 	Restore::file(vList);
 }
 
-//TODO: past() is the same across erase, list, restore. Reduce to one.
+// TODO: past() is the same across erase, list, restore. Reduce to one.
 void Restore::past()
 {
 	for(auto format : m_rOpt.timeVec)
@@ -201,7 +201,7 @@ void Restore::previous()
 	Restore::file(vList);
 }
 
-//Must return id. E.G "SELECT id FROM rcb WHERE file='.hiddenfile';" 
+// Must return id. E.G "SELECT id FROM rcb WHERE file='.hiddenfile';" 
 void Restore::sqlInjection()
 {
 	for(auto sql : m_rOpt.sqlVec)
@@ -214,10 +214,10 @@ void Restore::sqlInjection()
 	}
 }
 
-//Checks if progFile Exists inside of /rcb/file/<name>
+// Checks if progFile Exists inside of /rcb/file/<name>
 bool Restore::progFileExists(const std::string& stagedFile)
 {
-	//Early return check to see if file is empty. This should also be handled from the sql querying function.
+	// Early return check to see if file is empty. This should also be handled from the sql querying function.
 	if(stagedFile.empty()) return false;
 	
 	std::filesystem::path filePath { g_singleton->getWorkingProgFileDir() / stagedFile };
@@ -227,15 +227,15 @@ bool Restore::progFileExists(const std::string& stagedFile)
 	if(!result)
 		std::println("Failed to restore file: \"{0}\"\nfile to restore is missing in \"{1}\"", stagedFile, g_singleton->getWorkingProgFileDir().string());
 
-	//TODO; Needs semantic correction
+	// TODO; Needs semantic correction
 	return result;
 }
 
-//return original path status
+// return original path status
 Restore::PathStatus Restore::originalPathStatus(const std::filesystem::path& progDir)
 {
 	PathStatus result{};
-	//check parent path exists
+	// check parent path exists
 	if(Verity(std::filesystem::directory_entry(progDir.parent_path())).exists)
 	{
 		if(Verity(std::filesystem::directory_entry(progDir)).exists)
@@ -261,10 +261,10 @@ Restore::PathStatus Restore::originalPathStatus(const std::filesystem::path& pro
 	return result;
 }
 
-//Read relevant column database. Then perform checks
-//Check if file name exists inside file/
-//Check if the original rcb directory exists/
-//Check if the original rcb directory contains the same filename.
-//Create exception for directory permission as they could have changed.
+// Read relevant column database. Then perform checks
+// Check if file name exists inside file/
+// Check if the original rcb directory exists/
+// Check if the original rcb directory contains the same filename.
+// Create exception for directory permission as they could have changed.
 
-}//namespace rcb
+}// namespace rcb

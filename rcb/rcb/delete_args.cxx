@@ -33,7 +33,7 @@ void DeleteArgs::run(std::vector<std::string>& args)
 	
 		if (args.at(i).substr(0, 2) == "--" || args.at(i).substr(0, 1) == "-")
 		{
-			//Add Conditional check for '-'. Reads stdin/stdout. E.g cat -
+			// Add Conditional check for '-'. Reads stdin/stdout. E.g cat -
 
 			if(args.at(i) == "--help" || args.at(i) == "-h")
 			{
@@ -42,7 +42,7 @@ void DeleteArgs::run(std::vector<std::string>& args)
 			} 
 			else if(args.at(i) == "--")
 			{
-				//Remove -- before passing arguments to delete cmd.
+				// Remove -- before passing arguments to delete cmd.
 				m_erasePositions.push_back(i);
 				break;
 			} 
@@ -64,16 +64,16 @@ void DeleteArgs::run(std::vector<std::string>& args)
 			else
 			{
 				std::println("unknown option: {0}", args.at(i));
-				return; //Prevent continuation
+				return; // Prevent continuation
 			}
 		}
 		else
 		{
-			//Unused
+			// Unused
 		}
 	}
 
-	//Needs to be removed in reverse to prevent index shift back.
+	// Needs to be removed in reverse to prevent index shift back.
 	for (auto it = m_erasePositions.rbegin(); it != m_erasePositions.rend(); ++it) 
 	{
 		args.erase(args.begin() + *it);

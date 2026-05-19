@@ -81,7 +81,7 @@ void Validate::file()
 		{
 			for(const auto& file : danglingFiles)
 			{
-				//WARNING: If a file with the same name exists in wipe/ it will be overwritten. file/ only contains unique names but files in wipe/ are not checked.
+				// WARNING: If a file with the same name exists in wipe/ it will be overwritten. file/ only contains unique names but files in wipe/ are not checked.
 				std::filesystem::rename(g_singleton->getWorkingProgFileDir() / file, g_singleton->getWorkingProgWipeDir() / file);          
 				std::filesystem::remove_all(g_singleton->getWorkingProgWipeDir() / file);
 			}
@@ -102,7 +102,7 @@ void Validate::data()
 	for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
 		stagedFiles.push_back(entry.path().filename().string());
 
-	//pop back dbProgFiles with whatever is inside program's file/.
+	// pop back dbProgFiles with whatever is inside program's file/.
 	for (const auto& element : stagedFiles)
 		danglingRecords.erase(std::remove(danglingRecords.begin(), danglingRecords.end(), element), danglingRecords.end());
 
@@ -140,7 +140,7 @@ void Validate::data()
 
 void Validate::wipe()
 {
-	//Check for existence of files first. Display them. Then remove...
+	// Check for existence of files first. Display them. Then remove...
 	std::vector<std::filesystem::path> danglingFiles{};
 
 	for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgWipeDir()))
@@ -189,18 +189,18 @@ void Validate::wipe()
 
 void Validate::fillDirectorySize()
 {
-	//Store NULL directories into vector
-	//Optional: Check directory is in-fact a directory again. If not then remove from vector.
-	//iterate directory and save all files excluding directories into a new vector list like in List::size().
-	//Remove dupe ino,dev from new vector.
-	//Stat all files and append them onto a long long
-	//Update the directory size in the database using executeSQL().
+	// Store NULL directories into vector
+	// Optional: Check directory is in-fact a directory again. If not then remove from vector.
+	// iterate directory and save all files excluding directories into a new vector list like in List::size().
+	// Remove dupe ino,dev from new vector.
+	// Stat all files and append them onto a long long
+	// Update the directory size in the database using executeSQL().
 
-	//REVISE: This should be vector of type std::filesystem::path
+	// REVISE: This should be vector of type std::filesystem::path
 	std::vector<std::string> nullDirectoriesQuery { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2}='{3}' AND {4}='NULL';", 
 		g_kSchemaFile, g_kProgName, g_kSchemaFiletype, fileTypeToString(std::filesystem::file_type::directory), g_kSchemaSize)) };
 	
-	//prepend file/ path to each filename
+	// prepend file/ path to each filename
 	std::transform(nullDirectoriesQuery.begin(), 
 				   nullDirectoriesQuery.end(), 
 				   nullDirectoriesQuery.begin(), 
@@ -209,7 +209,7 @@ void Validate::fillDirectorySize()
 
 	for(auto& directoryPathString : nullDirectoriesQuery)
 	{
-		//Check for read perms on directory, which is needed in order to iterate through it.
+		// Check for read perms on directory, which is needed in order to iterate through it.
 		if (!canReadDir(std::filesystem::directory_entry(directoryPathString)) &&
 			Verity(std::filesystem::directory_entry(directoryPathString)).type == 
 			std::filesystem::file_type::directory) 
@@ -225,4 +225,4 @@ void Validate::fillDirectorySize()
 	}
 }
 
-}//namespace rcb
+}// namespace rcb

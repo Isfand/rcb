@@ -48,6 +48,6 @@ private:
 
 };
 	
-} //namespace rcb
+} // namespace rcb
 
-#endif //LIST_ARGS_HXX 
+#endif // LIST_ARGS_HXX 

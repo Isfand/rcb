@@ -40,6 +40,6 @@ private:
 };
 
 	
-} //namespace rcb
+} // namespace rcb
 
-#endif //ERASE_ARGS_HXX 
+#endif // ERASE_ARGS_HXX 

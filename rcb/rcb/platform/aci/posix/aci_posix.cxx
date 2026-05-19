@@ -23,21 +23,21 @@
 
 namespace aci{
 
-//NOTE: FreeBSD's aliases can be unsigned long long instead of linux's unsigned int.
-//TODO: Add overloads for std::string for all. Or use a template.
-//TODO: For readability create new aliases that resemble the posix ones as close as possible.
+// NOTE: FreeBSD's aliases can be unsigned long long instead of linux's unsigned int.
+// TODO: Add overloads for std::string for all. Or use a template.
+// TODO: For readability create new aliases that resemble the posix ones as close as possible.
 
 /* STAT */
 Stat::Stat(const char* filePath)
 {
-	//stat will follow symlinks. lstat will not.
+	// stat will follow symlinks. lstat will not.
 	if (lstat(filePath, &m_stat) == -1)
 		throw std::runtime_error("Error getting file information");
 }
 
 unsigned long long Stat::st_atim()    const
 {
-	//TODO. Implement
+	// TODO. Implement
 	return 0;
 };      
 unsigned long long Stat::st_blksize() const
@@ -50,7 +50,7 @@ unsigned long long Stat::st_blocks()  const
 };      
 unsigned long long Stat::st_ctim()    const
 {
-	//TODO. Implement
+	// TODO. Implement
 	return 0;
 };
 unsigned long long Stat::st_dev() const
@@ -60,7 +60,7 @@ unsigned long long Stat::st_dev() const
 };
 unsigned long long Stat::st_dev_major() const
 {
-	//XXX. fix or investigate why the minor number is different on FreeBSD when using stat from cli compared to the one reported here.
+	// XXX. fix or investigate why the minor number is different on FreeBSD when using stat from cli compared to the one reported here.
 	unsigned long long majorNum = major(m_stat.st_dev);
 
 	// Convert to string and format as "major,minor"
@@ -87,7 +87,7 @@ unsigned long long Stat::st_mode()    const
 };
 unsigned long long Stat::st_mtim()    const
 {
-	//TODO. Implement
+	// TODO. Implement
 	return 0;
 };
 unsigned long long Stat::st_nlink()   const
@@ -130,11 +130,11 @@ unsigned long long Utime::change_times(const char* path, long long new_atime, lo
 	return utime(path, &new_times);
 }
 
-//Utimensat::Utimensat(const char* path, struct timespec new_atime, struct timespec new_mtime)
+// Utimensat::Utimensat(const char* path, struct timespec new_atime, struct timespec new_mtime)
 //{
 //	if (change_times_ns(path, new_atime, new_mtime) == -1) throw std::runtime_error("Failed to change time in nanoseconds");
 //}
-//unsigned long long Utimensat::change_times_ns(const char* path, struct timespec new_atime, struct timespec new_mtime)
+// unsigned long long Utimensat::change_times_ns(const char* path, struct timespec new_atime, struct timespec new_mtime)
 //{
 //	struct timespec times[2];
 //	times[0] = new_atime;  // Access time
@@ -246,14 +246,14 @@ Termsize::Termsize()
 		std::cerr << "ioctl failed\n";
 		this->row = 0;
 		this->col = 0;
-		return; //return 1;
+		return; // return 1;
 	}
-	//return 0;
+	// return 0;
 
 	this->col = w.ws_col;
 	this->row = w.ws_row;
 }
 
-}//namespace aci
+}// namespace aci
 
 #endif //#if defined(__unix__) || defined(__APPLE__)

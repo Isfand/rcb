@@ -10,16 +10,16 @@
 
 namespace rcb{
 
-//TODO: Create a constructor to open DB and a destructor to close it instead of repeating it explicitly.
+// TODO: Create a constructor to open DB and a destructor to close it instead of repeating it explicitly.
 
-//Unused
+// Unused
 void Database::createDB()
 {
 	sqlite3_open((g_singleton->getWorkingProgDataDir() / g_kDatabaseName).string().c_str(), &m_db);
 	sqlite3_close(m_db);
 }
 
-//Resets counter if no records exist.
+// Resets counter if no records exist.
 void Database::resetCounter()
 {
 	sqlite3_open((g_singleton->getWorkingProgDataDir() / g_kDatabaseName).string().c_str(), &m_db);
@@ -72,7 +72,7 @@ void Database::createTable()
 											  g_kSchemaPathDepth,
 											  g_kSchemaUser,
 											  g_kSchemaExecution);
-											  //sqlite3 does not support UNSIGNED. It is simply ignored. Keep it here for a workaround.
+											  // sqlite3 does not support UNSIGNED. It is simply ignored. Keep it here for a workaround.
 
 	char* errorMsg{};
 	int exit {sqlite3_exec(m_db, defaultSQLTable.c_str(), NULL, 0, &errorMsg)};
@@ -103,7 +103,7 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 
 	sqlite3_open((g_singleton->getWorkingProgDataDir() / g_kDatabaseName).string().c_str(), &m_db);
 
-	//XXX: Use prepared statements (sqlite3_prepare_v2 + sqlite3_bind_text).
+	// XXX: Use prepared statements (sqlite3_prepare_v2 + sqlite3_bind_text).
 	std::string recordData = std::format("INSERT INTO {} ("
 										 "{}, {}, {}, {}, {}, {}, {}, {}) "
 										 "VALUES("
@@ -126,8 +126,8 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 										 fileDetails.at(6),
 										 fileDetails.at(7));
 	
-	//WARNING: Windows backslashes are interpreted as special characters which is why the failure for windows might happen.
-	//for (unsigned char c : fileDetails.at(6))
+	// WARNING: Windows backslashes are interpreted as special characters which is why the failure for windows might happen.
+	// for (unsigned char c : fileDetails.at(6))
 	//	std::println("{:02X}", c);
 	
 	int exit = {sqlite3_exec(m_db, recordData.c_str(), NULL, 0, &errorMsg)};
@@ -149,7 +149,7 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 	sqlite3_close(m_db);
 }
 
-//For delete.cxx & wipe.cxx
+// For delete.cxx & wipe.cxx
 std::string Database::selectData(const std::string& sql)
 {
 	sqlite3_stmt *stmt;
@@ -194,8 +194,8 @@ std::string Database::selectData(const std::string& sql)
  
 }
 
-//For list.cxx
-//TODO: Would be better to have this function return a type of std::vector<std::vector<std::string>> or custom struct instead of a plain string.
+// For list.cxx
+// TODO: Would be better to have this function return a type of std::vector<std::vector<std::string>> or custom struct instead of a plain string.
 std::string Database::selectDataA(const std::string& sql)
 {
 	sqlite3_stmt *stmt;
@@ -241,8 +241,8 @@ std::string Database::selectDataA(const std::string& sql)
 	return st;
 }
 
-//For Restore.cxx & Wipe.cxx(allFile())
-//Can be overloaded instead of having a unique function name using discriminatory tokens (enums)
+// For Restore.cxx & Wipe.cxx(allFile())
+// Can be overloaded instead of having a unique function name using discriminatory tokens (enums)
 std::vector<std::string> Database::selectDataB(const std::string& sql)
 {
 	std::vector<std::string> vlist{};
@@ -267,7 +267,7 @@ std::vector<std::string> Database::selectDataB(const std::string& sql)
 		int col_count = sqlite3_column_count(stmt);
 		for (int col = 0; col < col_count; col++) 
 		{
-			//const char* col_name = sqlite3_column_name(stmt, col);
+			// const char* col_name = sqlite3_column_name(stmt, col);
 			const char* col_text = (const char*)sqlite3_column_text(stmt, col);
 			// printf("%s: %s\n", col_name, col_text ? col_text : "NULL");
 			vlist.push_back(col_text);
@@ -311,4 +311,4 @@ int Database::executeSQL(const std::string &sql)
 	return SQLITE_OK;
 }
 
-} //namespace rcb
+} // namespace rcb

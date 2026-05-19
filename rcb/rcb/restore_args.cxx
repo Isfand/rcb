@@ -106,16 +106,16 @@ void RestoreArgs::run(std::vector<std::string>& args)
 			else
 			{
 				std::println("unknown option: {0}", args.at(i));
-				return; //Prevent continuation
+				return; // Prevent continuation
 			}
 		}
 		else
 		{
-			//Unused
+			// Unused
 		}
 	}
 
-	//Needs to be removed in reverse to prevent index shift back.
+	// Needs to be removed in reverse to prevent index shift back.
 	for (auto it = m_erasePositions.rbegin(); it != m_erasePositions.rend(); ++it) 
 	{
 		args.erase(args.begin() + *it);

@@ -25,6 +25,6 @@ private:
 	void sqlInjection();
 };
 	
-} //namespace rcb
+} // namespace rcb
 
-#endif //ERASE_HXX 
+#endif // ERASE_HXX 

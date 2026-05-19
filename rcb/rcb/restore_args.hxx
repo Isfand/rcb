@@ -9,7 +9,7 @@ namespace rcb{
 
 struct RestoreOptions
 {
-	//bool defaultOption{};
+	// bool defaultOption{};
 	bool allOption{};
 	bool verboseOption{};
 	bool forceOption{};

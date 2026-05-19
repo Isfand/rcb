@@ -31,6 +31,6 @@ private:
 	int pathDepth(const std::filesystem::path& path);
 };
 	
-}//namespace rcb
+}// namespace rcb
 
 #endif

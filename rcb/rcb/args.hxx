@@ -28,15 +28,15 @@ private:
 	int m_argc;
 	char** m_argv;
 
-	//Globals to be set in setGlobals();
-	//Always pushback globals in Args to m_argsToRemove
-	bool m_verboseOption  {}; //Incomplete
-	bool m_forceOption    {}; //Incomplete
-	//bool m_silentOption   {}; //Unused
-	//int  m_threadOptional {}; //Unused
+	// Globals to be set in setGlobals();
+	// Always pushback globals in Args to m_argsToRemove
+	bool m_verboseOption  {}; // Incomplete
+	bool m_forceOption    {}; // Incomplete
+	// bool m_silentOption   {}; // Unused
+	// int  m_threadOptional {}; // Unused
 
-	//bool m_tactacFlag{}; //Unused
-	//bool m_tacFlag   {}; //Unused
+	// bool m_tactacFlag{}; // Unused
+	// bool m_tacFlag   {}; // Unused
 	
 	std::optional<Command> m_cmd; // Shared flag for sub-commands.
 	
@@ -65,7 +65,7 @@ private:
 		"Top-Level Options:\n"
 		"--version, gives program version.\n";
 
-	//https://www.asciiart.eu/logos/recycle
+	// https:// www.asciiart.eu/logos/recycle
 	const char* m_rcb_ASCII_art =
 	R"(
     _____\    _______

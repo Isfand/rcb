@@ -9,7 +9,7 @@ namespace rcb{
 
 /* contains common shared program utilities */
 
-//This exists because it does two actions and by default directory_entry follows symbolic links. And I don't want todo std::filesystem::exists(entry.symlink_status) every single time.
+// This exists because it does two actions and by default directory_entry follows symbolic links. And I don't want todo std::filesystem::exists(entry.symlink_status) every single time.
 struct Verity
 {
 	std::filesystem::file_type type{};
@@ -28,10 +28,10 @@ std::array<std::array<bool, 3>, 3> getFilePerms(const std::filesystem::path& fil
 unsigned long long directorySize(const std::filesystem::directory_entry& directory);
 int formatToTimestamp(const std::string& format, long long& timestamp);
 
-//Unused
+// Unused
 std::string posixTimeToDateTime(std::chrono::seconds timestamp);
 
-//Unimplemented
+// Unimplemented
 std::string dataUnitConversion();
 
 void renameFile(std::string& file);
@@ -43,8 +43,8 @@ bool renameDupe(
 std::filesystem::path deepestExistingPath(const std::filesystem::path& fullPath);
 int sanitizeRemoveAll(const std::filesystem::path& path);
 
-//Add a thread pool here
+// Add a thread pool here
 
-} //namespace rcb
+} // namespace rcb
 
-#endif //UTILS_HXX
+#endif // UTILS_HXX

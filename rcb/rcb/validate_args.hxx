@@ -39,6 +39,6 @@ private:
 		;
 };
 	
-}//namespace rcb
+}// namespace rcb
 
 #endif

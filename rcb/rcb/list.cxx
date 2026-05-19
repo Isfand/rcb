@@ -24,17 +24,17 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 	std::println("totalSizeOption is:     {}", m_lOpt.totalSizeOption);
 	std::println("totalCountOption is:    {}", m_lOpt.totalCountOption);
 	std::println("humanReadableOption is: {}", m_lOpt.humanReadableOption);
-	std::println("verboseOption is:       {}", m_lOpt.verboseOption); //Unused
+	std::println("verboseOption is:       {}", m_lOpt.verboseOption); // Unused
 	std::println("noFormatOption is:      {}", m_lOpt.noFormatOption);
 	std::println("pastOption is:          {}", m_lOpt.pastOption);
 	std::println("previousOption is:      {}", m_lOpt.previousOption);
 	std::println("sqlOption is:           {}", m_lOpt.sqlOption);
 #endif
 
-	//Order matters
+	// Order matters
 
-	//TODO: WIll also need a way to convert size of bytes to other units.
-	//Can pair this problem with --no-format to work with regular queries.
+	// TODO: WIll also need a way to convert size of bytes to other units.
+	// Can pair this problem with --no-format to work with regular queries.
 	if(m_lOpt.humanReadableOption) { m_defaultSQLQuery = std::format("SELECT {0}, {1}, {2}, datetime({3}, 'unixepoch') AS {3}, {4}, {5}, {6}, {7} FROM {8}",
 		g_kSchemaID, g_kSchemaFile, g_kSchemaPath, g_kSchemaTimestamp, g_kSchemaSize, g_kSchemaFiletype, g_kSchemaUser, g_kSchemaExecution, g_kProgName); }
 
@@ -53,7 +53,7 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 		List::allFile();
 }
 
-//Prints all contents of rcb/data/*.sqlite3 database 
+// Prints all contents of rcb/data/*.sqlite3 database 
 void List::allFile()
 {
 	std::print("Results:\n{}", m_db.selectDataA(m_defaultSQLQuery + ";"));
@@ -68,10 +68,10 @@ void List::file(const std::vector<std::string>& args)
 			m_defaultSQLQuery, g_kSchemaID, arg)));
 }
 
-//TODO: past() is the same across erase, list, restore. Reduce to one.
+// TODO: past() is the same across erase, list, restore. Reduce to one.
 void List::past()
 {
-	//TODO. add silence to guard the return cerr text
+	// TODO. add silence to guard the return cerr text
 	for(auto format : m_lOpt.timeVec)
 	{
 		long long timestamp{};
@@ -113,7 +113,7 @@ void List::count()
 	if(m_lOpt.noFormatOption)
 		descriptor.erase();
 
-	//Repeated in size();
+	// Repeated in size();
 	if(m_validFiles.empty())
 		for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
 		{
@@ -138,8 +138,8 @@ void List::size()
 	std::set<std::pair<unsigned long long, unsigned long long>> seen;
 	unsigned long long size{};
 
-	//Repeated in count();
-	//Makes sure the filename exists inside file/
+	// Repeated in count();
+	// Makes sure the filename exists inside file/
 	if(m_validFiles.empty())
 		for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
 		{
@@ -182,12 +182,12 @@ void List::size()
 			g_kSchemaSize, g_kProgName, g_kSchemaFile, std::get<0>(de))) };
 		std::string byte = (query == "NULL") ? "0" : query;
 		size += std::stoull(byte);
-		//WARNING. Be wary of NULL values in size.
-		//Could also continue instead of assigning NULL to 0.
-		//Can also use COALESCE or IFNULL in the query itself.
+		// WARNING. Be wary of NULL values in size.
+		// Could also continue instead of assigning NULL to 0.
+		// Can also use COALESCE or IFNULL in the query itself.
 	}
 	std::println("{}{}", descriptor, size);
 
 }
 
-}//namespace rcb
+}// namespace rcb

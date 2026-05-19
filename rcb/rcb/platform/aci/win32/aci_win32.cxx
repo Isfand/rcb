@@ -9,7 +9,7 @@
 #include <sstream>
 #include <iomanip>
 
-#include <sys/stat.h> //Needed for mingw
+#include <sys/stat.h> // Needed for mingw
 #include <windows.h>
 #include <lmcons.h>
 #include <shlobj.h>
@@ -23,7 +23,7 @@ namespace aci{
 /* STAT */
 Stat::Stat(const char* filePath)
 {
-	//HANDLE handleFile = CreateFileA(
+	// HANDLE handleFile = CreateFileA(
 	//	filePath,
 	//	GENERIC_READ,
 	//	FILE_SHARE_READ,
@@ -33,11 +33,11 @@ Stat::Stat(const char* filePath)
 	//	NULL
 	//);
 
-	//GetFileAttributesExA(filePath, GetFileExInfoStandard, &m_fileAttributeInfo);
-	//GetFileInformationByHandle(handleFile, &m_fileHandleInfo);
+	// GetFileAttributesExA(filePath, GetFileExInfoStandard, &m_fileAttributeInfo);
+	// GetFileInformationByHandle(handleFile, &m_fileHandleInfo);
 
-	//Use _stat instead as it doesn't follow symbolic links by default on windows.
-	//Update: It does follow symlinks but only by checking if the target path exists. If not -1 is returned. Needs new implementation.
+	// Use _stat instead as it doesn't follow symbolic links by default on windows.
+	// Update: It does follow symlinks but only by checking if the target path exists. If not -1 is returned. Needs new implementation.
 
 	if (_stat(filePath, &m_stat) == -1)
 		throw std::runtime_error("Error getting file information");
@@ -66,13 +66,13 @@ unsigned long long Stat::st_dev() const
 };
 unsigned long long Stat::st_dev_major() const
 {
-	//No Major macro on windows.
+	// No Major macro on windows.
 	unsigned long long majorNum = (m_stat.st_dev);
 	return majorNum;
 };
 unsigned long long Stat::st_dev_minor() const
 {
-	//No Minor macro on windows.
+	// No Minor macro on windows.
 	unsigned long long minorNum = (m_stat.st_dev);
 	return minorNum;
 }
@@ -167,8 +167,8 @@ User::User()
 }
 unsigned long long User::uid() const
 {
-	//Seed the SID to have a unique ID.
-	//This formula can potentially create collisions. Unlikely as a normal machine only has like 5-30 SIDs.
+	// Seed the SID to have a unique ID.
+	// This formula can potentially create collisions. Unlikely as a normal machine only has like 5-30 SIDs.
 	unsigned long long seed{};
 	const unsigned long long prime{ 31 }; // A small prime number for hashing
 
@@ -266,8 +266,8 @@ std::string Pwuid::pw_name() const
 	return str;
 
 	// Convert from wstring (UTF-16) to string (UTF-8)
-	//std::wstring wstr(username);
-	//std::string str(wstr.begin(), wstr.end());
+	// std::wstring wstr(username);
+	// std::string str(wstr.begin(), wstr.end());
 }
 std::string Pwuid::pw_passwd() const
 {
@@ -327,13 +327,13 @@ Termsize::Termsize()
 		std::cerr << "GetConsoleScreenBufferInfo failed\n";
 		this->row = 0;
 		this->col = 0;
-		return; //return 1;
+		return; // return 1;
 	}
-	//return 0;
+	// return 0;
 	this->row = csbi.srWindow.Bottom - csbi.srWindow.Top  + 1;
 	this->col = csbi.srWindow.Right  - csbi.srWindow.Left + 1;
 }
 
-}//namespace aci
+}// namespace aci
 
 #endif //#if defined(_WIN32) && !defined(__CYGWIN__)

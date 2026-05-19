@@ -16,7 +16,7 @@ Delete::Delete(const std::vector<std::string>& args, const DeleteOptions& dOpt) 
 {
 #ifndef NDEBUG
 	std::println("verboseOption is:   {}", m_dOpt.verboseOption);
-	std::println("forceOption is:     {}", m_dOpt.forceOption); //Unused
+	std::println("forceOption is:     {}", m_dOpt.forceOption); // Unused
 	std::println("noDirSizeOption is: {}", m_dOpt.noDirSizeOption);
 #endif
 	m_currentExecutionID = incrementExecutionID();
@@ -27,8 +27,8 @@ void Delete::file(const std::vector<std::string>& args)
 {
 	for(const std::string& file : args)
 	{
-		//UPDATE: weakly canonical can throw exception if a symlink chains to many symlinks. Replacing with custom solution.
-		//CHANGED: systemFilePath should be in for loop top-level scope that way Verity can check symlink_status() properly. 
+		// UPDATE: weakly canonical can throw exception if a symlink chains to many symlinks. Replacing with custom solution.
+		// CHANGED: systemFilePath should be in for loop top-level scope that way Verity can check symlink_status() properly. 
 		const std::filesystem::path systemFilePath { removeTrailingSlash(std::filesystem::absolute(file).lexically_normal()) };
 
 		if(Verity(std::filesystem::directory_entry(systemFilePath)).exists)
@@ -36,7 +36,7 @@ void Delete::file(const std::vector<std::string>& args)
 			std::string mutFilename { systemFilePath.filename().string() };
 			std::filesystem::directory_entry stageEntry { g_singleton->getWorkingProgFileDir() / systemFilePath.filename() };
 
-			//Need to use systemFilePath for the full path. Relativity creates issues.
+			// Need to use systemFilePath for the full path. Relativity creates issues.
 			if (!canMvFileChk(std::filesystem::directory_entry(systemFilePath)))
 			{
 				std::println("process execution user {} is missing write/execute permissions for parent directory of {} ", g_singleton->getWorkingUsername(), systemFilePath.string());
@@ -54,19 +54,19 @@ void Delete::file(const std::vector<std::string>& args)
 #ifndef NDEBUG
 			std::println("CFP is: {0}\nMFN is: {1}", systemFilePath.string(), mutFilename);
 #endif
-			//The reason to always write the file data first is because the program could be terminated.
-			//Its better to have dangling records than have some file moved which is not on record.
+			// The reason to always write the file data first is because the program could be terminated.
+			// Its better to have dangling records than have some file moved which is not on record.
 			try
 			{
-				//Checks for read perms on directory, which is needed in order to iterate through it to save its size.
-				//Also checks for noDirSizeOption so the message doesn't print when using the option
-				//TODO. canReadDir/rec check is being called twice in this file. It should only be called once per file entry. Save the result as bool and reuse it.
+				// Checks for read perms on directory, which is needed in order to iterate through it to save its size.
+				// Also checks for noDirSizeOption so the message doesn't print when using the option
+				// TODO. canReadDir/rec check is being called twice in this file. It should only be called once per file entry. Save the result as bool and reuse it.
 				if (!m_dOpt.noDirSizeOption && 
 					!canReadDir(std::filesystem::directory_entry(systemFilePath)) &&
 					Verity(std::filesystem::directory_entry(systemFilePath)).type ==
 					std::filesystem::file_type::directory) 
 				{
-					//TODO: Can create something that force adds read permissions for the execution user. This can be used to create a --force-save-directorysize.
+					// TODO: Can create something that force adds read permissions for the execution user. This can be used to create a --force-save-directorysize.
 					if(!m_dOpt.forceOption)
 						std::println("cannot save directory size, process execution user {} is missing read permissions for directory {}\nUse --force or explicitly --no-directorysize",
 						g_singleton->getWorkingUsername(), systemFilePath.string());
@@ -77,7 +77,7 @@ void Delete::file(const std::vector<std::string>& args)
 			catch(const std::filesystem::filesystem_error& e)
 			{
 				std::println("{}", e.what());
-				//Using continue to allow the other args to be processed.
+				// Using continue to allow the other args to be processed.
 				continue;
 			}
 			
@@ -92,8 +92,8 @@ void Delete::file(const std::vector<std::string>& args)
 				}
 				catch(const std::filesystem::filesystem_error& e)
 				{
-					//Insert data failed
-					//TODO: Instead of just deleting the highest value, check against every detail held in memory with the database record. *Added 2nd try catch above to prevent removing existing data if insertData fails.
+					// Insert data failed
+					// TODO: Instead of just deleting the highest value, check against every detail held in memory with the database record. *Added 2nd try catch above to prevent removing existing data if insertData fails.
 					m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}=(SELECT MAX({1}) FROM {0});", g_kProgName, g_kSchemaID));
 					std::println("cannot move file. insufficient permissions");
 					continue;
@@ -106,13 +106,13 @@ void Delete::file(const std::vector<std::string>& args)
 				
 				try
 				{
-					//Get device ID of getWorkingProgDir and compare it to the file argument. If it's not the same. Then you are accessing an external device.
+					// Get device ID of getWorkingProgDir and compare it to the file argument. If it's not the same. Then you are accessing an external device.
 					externRename(systemFilePath, (g_singleton->getWorkingProgFileDir() / mutFilename));
 				}
 				catch(const std::filesystem::filesystem_error& e)
 				{
-					//Insert data failed
-					//TODO: Instead of just deleting the highest value, check against every detail held in memory with the database record. *Added 2nd try catch above to prevent removing existing data if insertData fails.
+					// Insert data failed
+					// TODO: Instead of just deleting the highest value, check against every detail held in memory with the database record. *Added 2nd try catch above to prevent removing existing data if insertData fails.
 					m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}=(SELECT MAX({1}) FROM {0});", g_kProgName, g_kSchemaID));
 					std::println("cannot move file. insufficient permissions");
 					continue;
@@ -134,7 +134,7 @@ const std::array<std::string, 8> Delete::saveFileData(const std::string& stageFi
 	std::string filePath{originalPath.string()};
 	std::string timestamp{std::to_string(currentTime)};
 	
-	//WARNING: "NULL" is being stored as a literal string and not an actual sqlite NULL.
+	// WARNING: "NULL" is being stored as a literal string and not an actual sqlite NULL.
 	std::string fileByteSize = 
 		(m_dOpt.noDirSizeOption && 
 		Verity(std::filesystem::directory_entry(originalPath)).type == 
@@ -153,10 +153,10 @@ const std::array<std::string, 8> Delete::saveFileData(const std::string& stageFi
 	return std::array<std::string, 8>{fileName, filePath, timestamp, fileByteSize, fileType, originalPathDepth, workingUsername, executionID};
 }
 
-//TODO: Move into utils and use in DirectorySize() to reduce duplicate code.
+// TODO: Move into utils and use in DirectorySize() to reduce duplicate code.
 long long unsigned Delete::fileSize(const std::filesystem::directory_entry& file)
 {
-	unsigned long long size{}; //TODO: does not prevent integer overflow. cap to MAX.
+	unsigned long long size{}; // TODO: does not prevent integer overflow. cap to MAX.
 	Verity entryItem{file};
 
 	switch(entryItem.type)
@@ -239,9 +239,9 @@ std::filesystem::path Delete::removeTrailingSlash(const std::filesystem::path& p
 
 int Delete::pathDepth(const std::filesystem::path& path)
 {
-	//has_root_path() checks if a path starts with root. / itself starts as /. So does /some/file/dir.
+	// has_root_path() checks if a path starts with root. / itself starts as /. So does /some/file/dir.
 	int depth = std::distance(path.begin(), path.end());
     return path.has_root_path() ? depth - 1 : depth;
 }
 		
-}//namespace rcb
+}// namespace rcb

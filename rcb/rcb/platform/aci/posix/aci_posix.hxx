@@ -52,11 +52,11 @@ private:
 	unsigned long long change_times(const char* path, long long new_atime, long long new_mtime);
 };
 
-//class Utimensat
+// class Utimensat
 //{
-//public:
+// public:
 //	Utimensat(const char* path, struct timespec new_atime, struct timespec new_mtime);
-//private:
+// private:
 //	unsigned long long change_times_ns(const char* path, struct timespec new_atime, struct timespec new_mtime);
 //};
 
@@ -110,8 +110,8 @@ struct Termsize
 	Termsize();
 };
 
-}//namespace aci
+}// namespace aci
 
-#endif //ACI_POSIX_HXX
+#endif // ACI_POSIX_HXX
 
 #endif //#if defined(__unix__) || defined(__APPLE__)

@@ -5,7 +5,7 @@
 #include "args.hxx"
 #ifndef NDEBUG
 #include "common/stopwatch.hxx"
-#endif//NDEBUG
+#endif// NDEBUG
 
 //#include "common/singleton.hxx"
 //#include "common/globals.hxx"
@@ -27,9 +27,9 @@ int main (int argc, char** argv)
 	catch(const std::exception& e)
 	{
 		std::cerr << e.what() << std::endl;
-		//ScopedSingletonDeleter<Singleton> _{singleton};
+		// ScopedSingletonDeleter<Singleton> _{singleton};
 		return EXIT_FAILURE;
 	}
-	//ScopedSingletonDeleter<Singleton> _{singleton};
+	// ScopedSingletonDeleter<Singleton> _{singleton};
 	return EXIT_SUCCESS;
 }

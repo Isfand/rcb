@@ -8,24 +8,24 @@
 
 namespace rcb{
 
-//Using alteration of Blair Davidson's singleton: https://loosechainsaw.github.io/c++/2020/02/16/singleton/
+// Using alteration of Blair Davidson's singleton: https:// loosechainsaw.github.io/c++/2020/02/16/singleton/
 class Singleton
 {
 public:
 	static Singleton* instance();
 	
-	//https://www.stroustrup.com/C++11FAQ.html#default2
+	// https:// www.stroustrup.com/C++11FAQ.html#default2
 	Singleton(const Singleton&)            = delete; // Prevent copy ctor
 	Singleton& operator=(const Singleton&) = delete; // Prevent copy assignment
 	Singleton(Singleton&&)                 = delete; // Prevent move ctor
 	Singleton& operator=(Singleton&&)      = delete; // Prevent move assignment
 	~Singleton();
 
-	//Accessors
-	//const bool        getVerboseOption()       const;
-	//const bool        getForceOption()         const;
+	// Accessors
+	// const bool        getVerboseOption()       const;
+	// const bool        getForceOption()         const;
 
-	//Could make these return std::optional
+	// Could make these return std::optional
 	const std::filesystem::path getWorkingProgDir()     const;
 	const std::filesystem::path getWorkingProgFileDir() const;
 	const std::filesystem::path getWorkingProgDataDir() const;
@@ -33,9 +33,9 @@ public:
 	const std::filesystem::path getWorkingProgSignDir() const;
 	const std::string           getWorkingUsername()    const;
 
-	//Mutators
-	//void setVerboseOption      (bool verboseOption);
-	//void setForceOption        (bool forceOption);
+	// Mutators
+	// void setVerboseOption      (bool verboseOption);
+	// void setForceOption        (bool forceOption);
 
 	void setWorkingProgDir    (std::filesystem::path workingProgDir);
 	void setWorkingProgFileDir(std::filesystem::path workingProgFileDir);
@@ -44,19 +44,19 @@ public:
 	void setWorkingProgSignDir(std::filesystem::path workingProgSignDir);
 	void setWorkingUsername   (std::string workingProgUsername);
 
-	//Assign
+	// Assign
 	// const bool&& g_kVerboseFlag = getVerboseFlag();
 	
 private:
 	Singleton();
-	//int m_state = 1; //Unused
-	//NOTE: These are set to static which means they will persist even after object recreation, which can be a problem for tests. An alternative solution for debugging could be later created.
+	// int m_state = 1; // Unused
+	// NOTE: These are set to static which means they will persist even after object recreation, which can be a problem for tests. An alternative solution for debugging could be later created.
 	static Singleton *s_instance;
-	//Do NOT inline these once_flags. avoid multiple definitions and potential issues with thread synchronization
+	// Do NOT inline these once_flags. avoid multiple definitions and potential issues with thread synchronization
 	static std::once_flag s_flag;
 
-	//static std::once_flag s_setVerboseOptionFlag;
-	//static std::once_flag s_setForceOptionFlag;
+	// static std::once_flag s_setVerboseOptionFlag;
+	// static std::once_flag s_setForceOptionFlag;
 
 	static std::once_flag s_setWorkingProgDirFlag;
 	static std::once_flag s_setWorkingProgFileDirFlag;
@@ -65,8 +65,8 @@ private:
 	static std::once_flag s_setWorkingProgSignDirFlag;
 	static std::once_flag s_setWorkingUsernameFlag;
 
-	//bool m_verboseOption{};
-	//bool m_forceOption{};
+	// bool m_verboseOption{};
+	// bool m_forceOption{};
 	
 	std::filesystem::path m_workingProgDir{};
 	std::filesystem::path m_workingProgFileDir{};
@@ -76,7 +76,7 @@ private:
 	std::string m_workingUsername{};
 };
 
-//Unused
+// Unused
 template<typename T>
 class ScopedSingletonDeleter {
 public:
@@ -97,6 +97,6 @@ private:
 	T* m_ptr_{};
 };
 
-} //namespace rcb
+} // namespace rcb
 
-#endif //SINGLETON_HXX
+#endif // SINGLETON_HXX

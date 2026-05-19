@@ -71,16 +71,16 @@ void ValidateArgs::run(std::vector<std::string>& args)
 			else
 			{
 				std::println("unknown option: {0}", args.at(i));
-				return; //Prevent continuation
+				return; // Prevent continuation
 			}
 		}
 		else
 		{
 			std::println("incorrect use of command\nuse --help for usage");
-			return; //Prevent continuation
+			return; // Prevent continuation
 		}
 	} 
 	Validate{m_vOpt};
 }
 	
-}//namespace rcb
+}// namespace rcb
