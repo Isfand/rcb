@@ -56,7 +56,7 @@ private:
 		"delete   | d, deletes files.\n"
 		"list     | l, lists files.\n"
 		"restore  | r, restores files.\n"
-		"erase    | e, empty files.\n"
+		"erase    | e, erase files.\n"
 		"validate | v, validate files.\n\n"
 
 		"Shared Options:\n"
