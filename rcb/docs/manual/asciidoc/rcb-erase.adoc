@@ -29,7 +29,7 @@ Permanently remove all files.
  
 *--past* _<n>(unit)_ +
 [.indent]
-Erase file(s) by relative past time with units: t,s,m,h,d,w,mo,y,c,k. +
+Erase file(s) by relative past time with units: t,s,m,h,d,w,mo,y,dec,c,k. +
 *Example:* +
 *$ rcb erase* _--past 10m_ +
 Will erase all files that were deleted 10 minutes ago. +

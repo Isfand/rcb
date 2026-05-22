@@ -45,7 +45,7 @@ Force restore by recreating any directories leading up-to the original filepath
  
 *--past* _<n>(unit)_ +
 [.indent]
-Restore file(s) by relative past time with units: t,s,m,h,d,w,mo,y,c,k. +
+Restore file(s) by relative past time with units: t,s,m,h,d,w,mo,y,dec,c,k. +
 *Example:* +
 *$ rcb restore* _--past 10m_ +
 Will restore all files that were deleted 10 minutes ago. +

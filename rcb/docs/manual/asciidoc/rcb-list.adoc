@@ -28,7 +28,7 @@ List everything in record along with total count and total size.
  
 *--past* _<n>(unit)_ +
 [.indent]
-List file(s) by relative past time with units: t,s,m,h,d,w,mo,y,c,k. +
+List file(s) by relative past time with units: t,s,m,h,d,w,mo,y,dec,c,k. +
 *Example:* +
 *$ rcb list* _--past 10m_ +
 Will list all files that were deleted 10 minutes ago. +
