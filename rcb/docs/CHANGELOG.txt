@@ -5,10 +5,10 @@
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
 ----------------------------------------------------------------------
- VERSION 0.14.0 (??-??-????)
+ VERSION 0.14.0 (22-05-2026)
 ----------------------------------------------------------------------
 
-Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
+Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v0.14.0
 
 - CHANGE: pkg-managers branch is now recipes and rcb-utility/pkg-managers/ is rcb-utility/packages/.
 - CHANGE: cppget sqlite3 dependency version is now 3.51.3+1.
