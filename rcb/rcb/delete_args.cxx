@@ -2,8 +2,8 @@
 #include <vector>
 #include <print>
 
-#include "delete_args.hxx"
 #include "delete.hxx"
+#include "delete_args.hxx"
 #include "common/globals.hxx"
 
 namespace rcb{

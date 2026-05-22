@@ -5,17 +5,9 @@
 #include <string>
 #include <vector>
 
-namespace rcb{
+#include "validate.hxx"
 
-struct ValidateOptions
-{
-	bool verboseOption{};
-	bool yesOption{};
-	bool fileOption{};
-	bool dataOption{};
-	bool wipeOption{};
-	bool fillDirSizeOption{};
-};
+namespace rcb{
 
 class ValidateArgs
 {

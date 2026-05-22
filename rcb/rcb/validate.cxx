@@ -7,7 +7,6 @@
 #include <algorithm>
 
 #include "validate.hxx"
-#include "validate_args.hxx"
 #include "common/database.hxx"
 #include "common/globals.hxx"
 #include "common/utils.hxx"

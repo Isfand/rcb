@@ -6,11 +6,28 @@
 #include <vector>
 #include <format>
 
-#include "list_args.hxx"
 #include "common/globals.hxx"
 #include "common/database.hxx"
 
 namespace rcb{
+
+struct ListOptions
+{
+	bool allOption{};
+	bool defaultOption{};
+	bool totalSizeOption{};
+	bool totalCountOption{};
+	bool humanReadableOption{};
+	bool noFormatOption{};
+	bool verboseOption{};
+	bool previousOption{};
+
+	bool pastOption{};
+	std::vector<std::string> timeVec{};
+
+	bool sqlOption{};
+	std::vector<std::string> sqlVec{};
+};
 
 class List
 {

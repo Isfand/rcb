@@ -1,7 +1,7 @@
 #include <print>
 
-#include "erase_args.hxx"
 #include "erase.hxx"
+#include "erase_args.hxx"
 #include "common/globals.hxx"
 
 namespace rcb{

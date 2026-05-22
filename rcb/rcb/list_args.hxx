@@ -5,25 +5,9 @@
 #include <string>
 #include <vector>
 
+#include "list.hxx"
+
 namespace rcb{
-
-struct ListOptions
-{
-	bool allOption{};
-	bool defaultOption{};
-	bool totalSizeOption{};
-	bool totalCountOption{};
-	bool humanReadableOption{};
-	bool noFormatOption{};
-	bool verboseOption{};
-	bool previousOption{};
-
-	bool pastOption{};
-	std::vector<std::string> timeVec{};
-
-	bool sqlOption{};
-	std::vector<std::string> sqlVec{};
-};
 
 class ListArgs
 {

@@ -2,10 +2,19 @@
 #ifndef VALIDATE_HXX
 #define VALIDATE_HXX
 
-#include "validate_args.hxx"
 #include "common/database.hxx"
 
 namespace rcb{
+
+struct ValidateOptions
+{
+	bool verboseOption{};
+	bool yesOption{};
+	bool fileOption{};
+	bool dataOption{};
+	bool wipeOption{};
+	bool fillDirSizeOption{};
+};
 
 class Validate
 {

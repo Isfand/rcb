@@ -5,14 +5,9 @@
 #include <string>
 #include <vector>
 
-namespace rcb{
+#include "delete.hxx"
 
-struct DeleteOptions
-{
-	bool verboseOption{};
-	bool forceOption{};
-	bool noDirSizeOption{};
-};
+namespace rcb{
 
 class DeleteArgs
 {

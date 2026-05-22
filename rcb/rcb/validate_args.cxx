@@ -3,8 +3,8 @@
 #include <print>
 
 #include "validate_args.hxx"
-#include "common/globals.hxx"
 #include "validate.hxx"
+#include "common/globals.hxx"
 
 namespace rcb{
 

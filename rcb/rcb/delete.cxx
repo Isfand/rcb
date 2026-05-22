@@ -4,7 +4,6 @@
 #include <print>
 
 #include "delete.hxx"
-#include "delete_args.hxx"
 #include "platform/aci/aci.hxx"
 #include "common/database.hxx"
 #include "common/globals.hxx"

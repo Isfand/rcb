@@ -5,20 +5,9 @@
 #include <string>
 #include <vector>
 
+#include "erase.hxx"
+
 namespace rcb{
-
-struct EraseOptions
-{
-	bool allOption{};
-	bool previousOption{};
-	bool verboseOption{};
-	
-	bool pastOption{};
-	std::vector<std::string> timeVec{};
-
-	bool sqlOption{};
-	std::vector<std::string> sqlVec{};
-};
 	
 class EraseArgs
 {

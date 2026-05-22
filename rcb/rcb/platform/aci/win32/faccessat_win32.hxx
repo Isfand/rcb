@@ -1,6 +1,8 @@
 #if defined(_WIN32) && !defined(__CYGWIN__)
 #pragma once
 
+//Provisional implementation
+
 /**
  * faccessat_win32.hxx
  * --------------------

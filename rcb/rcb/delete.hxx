@@ -7,10 +7,16 @@
 #include <filesystem>
 #include <vector>
 
-#include "delete_args.hxx"
 #include "common/database.hxx"
 
 namespace rcb{
+
+struct DeleteOptions
+{
+	bool verboseOption{};
+	bool forceOption{};
+	bool noDirSizeOption{};
+};
 
 class Delete
 {

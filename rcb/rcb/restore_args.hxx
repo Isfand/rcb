@@ -5,25 +5,9 @@
 #include <string>
 #include <vector>
 
+#include "restore.hxx"
+
 namespace rcb{
-
-struct RestoreOptions
-{
-	// bool defaultOption{};
-	bool allOption{};
-	bool verboseOption{};
-	bool forceOption{};
-	bool forceReplaceOption{};
-	bool forceRenameOption{};
-	bool forceRecreateDirectoryOption{};
-	bool previousOption{};
-
-	bool pastOption{};
-	std::vector<std::string> timeVec{};
-	
-	bool sqlOption{};
-	std::vector<std::string> sqlVec{};
-};
 
 class RestoreArgs
 {
