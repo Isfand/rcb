@@ -24,3 +24,15 @@ nix-build -E 'with import /opt/ports/nixpkgs {}; callPackage /opt/ports/nixpkgs/
 
 #Install
 nix-env -i -E 'with import /opt/ports/nixpkgs {}; callPackage /opt/ports/nixpkgs/pkgs/by-name/rc/rcb/package.nix {}'
+
+#Uninstall
+nix-env -e rcb
+
+
+
+#Packaging hash
+#Note: When updating versions remove the original "/opt/ports/nixpkgs/pkgs/by-name/rc/rcb"
+Use either:
+nix hash convert --hash-algo sha256 $(nix-prefetch-url --unpack https://github.com/Isfand/rcb/archive/refs/tags/vX.Y.Z.tar.gz 2>/dev/null)
+Or modify package.nix with:
+hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="; then #build & copy the new generated hash back in

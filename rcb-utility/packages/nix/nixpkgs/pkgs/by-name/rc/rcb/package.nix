@@ -10,7 +10,7 @@
 
 stdenv.mkDerivation (finalAttrs: let owner = "Isfand"; in {
   pname = "rcb";
-  version = "0.13.0";
+  version = "0.14.0";
 
   outputs = [
     "out"
@@ -21,7 +21,7 @@ stdenv.mkDerivation (finalAttrs: let owner = "Isfand"; in {
     inherit owner;
     repo  = finalAttrs.pname;
     rev = "v${finalAttrs.version}";
-    hash = "sha256-8mZXR9Rlio8ace8rmY//qrrsNlmbs32NS+dmBlPKyHk=";
+    hash = "sha256-bvtd0fbu4Ytf9oZnOQ0rBmW/qOGn60GNMnRmQSPjZKs=";
   };
 
   sourceRoot = "source/rcb";
