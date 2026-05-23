@@ -1,26 +1,27 @@
 Known issues:
 1. Windows cannot delete broken symlinks due to _stat implementation.
 2. If you move a file out of .rcb/file/ without updating the database it will call "free(): invalid size"
-3. canReadDirChk() does a shallow check instead of a recursive one.
 4. --no-format is only implemented for size and counts.
 5. --human-readable is only implemented for timestamp.
 
 ToDo:
+-ADD: --dry-run
+-FIX: the database is not using the correct sqlite statements like prepare and bind.
+-FIX: The database is using a literal string for NULL.
+-Refactor the rcb project to create a clear separation between args parsing and command logic so a library can be made. 
 -In delete_args add --force-save-directorysize for Delete::file(). There is also a comment.
--Fix. When deleting a directory which has a nested unreadable directory the program throws an exception instead of disregarding the directorySize. Or could just add a message saying to use --no-directorysize on the error.
 -ADD an option to recreate .rcb/ folder. Helpful for incompatible versions.
 -ADD a built in option to elevate privileges using an elevation command. E.G sudo/doas. Must enter name of command followed by password.
 -Implement --human-readable for list
--Implement PID_LOCK in /word
+-Implement PID_LOCK in /sign
 -Implement environment variable for .config as well as default dir.
 -Implement --jobs // For multithreading
 
 Suggestions:
 -Implement a temporary file that contains the previous list of files that were restored. 
-	Can also be done by creating a new sql column 'restoration' values true/false. This will never be deleted unless if the restored files do not exist.
+	Can also be done by creating a new sql column 'restoration' values true/false. This will never be deleted unless if the restored files do not exist. Or just create a new table for clear separation.
 -Implement rcb d --message 'text' | -m 'text'. for a column with a message attached per file.
 -Implement rcb r --all --exclude 'text'| -a -e 'text'. restore all but the excluded. #Note --sql would be a better alternative. 
--implement rcb e --shred, shreds all or selected files instead of just using unlink().
 
 End Goal:
 Once completed the final project will be to create a helper daemon/service for:

@@ -33,11 +33,10 @@ CROSS JOIN now_cte;
 
 Note: When changing version, change version inside:
 	rcb/common/globals.hxx
-	docs/manual/man/*
-	docs/manual/help/*
+	rcb/rcb/tools/scripts/mp_gen.sh <version>
 	manifest
 	update docs/CHANGELOG.txt
-	and recipes/* && Also update distinfo/* with makesum
+	and recipes/packages/*
 
 Note: To install use 'b install config.cxx.loptions="-L/usr/local/lib -Wl,-rpath,/usr/local/lib" config.install.root="/usr/local/" config.install.sudo="sudo"'
 

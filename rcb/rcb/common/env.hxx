@@ -21,7 +21,7 @@ private:
 	std::filesystem::path m_workingProgWipeDir{};
 	std::filesystem::path m_workingProgSignDir{}; 
 	std::filesystem::path m_workingConfDir{};
-	std::string m_workingUsername{};
+	std::string           m_workingUsername{};
 	
 	void var();
 	void dir();

@@ -58,25 +58,6 @@ This is where the files are moved to be permanently removed/wiped. It exists as 
 ### **sign/**
 Contains files used for IPC (Inter-Process Communication) and configurations or sharing of data.
 
-## Globals
-
-<pre>
-g_kProgName    | Program name
-g_kProgVersion | Program version
-g_singleton    | Forced single class instance
-</pre>
-
-The following variables have global immutable access after the first assignment via g_singleton. They can only be mutated once and have a single instance of access.
-
-<pre>
-get/set+workingProgDir     | Defaults to $HOME/.rcb/ or use RCB_DIR
-get/set+workingProgFileDir | file/ location
-get/set+workingProgDataDir | data/ location
-get/set+workingProgWipeDir | wipe/ location
-get/set+workingProgSignDir | sign/ location
-get/set+workingUsername    | Environment variable $USER 
-</pre>
-
 # Commands
 The top-level sub-commands should be parsed **independently**, every command should be parsed by their respective parsers that set options that are **local** to the commands, with the **exception** of having internal shared utilities, global environment for **directories**, **config** and the **user** who executed the program. The general idea is to make the program have usable utilities, like, for example, BusyBox.
 
