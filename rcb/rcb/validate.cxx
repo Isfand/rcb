@@ -82,7 +82,7 @@ void Validate::file()
 			{
 				// WARNING: If a file with the same name exists in wipe/ it will be overwritten. file/ only contains unique names but files in wipe/ are not checked.
 				std::filesystem::rename(g_singleton->getWorkingProgFileDir() / file, g_singleton->getWorkingProgWipeDir() / file);          
-				std::filesystem::remove_all(g_singleton->getWorkingProgWipeDir() / file);
+				sanitizeRemoveAll(g_singleton->getWorkingProgWipeDir() / file);
 			}
 		}  
 	}
