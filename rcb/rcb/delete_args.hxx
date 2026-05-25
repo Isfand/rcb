@@ -25,6 +25,7 @@ private:
 		"--verbose         | -v \n"
 		"--force           | -f \n"
 		"--no-directorysize, don't save size for filetype:directory\n"
+		"--dry-run\n"
 		"--, options end after this point.\n"
 		;
 };

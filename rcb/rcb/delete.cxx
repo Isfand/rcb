@@ -17,6 +17,7 @@ Delete::Delete(const std::vector<std::string>& args, const DeleteOptions& dOpt) 
 	std::println("verboseOption is:   {}", m_dOpt.verboseOption);
 	std::println("forceOption is:     {}", m_dOpt.forceOption); // Unused
 	std::println("noDirSizeOption is: {}", m_dOpt.noDirSizeOption);
+	std::println("dryRunOption is:    {}", m_dOpt.dryRunOption);
 #endif
 	m_currentExecutionID = incrementExecutionID();
 	Delete::file(args);
@@ -71,7 +72,8 @@ void Delete::file(const std::vector<std::string>& args)
 						g_singleton->getWorkingUsername(), systemFilePath.string());
 				}
 				auto fileDetails = Delete::saveFileData(mutFilename, systemFilePath);
-				m_db.insertData(fileDetails); // Could make InsertData Return bool for error checking instead of using try/catch
+				if(!m_dOpt.dryRunOption)
+					m_db.insertData(fileDetails); // Could make InsertData Return bool for error checking instead of using try/catch
 			}
 			catch(const std::filesystem::filesystem_error& e)
 			{
@@ -87,13 +89,15 @@ void Delete::file(const std::vector<std::string>& args)
 
 				try
 				{
-					std::filesystem::rename(systemFilePath, g_singleton->getWorkingProgFileDir() / mutFilename);
+					if(!m_dOpt.dryRunOption)
+						std::filesystem::rename(systemFilePath, g_singleton->getWorkingProgFileDir() / mutFilename);
 				}
 				catch(const std::filesystem::filesystem_error& e)
 				{
 					// Insert data failed
 					// TODO: Instead of just deleting the highest value, check against every detail held in memory with the database record. *Added 2nd try catch above to prevent removing existing data if insertData fails.
-					m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}=(SELECT MAX({1}) FROM {0});", g_kProgName, g_kSchemaID));
+					if(!m_dOpt.dryRunOption)
+						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}=(SELECT MAX({1}) FROM {0});", g_kProgName, g_kSchemaID));
 					std::println("cannot move file. insufficient permissions");
 					continue;
 				}
@@ -106,13 +110,15 @@ void Delete::file(const std::vector<std::string>& args)
 				try
 				{
 					// Get device ID of getWorkingProgDir and compare it to the file argument. If it's not the same. Then you are accessing an external device.
-					externRename(systemFilePath, (g_singleton->getWorkingProgFileDir() / mutFilename));
+					if(!m_dOpt.dryRunOption)
+						externRename(systemFilePath, (g_singleton->getWorkingProgFileDir() / mutFilename));
 				}
 				catch(const std::filesystem::filesystem_error& e)
 				{
 					// Insert data failed
 					// TODO: Instead of just deleting the highest value, check against every detail held in memory with the database record. *Added 2nd try catch above to prevent removing existing data if insertData fails.
-					m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}=(SELECT MAX({1}) FROM {0});", g_kProgName, g_kSchemaID));
+					if(!m_dOpt.dryRunOption)
+						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}=(SELECT MAX({1}) FROM {0});", g_kProgName, g_kSchemaID));
 					std::println("cannot move file. insufficient permissions");
 					continue;
 				}

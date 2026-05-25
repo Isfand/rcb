@@ -16,6 +16,7 @@ struct DeleteOptions
 	bool verboseOption{};
 	bool forceOption{};
 	bool noDirSizeOption{};
+	bool dryRunOption{};
 };
 
 class Delete

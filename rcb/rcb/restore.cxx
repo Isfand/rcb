@@ -22,6 +22,7 @@ Restore::Restore(const std::vector<std::string>& args, const RestoreOptions& rOp
 	std::println("forceReplaceOption is:     {}", m_rOpt.forceReplaceOption);
 	std::println("forceRenameOption is:      {}", m_rOpt.forceRenameOption);
 	std::println("forceRecreateDirectory is: {}", m_rOpt.forceRecreateDirectoryOption);
+	std::println("dryRunOption is:           {}", m_rOpt.dryRunOption);
 	std::println("sqlOption is:              {}", m_rOpt.sqlOption);
 #endif
 	Restore::file(args);
@@ -109,47 +110,47 @@ void Restore::file(const std::vector<std::string>& args)
 			{
 				try
 				{
-					// Duplicated #1
-					if(m_rOpt.forceReplaceOption && originalPathType == std::filesystem::file_type::directory && pathStatus == PathStatus::Occupied) 
-						sanitizeRemoveAll(originalPath);
-
-					std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, mutRestorePath);
+					// Duplicated code #1
+					if(!m_rOpt.dryRunOption)
+					{
+						if(m_rOpt.forceReplaceOption && originalPathType == std::filesystem::file_type::directory && pathStatus == PathStatus::Occupied) 
+							sanitizeRemoveAll(originalPath);
+						std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, mutRestorePath);
+						// TODO;
+						// Also check against saveFileData() values to make sure.
+						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kProgName, g_kSchemaID, arg));
+					}
+					if(m_rOpt.verboseOption)
+						std::println("Path is:{0}", mutRestorePath.string().c_str());
 				}
 				catch(const std::exception& e)
 				{
 					std::cerr << e.what() << std::endl;
 					continue;
 				}
-
-				if(m_rOpt.verboseOption)
-					std::println("Path is:{0}", mutRestorePath.string().c_str());
-
-				// TODO;
-				// Also check against saveFileData() values to make sure.
-				m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kProgName, g_kSchemaID, arg));
 			}
 			else
 			{
 				try
 				{
-					// Duplicated #1
-					if(m_rOpt.forceReplaceOption && originalPathType == std::filesystem::file_type::directory && pathStatus == PathStatus::Occupied) 
-						sanitizeRemoveAll(originalPath);
+					// Duplicated code #1
+					if(!m_rOpt.dryRunOption)
+					{
+						if(m_rOpt.forceReplaceOption && originalPathType == std::filesystem::file_type::directory && pathStatus == PathStatus::Occupied) 
+							sanitizeRemoveAll(originalPath);
+						externRename((g_singleton->getWorkingProgFileDir() / stagedFile), mutRestorePath);
+						// TODO; // Also check against saveFileData() values to make sure.
+						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kProgName, g_kSchemaID, arg));
+					}
 
-					externRename((g_singleton->getWorkingProgFileDir() / stagedFile), mutRestorePath);
+					if(m_rOpt.verboseOption)
+						std::println("Path is:{0}", mutRestorePath.string());
 				}
 				catch(const std::exception& e)
 				{
 					std::cerr << e.what() << std::endl;
 					continue;
 				}
-
-				if(m_rOpt.verboseOption)
-					std::println("Path is:{0}", mutRestorePath.string());
-
-				// TODO; // Also check against saveFileData() values to make sure.
-				m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kProgName, g_kSchemaID, arg));
-				
 			}
 
 		}

@@ -20,6 +20,7 @@ struct RestoreOptions
 	bool forceRenameOption{};
 	bool forceRecreateDirectoryOption{};
 	bool previousOption{};
+	bool dryRunOption{};
 
 	bool pastOption{};
 	std::vector<std::string> timeVec{};

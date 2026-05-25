@@ -60,6 +60,11 @@ void DeleteArgs::run(std::vector<std::string>& args)
 			{
 				m_dOpt.noDirSizeOption = true;
 				m_erasePositions.push_back(i);
+			}
+			else if(args.at(i) == "--dry-run")
+			{
+				m_dOpt.dryRunOption = true;
+				m_erasePositions.push_back(i);
 			} 
 			else
 			{

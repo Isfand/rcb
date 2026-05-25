@@ -14,6 +14,7 @@ struct EraseOptions
 	bool allOption{};
 	bool previousOption{};
 	bool verboseOption{};
+	bool dryRunOption{};
 	
 	bool pastOption{};
 	std::vector<std::string> timeVec{};

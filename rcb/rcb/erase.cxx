@@ -19,6 +19,7 @@ Erase::Erase(const std::vector<std::string>& args, const EraseOptions& eOpt) : m
 	std::println("pastOption is:     {}", m_eOpt.pastOption);
 	std::println("previousOption is: {}", m_eOpt.previousOption);
 	std::println("verboseOption is:  {}", m_eOpt.verboseOption); // Unused
+	std::println("dryRunOption is:   {}", m_eOpt.dryRunOption); // Unused
 	std::println("sqlOption is:      {}", m_eOpt.sqlOption);
 #endif
 	Erase::file(args);
@@ -38,17 +39,18 @@ void Erase::file(const std::vector<std::string>& args)
 
 		try 
 		{
-			std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, g_singleton->getWorkingProgWipeDir() / stagedFile);
-			sanitizeRemoveAll(g_singleton->getWorkingProgWipeDir() / stagedFile);
+			if(!m_eOpt.dryRunOption)
+			{
+				std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, g_singleton->getWorkingProgWipeDir() / stagedFile);
+				sanitizeRemoveAll(g_singleton->getWorkingProgWipeDir() / stagedFile);
+				m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kProgName, g_kSchemaID, arg)); // Once removed then delete from database
+			}
 		}
 		catch (std::filesystem::filesystem_error& e) 
 		{
 			std::cerr << e.what() << "\n";
 			continue;
 		}
-		// Once removed then delete from database
-		m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", 
-			g_kProgName, g_kSchemaID, arg));
 	}
 }
 

@@ -87,6 +87,11 @@ void RestoreArgs::run(std::vector<std::string>& args)
 				m_rOpt.previousOption = true;
 				m_erasePositions.push_back(i);
 			}
+			else if(args.at(i) == "--dry-run")
+			{
+				m_rOpt.dryRunOption = true;
+				m_erasePositions.push_back(i);
+			} 
 			else if (args.at(i) == "--sql")
 			{
 				if (i + 1 < args.size())

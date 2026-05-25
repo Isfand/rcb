@@ -68,6 +68,11 @@ void EraseArgs::run(std::vector<std::string>& args)
 				m_eOpt.verboseOption = true;
 				m_erasePositions.push_back(i);
 			}
+			else if(args.at(i) == "--dry-run")
+			{
+				m_eOpt.dryRunOption = true;
+				m_erasePositions.push_back(i);
+			} 
 			else if (args.at(i) == "--sql")
 			{
 				if (i + 1UL < args.size())

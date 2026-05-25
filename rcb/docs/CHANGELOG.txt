@@ -5,11 +5,12 @@
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
 ----------------------------------------------------------------------
- VERSION 0.14.1 (??-??-????)
+ VERSION 0.15.0 (??-??-????)
 ----------------------------------------------------------------------
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?.?
 
+- FEATURE: --dry-run added into delete, erase and restore.
 - CHANGE: docs have now removed residual 'ae' time unit & added missing unit 'dec'
 - BUGFIX: validate --file was not changing file permissions when removing files
 
