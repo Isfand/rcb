@@ -100,7 +100,9 @@ Print extra information on program state \
 **--force** \
 Force file deletion if possible. \
 **--no-directorysize** \
-Do not save size for directories. Write as 'NULL'
+Do not save size for directories. Write as SQLITE 'NULL' \
+**--dry-run** \
+Do not perform any non-read database or filesystem operation. \
 
 ## Restore
 Transfer files back to their original paths. This is done by reading the 'directory' column value(s) for the corresponding id entered and using 'rename()' on the filename on the file(s) inside file/.
@@ -127,6 +129,8 @@ Restore by recreating any directories leading up-to the original filepath. \
 Restores file(s) with record(s) with the highest execution number. \
 **--past \<n>(unit)** \
 Restore file(s) with relative time from system time to epoch. \
+**--dry-run** \
+Do not perform any database or filesystem operation. \
 **--sql '\<s>'** \
 Allows for SQL passthrough. AKA SQL injection.
 
@@ -166,6 +170,8 @@ Do not ask the user for input. Perform the action(s) requested. \
 Erase file(s) with record(s) with the highest execution number. \
 **--past \<n>(unit)** \
 Erase file(s) with relative time from system time to epoch. \
+**--dry-run** \
+Do not perform any database or filesystem operation. \
 **--sql '\<s>'** \
 Allows for SQL passthrough. AKA SQL injection.
 

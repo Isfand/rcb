@@ -39,4 +39,8 @@ Forces file deletion.
 [.indent]
 Don't save size for filetype of directory.
 
+*--dry-run* +
+[.indent]
+Do not perform any non-read database or filesystem operation.
+
 include::_rcb-shared.adoc[tags=footer]

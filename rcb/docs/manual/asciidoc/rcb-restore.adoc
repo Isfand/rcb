@@ -71,6 +71,10 @@ Will restore all files that were deleted 10 minutes ago. +
 [.indent]
 Restore file(s) by highest execution. Execution is the order in which files were deleted together under the same process.
 
+*--dry-run* +
+[.indent]
+Do not perform any non-read database or filesystem operation.
+
 *--sql* _<s>_ +
 [.indent]
 _WARNING UNSAFE:_ Insert sql statement directly for restore. Must return ID. +
