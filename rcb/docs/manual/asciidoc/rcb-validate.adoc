@@ -44,4 +44,8 @@ Removes dangling file(s) left inside wipe/
 [.indent]
 Evaluates size:NULL of filetype:directory of record(s) inside data/
 
+*--dry-run* +
+[.indent]
+Do not perform any non-read database or filesystem operation.
+
 include::_rcb-shared.adoc[tags=footer]

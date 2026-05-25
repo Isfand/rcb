@@ -68,6 +68,10 @@ void ValidateArgs::run(std::vector<std::string>& args)
 			{
 				m_vOpt.fillDirSizeOption = true;
 			}
+			else if(args.at(i) == "--dry-run")
+			{
+				m_vOpt.dryRunOption = true;
+			} 
 			else
 			{
 				std::println("unknown option: {0}", args.at(i));

@@ -22,6 +22,7 @@ Validate::Validate(const ValidateOptions& vOpt) : m_vOpt{vOpt}
 	std::println("dataOption is:        {}", m_vOpt.dataOption);
 	std::println("wipeOption is:        {}", m_vOpt.wipeOption);
 	std::println("fillDirSizeOption is: {}", m_vOpt.fillDirSizeOption);
+	std::println("dryRunOption is:      {}", m_vOpt.dryRunOption);
 #endif
 	if(m_vOpt.fileOption)Validate::file();
 	if(m_vOpt.dataOption)Validate::data();
@@ -34,6 +35,7 @@ void Validate::allFile()
 	file();
 	data();
 	wipe();
+	fillDirectorySize();
 }
 
 void Validate::file()
@@ -76,7 +78,7 @@ void Validate::file()
 			while(confirm != "Y" && confirm != "n");
 			confirm == "Y" ? confirmFlag=true : confirmFlag=false;
 		}
-		if(confirmFlag || m_vOpt.yesOption)
+		if(!m_vOpt.dryRunOption && (confirmFlag || m_vOpt.yesOption))
 		{
 			for(const auto& file : danglingFiles)
 			{
@@ -128,7 +130,7 @@ void Validate::data()
 			while(confirm != "Y" && confirm != "n");
 			confirm == "Y" ? confirmFlag=true : confirmFlag=false;
 		}
-		if(confirmFlag || m_vOpt.yesOption)
+		if(!m_vOpt.dryRunOption && (confirmFlag || m_vOpt.yesOption))
 		{
 			for (const auto& danglingRecord : danglingRecords)
 				m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kProgName, g_kSchemaFile, danglingRecord));
@@ -168,7 +170,7 @@ void Validate::wipe()
 			while(confirm != "Y" && confirm != "n");
 			confirm == "Y" ? confirmFlag=true : confirmFlag=false;
 		}
-		if(confirmFlag || m_vOpt.yesOption)
+		if(!m_vOpt.dryRunOption && (confirmFlag || m_vOpt.yesOption))
 		{
 			for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgWipeDir()))
 			{
@@ -220,7 +222,8 @@ void Validate::fillDirectorySize()
 
 		auto directory_entry = std::filesystem::directory_entry(directoryPathString);
 		unsigned long long size { directorySize(directory_entry) };
-		m_db.executeSQL(std::format("UPDATE {0} SET {1}='{2}' WHERE {3}='{4}';", g_kProgName, g_kSchemaSize, size, g_kSchemaFile, directory_entry.path().filename().string()));
+		if(!m_vOpt.dryRunOption)
+			m_db.executeSQL(std::format("UPDATE {0} SET {1}='{2}' WHERE {3}='{4}';", g_kProgName, g_kSchemaSize, size, g_kSchemaFile, directory_entry.path().filename().string()));
 	}
 }
 

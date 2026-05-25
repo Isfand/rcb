@@ -189,6 +189,8 @@ Checks for dangling record(s) in data/ that have no corresponding file in file/.
 Checks for dangling file(s) in wipe/ that exist. \
 **--fill-directorysize** \
 Checks for 'NULL' directory sizes and evaluates them. \
+**--dry-run** \
+Do not perform any non-read database or filesystem operation. \
 **--verbose** \
 Print extra information on program state. \
 **--yes** \

@@ -14,6 +14,7 @@ struct ValidateOptions
 	bool dataOption{};
 	bool wipeOption{};
 	bool fillDirSizeOption{};
+	bool dryRunOption{};
 };
 
 class Validate

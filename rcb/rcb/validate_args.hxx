@@ -28,6 +28,7 @@ private:
 		"--data    | -D, validate data/ only\n"
 		"--wipe    | -W, validate wipe/ only\n"
 		"--fill-directorysize, validate size:NULL of filetype:directory\n"
+		"--dry-run\n"
 		;
 };
 	
