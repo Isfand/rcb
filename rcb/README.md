@@ -44,8 +44,8 @@ Nix package port is provided inside recipes branch: rcb-utility/packages/nix
 **`git clone https://github.com/Isfand/rcb.git`** \
 **`cd rcb/rcb`**
 
-POSIX: **`./config_init.sh`**\
-WIN32: **`.\config_init.ps1`**
+POSIX: **`./tools/scripts/config_init.sh`**\
+WIN32: **`.\tools\scripts\config_init.ps1`**
 
 **`bdep update -a`**
 
@@ -60,7 +60,7 @@ To clean a specific config: `bdep clean @<config-name>`
 ## **Install**
 
 ### POSIX:
-cd into your release target build configuration directory. E.G: `cd ../../rcb-x64-posix-llvm-release`
+cd into your release target build configuration directory. E.G: `cd ../artefacts/rcb/x64-posix-llvm-release`
 
 And type: \
 `b install config.cxx.loptions="-L/usr/local/lib -Wl,-rpath,/usr/local/lib" config.install.root="/usr/local/" config.install.sudo="sudo"`
