@@ -1,4 +1,5 @@
 .bdep/
+.cache/
 .idea/
 artefacts/
 
