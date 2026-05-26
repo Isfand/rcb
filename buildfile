@@ -1,3 +1,3 @@
-import proj = */
+import proj = {*/ -artefacts/}
 
 ./: $proj
