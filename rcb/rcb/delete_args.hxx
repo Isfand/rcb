@@ -20,7 +20,7 @@ private:
 
 	const char* m_deleteHelpMsg =
 		"delete usage:\n" 
-		"delete <filename> | d <filename>, delete file by filename\n"
+		"delete <filename> |  d <filename>, delete file by filename\n"
 		"--help            | -h \n"
 		"--verbose         | -v \n"
 		"--force           | -f \n"

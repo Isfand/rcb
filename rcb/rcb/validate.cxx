@@ -118,7 +118,7 @@ void Validate::data()
 		
 		if(m_vOpt.verboseOption)
 		{
-			std::println("Dangling record(s) found:");
+			std::println("dangling record(s) found:");
 			for (const auto& danglingRecord : danglingRecords)
 				std::println("{}", danglingRecord);
 		}

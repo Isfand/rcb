@@ -55,12 +55,12 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 // Prints all contents of rcb/data/*.sqlite3 database 
 void List::allFile()
 {
-	std::print("Results:\n{}", m_db.selectDataA(m_defaultSQLQuery + ";"));
+	std::print("results:\n{}", m_db.selectDataA(m_defaultSQLQuery + ";"));
 }
 
 void List::file(const std::vector<std::string>& args)
 {
-	std::println("Results:");
+	std::println("results:");
 
 	for(auto& arg : args)
 		std::print("{}", m_db.selectDataA(std::format("{0} WHERE {1}='{2}';", 
@@ -97,7 +97,7 @@ void List::previous()
 
 void List::sqlInjection()
 {
-	std::println("Results:");
+	std::println("results:");
 	for(auto i { 0UL }; i < m_lOpt.sqlVec.size(); ++i)
 	{
 		std::print("{}", m_db.selectDataA(m_lOpt.sqlVec.at(i)));

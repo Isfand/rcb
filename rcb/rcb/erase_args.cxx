@@ -34,7 +34,7 @@ void EraseArgs::run(std::vector<std::string>& args)
 		{
 			if(args.at(i) == "--help" || args.at(i) == "-h")
 			{
-				std::println("{}", m_eraseHelpMsg);
+				std::print("{}", m_eraseHelpMsg);
 				return;
 			} 
 			else if (args.at(i) == "--all" || args.at(i) == "-a")

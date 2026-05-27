@@ -20,13 +20,14 @@ private:
 
 	const char* m_eraseHelpMsg = 
 		"erase usage:\n" 
-		"erase <n> | e <n>, erase file by id.\n"
+		"erase <n> |  e <n>, erase file by id.\n"
 		"--help    | -h \n"
 		"--all     | -a, permanently remove all files\n"
 		"--past <n>(unit), t,s,m,h,d,w,mo,y,dec,c,k\n"
 		"--previous\n"
 		"--dry-run\n"
-		"--sql <s>, UNSAFE: Insert sql statement directly for erase. Must return ID.";
+		"--sql <s>, UNSAFE: Insert sql statement directly for erase. Must return ID.\n"
+		;
 };
 
 	

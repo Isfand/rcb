@@ -45,8 +45,8 @@ void Delete::file(const std::vector<std::string>& args)
 
 			if(m_dOpt.verboseOption)
 			{
-				std::println("System filepath is: {0}", systemFilePath.string());
-				std::println("Searching path: {}", (g_singleton->getWorkingProgFileDir() / systemFilePath.filename()).string());
+				std::println("system filepath is: {0}", systemFilePath.string());
+				std::println("searching path: {}", (g_singleton->getWorkingProgFileDir() / systemFilePath.filename()).string());
 			}
 
 			if(!renameDupe(stageEntry.path().parent_path(), std::filesystem::directory_entry(stageEntry.path()), mutFilename)) continue;

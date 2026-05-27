@@ -346,7 +346,7 @@ int formatToTimestamp(const std::string& format, long long& timestamp)
 		{
 			timestamp = (units == "t") ? std::stoll(digits) : currentTime - (std::stoll(digits) * timeMap.at(units));
 #ifndef NDEBUG
-			std::println("Found:         {}", it->second);
+			std::println("found:         {}", it->second);
 			std::println("total seconds: {}", std::stoll(digits) * timeMap.at(units));
 			std::println("timestamp:     {}", timestamp);
 #endif

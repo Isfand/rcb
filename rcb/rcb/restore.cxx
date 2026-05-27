@@ -78,7 +78,7 @@ void Restore::file(const std::vector<std::string>& args)
 					}
 					catch(const std::exception& e)
 					{
-						std::cerr << "Error creating directories: " << e.what() << std::endl;
+						std::cerr << "error creating directories: " << e.what() << std::endl;
 					}
 				}
 				else
@@ -121,7 +121,7 @@ void Restore::file(const std::vector<std::string>& args)
 						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kProgName, g_kSchemaID, arg));
 					}
 					if(m_rOpt.verboseOption)
-						std::println("Path is:{0}", mutRestorePath.string().c_str());
+						std::println("path is:{0}", mutRestorePath.string().c_str());
 				}
 				catch(const std::exception& e)
 				{
@@ -144,7 +144,7 @@ void Restore::file(const std::vector<std::string>& args)
 					}
 
 					if(m_rOpt.verboseOption)
-						std::println("Path is:{0}", mutRestorePath.string());
+						std::println("path is:{0}", mutRestorePath.string());
 				}
 				catch(const std::exception& e)
 				{
@@ -226,7 +226,7 @@ bool Restore::progFileExists(const std::string& stagedFile)
 	bool result = Verity(std::filesystem::directory_entry(filePath)).exists; // ? true : false;
 
 	if(!result)
-		std::println("Failed to restore file: \"{0}\"\nfile to restore is missing in \"{1}\"", stagedFile, g_singleton->getWorkingProgFileDir().string());
+		std::println("failed to restore file: \"{0}\"\nfile to restore is missing in \"{1}\"", stagedFile, g_singleton->getWorkingProgFileDir().string());
 
 	// TODO; Needs semantic correction
 	return result;
@@ -242,20 +242,20 @@ Restore::PathStatus Restore::originalPathStatus(const std::filesystem::path& pro
 		if(Verity(std::filesystem::directory_entry(progDir)).exists)
 		{
 			if(m_rOpt.verboseOption)
-				std::println("Occupied: \"{0}\"\nexisting file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
+				std::println("occupied: \"{0}\"\nexisting file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
 			result = PathStatus::Occupied;
 		}
 		else
 		{
 			if(m_rOpt.verboseOption)
-				std::println("Free: \"{0}\"\nno existing file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
+				std::println("free: \"{0}\"\nno existing file found inside DIR \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
 			result = PathStatus::Free;
 		}
 	}
 	else
 	{
 		if(m_rOpt.verboseOption)
-		   std::println("NoParent: \"{0}\"\nparent directory not found: \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
+		   std::println("no-parent: \"{0}\"\nparent directory not found: \"{1}\"", progDir.filename().string(), progDir.parent_path().string());
 		result = PathStatus::NoParent;
 	}
 	

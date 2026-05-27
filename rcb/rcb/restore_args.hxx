@@ -20,7 +20,7 @@ private:
 	
 	const char* m_restoreHelpMsg = 
 		"restore usage:\n" 
-		"restore <n> | r <n>, restore file by id.\n"
+		"restore <n> |  r <n>, restore file by id.\n"
 		"--help      | -h\n"
 		"--verbose   | -v\n"
 		"--all       | -a\n"

@@ -171,7 +171,7 @@ void Args::init()
 		{
 			if(m_cmd) continue;
 					 
-			std::println("{0}", m_helpMsg);
+			std::print("{0}", m_helpMsg);
 			return;
 		}
 		else if(arg == "--verbose" || arg == "-v")
