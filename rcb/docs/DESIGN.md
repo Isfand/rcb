@@ -17,7 +17,6 @@ $HOME/.rcb
 
 The rcb directory location and name should be changeable through the use of a single environment variable. I.E RCB_DIR.
 
-
 ### **data/**
 Contains saved details on the file that can be used to list, restore and erase. 
 
