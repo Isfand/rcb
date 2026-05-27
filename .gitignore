@@ -1,9 +1,6 @@
 *
-# Now, whitelist anything that's a directory
 !*/
-
-!rcb-utility/
-!rcb-utility/*
+# Whitelist after this point
 !rcb-utility/**
 
 !README.md
