@@ -1,0 +1,4 @@
+# .clangd configuration file
+CompileFlags:
+  # Path to your compile_commands.json or build directory
+  CompilationDatabase: <OUTPUT_PATH>

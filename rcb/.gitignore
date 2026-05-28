@@ -33,6 +33,7 @@
 rcb/rcb
 rcb/.cache
 .cache
+.clangd
 compile_commands.json
 rcb.core
 .vscode
