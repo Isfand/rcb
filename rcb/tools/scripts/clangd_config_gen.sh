@@ -1,8 +1,8 @@
 #!/bin/sh
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-SOURCE_PATH="$(b info | awk '/^src_root:/ {print $2}')"
-OUTPUT_PATH="$(bdep config list | awk '/default/{print $2}')"
+SCRIPT_PATH="$(cd "$(dirname "$0")" && pwd)"
+SOURCE_PATH="$(cd "$SCRIPT_PATH" && b info | awk '/^src_root:/ {print $2}')"
+OUTPUT_PATH="$(cd "$SCRIPT_PATH" && bdep config list | awk '/default/{print $2}')"
 
 cat > "${SOURCE_PATH}/.clangd" <<EOF
 CompileFlags:
