@@ -1,6 +1,4 @@
 #pragma once
-#ifndef PLATFORM_ACI_HXX
-#define PLATFORM_ACI_HXX
 
 // TODO: Use the PIMPL design pattern or a forward declaration to hide this header to prevent C pollution.
 // Or just wait for C++ Modules to be fully implemented.
@@ -32,5 +30,3 @@ using Faccessat = Faccessat;
 // Need to know if the program is called in a terminal or is being piped. Pass in kernel fds
 
 }// namespace aci
-
-#endif // PLATFORM_ACI_HXX

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef GLOBAL_HXX
-#define GLOBAL_HXX
 
 #include "singleton.hxx"
 
@@ -32,5 +30,3 @@ inline constexpr const char* g_kSchemaExecution {"execution"}; // Execution id o
 inline Singleton* g_singleton = Singleton::instance();
 
 } // namespace rcb
-
-#endif // GLOBAL_HXX

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef DELETE_ARGS_HXX
-#define DELETE_ARGS_HXX
 
 #include <string>
 #include <vector>
@@ -31,5 +29,3 @@ private:
 };
 
 } // namespace rcb
-
-#endif // DELETE_ARGS_HXX

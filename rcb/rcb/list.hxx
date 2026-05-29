@@ -1,6 +1,4 @@
 #pragma once
-#ifndef LIST_HXX
-#define LIST_HXX
 
 #include <string>
 #include <vector>
@@ -49,5 +47,3 @@ private:
 };
 	
 } // namespace rcb
-
-#endif // LIST_ARGS_HXX 

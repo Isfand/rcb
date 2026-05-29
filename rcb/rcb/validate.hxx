@@ -1,6 +1,4 @@
 #pragma once
-#ifndef VALIDATE_HXX
-#define VALIDATE_HXX
 
 #include "common/database.hxx"
 
@@ -41,5 +39,3 @@ private:
 
 	
 }// namespace rcb
-
-#endif

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ENV_HXX
-#define ENV_HXX
 
 #include <filesystem>
 #include <string>
@@ -31,5 +29,3 @@ private:
 };
 
 } // namespace rcb
-
-#endif // ENV_HXX

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef DELETE_HXX
-#define DELETE_HXX
 
 #include <string>
 #include <array>
@@ -39,5 +37,3 @@ private:
 };
 	
 }// namespace rcb
-
-#endif

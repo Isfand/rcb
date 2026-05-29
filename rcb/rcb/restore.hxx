@@ -1,6 +1,4 @@
 #pragma once
-#ifndef RESTORE_HXX
-#define RESTORE_HXX
 
 #include <string>
 #include <filesystem>
@@ -56,5 +54,3 @@ private:
 };
 
 } // rcb namespace
-
-#endif // RESTORE_HXX

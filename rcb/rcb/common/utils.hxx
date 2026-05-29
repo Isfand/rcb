@@ -1,6 +1,4 @@
 #pragma once
-#ifndef UTILS_HXX
-#define UTILS_HXX
 
 #include <filesystem>
 #include <string>
@@ -46,5 +44,3 @@ int sanitizeRemoveAll(const std::filesystem::path& path);
 // Add a thread pool here
 
 } // namespace rcb
-
-#endif // UTILS_HXX

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ARGS_HXX
-#define ARGS_HXX
 
 #include <vector>
 #include <string>
@@ -83,5 +81,3 @@ private:
 };
 
 } // namespace rcb
-
-#endif // ARGS_HXX

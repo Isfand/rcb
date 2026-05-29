@@ -1,6 +1,4 @@
 #pragma once
-#ifndef STOPWATCH_HXX
-#define STOPWATCH_HXX
 
 // Debug macros for shorter syntax
 //#define FILE_FUNC_NAME std::string(__FILE__) + " in " + std::string(__func__)
@@ -24,4 +22,3 @@ private:
 };
 
 } // namespace rcb
-#endif // STOPWATCH_HXX

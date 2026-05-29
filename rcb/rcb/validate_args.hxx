@@ -1,6 +1,4 @@
 #pragma once
-#ifndef VALIDATE_ARGS_HXX
-#define VALIDATE_ARGS_HXX
 
 #include <string>
 #include <vector>
@@ -33,5 +31,3 @@ private:
 };
 	
 }// namespace rcb
-
-#endif

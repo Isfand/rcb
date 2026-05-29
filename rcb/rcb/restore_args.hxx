@@ -1,6 +1,4 @@
 #pragma once
-#ifndef RESTORE_ARGS_HXX
-#define RESTORE_ARGS_HXX
 
 #include <string>
 #include <vector>
@@ -35,5 +33,3 @@ private:
 };
 
 } // namespace rcb
-
-#endif // RESTORE_ARGS_HXX

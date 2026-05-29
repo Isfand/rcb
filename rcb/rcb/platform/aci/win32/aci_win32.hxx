@@ -1,8 +1,5 @@
 #if defined(_WIN32) && !defined(__CYGWIN__)
-
 #pragma once
-#ifndef ACI_WIN32_HXX
-#define ACI_WIN32_HXX
 
 #include <string>
 #include <vector>
@@ -108,7 +105,5 @@ struct Termsize
 };
 
 }// namespace aci
-
-#endif // ACI_WIN32_HXX
 
 #endif //#if defined(_WIN32) && !defined(__CYGWIN__)

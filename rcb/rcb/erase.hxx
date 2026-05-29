@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ERASE_HXX
-#define ERASE_HXX
 
 #include <string>
 #include <vector>
@@ -39,5 +37,3 @@ private:
 };
 	
 } // namespace rcb
-
-#endif // ERASE_HXX 

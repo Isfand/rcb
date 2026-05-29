@@ -1,6 +1,4 @@
 #pragma once
-#ifndef SINGLETON_HXX
-#define SINGLETON_HXX
 
 #include <string>
 #include <mutex>
@@ -98,5 +96,3 @@ private:
 };
 
 } // namespace rcb
-
-#endif // SINGLETON_HXX
