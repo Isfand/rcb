@@ -499,7 +499,7 @@ int sanitizeRemoveAll(const std::filesystem::path& path)
 
 	// Note: Use Verity. ::exists ignores symlinks.
 	// if (!std::filesystem::exists(path, ec))
-		// return true;
+		// return false;
 
 	// Recursively iterate bottom-up
 	for (auto it = std::filesystem::recursive_directory_iterator(
@@ -510,8 +510,6 @@ int sanitizeRemoveAll(const std::filesystem::path& path)
 		it != std::filesystem::recursive_directory_iterator();
 		++it)
 	{
-		// if (ec) return false;
-
 		const std::filesystem::path& p = it->path();
 
 		// Grant owner full permissions to allow deletion
@@ -520,8 +518,6 @@ int sanitizeRemoveAll(const std::filesystem::path& path)
 			std::filesystem::perms::owner_all,
 			std::filesystem::perm_options::add,
 			ec);
-
-		// if (ec) return false;
 	}
 
 	// Make sure root directory is writable
@@ -530,8 +526,6 @@ int sanitizeRemoveAll(const std::filesystem::path& path)
 		std::filesystem::perms::owner_all,
 		std::filesystem::perm_options::add,
 		ec);
-
-	// if (ec) return false;
 
 	// Remove everything recursively
 	std::filesystem::remove_all(path, ec);
