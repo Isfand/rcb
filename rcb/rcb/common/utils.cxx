@@ -400,7 +400,7 @@ void renameFile(std::string& file)
 {
 	std::string_view view(file);
 	std::size_t name_start = (!view.empty() && view[0] == '.') ? 1 : 0; // skip hidden dot
-	auto ext_dot            = view.find('.', name_start);                // first real extension dot
+	auto ext_dot           = view.find('.', name_start);                // first real extension dot
 
 	const std::string_view leading = view.substr(0, name_start);        // "" or "."
 	std::string            base    = std::string(view.substr(name_start, ext_dot - name_start));
