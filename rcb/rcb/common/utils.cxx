@@ -399,8 +399,6 @@ std::string dataUnitConversion()
 void renameFile(std::string& file)
 {
 	std::string_view view(file);
-
-	// Split by position — no hardcoded extensions needed
 	std::size_t name_start = (!view.empty() && view[0] == '.') ? 1 : 0; // skip hidden dot
 	auto ext_dot            = view.find('.', name_start);                // first real extension dot
 
@@ -426,8 +424,7 @@ void renameFile(std::string& file)
 			}
 		}
 	}
-
-	// No (n) suffix yet — append (1)
+	
 	file = std::string(leading) + base + "(1)" + std::string(ext);
 }
 
