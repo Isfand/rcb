@@ -24,7 +24,7 @@ void Database::resetCounter()
 {
 	sqlite3_open((g_singleton->getWorkingProgDataDir() / g_kDatabaseName).string().c_str(), &m_db);
 
-	std::string query = std::format("DELETE FROM sqlite_sequence WHERE name = '{0}' AND NOT EXISTS ( SELECT 1 FROM {0} LIMIT 1);", g_kProgName);
+	std::string query = std::format("DELETE FROM sqlite_sequence WHERE name = '{0}' AND NOT EXISTS ( SELECT 1 FROM {0} LIMIT 1);", g_kTableName);
 
 	char* errorMsg{};
 	int exit {sqlite3_exec(m_db, query.c_str(), NULL, 0, &errorMsg)};
@@ -62,7 +62,7 @@ void Database::createTable()
 											  "\t\"{7}\" BIGINT UNSIGNED,\n" 
 											  "\t\"{8}\" varchar(65535),\n" 
 											  "\t\"{9}\" BIGINT UNSIGNED);\n",
-											  g_kProgName, 
+											  g_kTableName, 
 											  g_kSchemaID, 
 											  g_kSchemaFile, 
 											  g_kSchemaPath, 
@@ -108,7 +108,7 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 										 "{}, {}, {}, {}, {}, {}, {}, {}) "
 										 "VALUES("
 										 "'{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}');",
-										 g_kProgName, 
+										 g_kTableName, 
 										 g_kSchemaFile,
 										 g_kSchemaPath,
 										 g_kSchemaTimestamp,

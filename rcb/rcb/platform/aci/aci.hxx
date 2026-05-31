@@ -21,12 +21,13 @@ using User      = User;
 using Pwuid     = Pwuid;
 using Pwnam     = Pwnam;
 
-using Termsize  = Termsize;
 
 // WIP: Do NOT use.
 using Faccessat = Faccessat;
 
 // TODO: add isatty() from unistd.h. 
 // Need to know if the program is called in a terminal or is being piped. Pass in kernel fds
+
+using Termsize  = Termsize;
 
 }// namespace aci

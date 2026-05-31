@@ -49,7 +49,7 @@ void Validate::file()
 	for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
 	{    
 		std::string stagedFile = entry.path().filename().string();
-		std::string dbProgFileRecord = m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", g_kSchemaFile, g_kProgName, stagedFile));
+		std::string dbProgFileRecord = m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", g_kSchemaFile, g_kTableName, stagedFile));
 
 		if(stagedFile != dbProgFileRecord)
 			danglingFiles.push_back(stagedFile);
@@ -97,7 +97,7 @@ void Validate::data()
 	// records points to a stagedFile in /file
 	// Then delete
 
-	std::vector<std::string> danglingRecords { m_db.selectDataB(std::format("SELECT {0} from {1};", g_kSchemaFile, g_kProgName)) };
+	std::vector<std::string> danglingRecords { m_db.selectDataB(std::format("SELECT {0} from {1};", g_kSchemaFile, g_kTableName)) };
 
 	std::vector<std::string> stagedFiles{};
 	for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
@@ -133,7 +133,7 @@ void Validate::data()
 		if(!m_vOpt.dryRunOption && (confirmFlag || m_vOpt.yesOption))
 		{
 			for (const auto& danglingRecord : danglingRecords)
-				m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kProgName, g_kSchemaFile, danglingRecord));
+				m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kTableName, g_kSchemaFile, danglingRecord));
 		}
 	}
 
@@ -199,7 +199,7 @@ void Validate::fillDirectorySize()
 
 	// REVISE: This should be vector of type std::filesystem::path
 	std::vector<std::string> nullDirectoriesQuery { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2}='{3}' AND {4}='NULL';", 
-		g_kSchemaFile, g_kProgName, g_kSchemaFiletype, fileTypeToString(std::filesystem::file_type::directory), g_kSchemaSize)) };
+		g_kSchemaFile, g_kTableName, g_kSchemaFiletype, fileTypeToString(std::filesystem::file_type::directory), g_kSchemaSize)) };
 	
 	// prepend file/ path to each filename
 	std::transform(nullDirectoriesQuery.begin(), 
@@ -223,7 +223,7 @@ void Validate::fillDirectorySize()
 		auto directory_entry = std::filesystem::directory_entry(directoryPathString);
 		unsigned long long size { directorySize(directory_entry) };
 		if(!m_vOpt.dryRunOption)
-			m_db.executeSQL(std::format("UPDATE {0} SET {1}='{2}' WHERE {3}='{4}';", g_kProgName, g_kSchemaSize, size, g_kSchemaFile, directory_entry.path().filename().string()));
+			m_db.executeSQL(std::format("UPDATE {0} SET {1}='{2}' WHERE {3}='{4}';", g_kTableName, g_kSchemaSize, size, g_kSchemaFile, directory_entry.path().filename().string()));
 	}
 }
 
