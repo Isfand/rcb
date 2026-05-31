@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <string>
+#include <optional>
 
 namespace rcb{
 
@@ -40,7 +41,5 @@ bool renameDupe(
 
 std::filesystem::path deepestExistingPath(const std::filesystem::path& fullPath);
 int sanitizeRemoveAll(const std::filesystem::path& path);
-
-// Add a thread pool here
 
 } // namespace rcb
