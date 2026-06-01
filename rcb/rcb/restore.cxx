@@ -38,8 +38,8 @@ void Restore::file(const std::vector<std::string>& args)
 	for(const std::string& arg : args)
 	{
 		// TODO. Need to add something accounting for empty values returned from sql.
-		const std::string stagedFile             { m_db.selectData(std::format("SELECT {0} FROM {1} WHERE id='{2}';", g_kSchemaFile, g_kTableName, arg)) };
-		const std::filesystem::path originalPath { m_db.selectData(std::format("SELECT {0} FROM {1} WHERE id='{2}';", g_kSchemaPath, g_kTableName, arg)) };
+		const std::string stagedFile             { m_db.selectData(std::format("SELECT {0} FROM {1} WHERE id='{2}';", DTO::Meta::kSchemaFile, DTO::Meta::kTableName, arg)) };
+		const std::filesystem::path originalPath { m_db.selectData(std::format("SELECT {0} FROM {1} WHERE id='{2}';", DTO::Meta::kSchemaPath, DTO::Meta::kTableName, arg)) };
 
 		// Early return for if no file exists inside of .rcb/file. Saves time.
 		if(!progFileExists(stagedFile)) continue;
@@ -118,7 +118,7 @@ void Restore::file(const std::vector<std::string>& args)
 						std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, mutRestorePath);
 						// TODO;
 						// Also check against saveFileData() values to make sure.
-						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kTableName, g_kSchemaID, arg));
+						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", DTO::Meta::kTableName, DTO::Meta::kSchemaID, arg));
 					}
 					if(m_rOpt.verboseOption)
 						std::println("path is:{0}", mutRestorePath.string().c_str());
@@ -140,7 +140,7 @@ void Restore::file(const std::vector<std::string>& args)
 							sanitizeRemoveAll(originalPath);
 						externRename((g_singleton->getWorkingProgFileDir() / stagedFile), mutRestorePath);
 						// TODO; // Also check against saveFileData() values to make sure.
-						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", g_kTableName, g_kSchemaID, arg));
+						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", DTO::Meta::kTableName, DTO::Meta::kSchemaID, arg));
 					}
 
 					if(m_rOpt.verboseOption)
@@ -165,7 +165,7 @@ void Restore::file(const std::vector<std::string>& args)
 void Restore::allFile()
 {
 	// Need to restore files with the lowest depth ascending.
-	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} ORDER BY {2} ASC;", g_kSchemaID, g_kTableName, g_kSchemaPathDepth)) };
+	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} ORDER BY {2} ASC;", DTO::Meta::kSchemaID, DTO::Meta::kTableName, DTO::Meta::kSchemaPathDepth)) };
 
 #ifndef NDEBUG
 	std::println("Printing all existing record IDs");
@@ -187,7 +187,7 @@ void Restore::past()
 		
 		if (return_code == 0)
 		{
-			std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} >= {3};", g_kSchemaID, g_kTableName, g_kSchemaTimestamp, timestamp)) };
+			std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} >= {3};", DTO::Meta::kSchemaID, DTO::Meta::kTableName, DTO::Meta::kSchemaTimestamp, timestamp)) };
 			Restore::file(vList);
 		}
 		else if(return_code == 1) std::cerr << "error: units not found\n";
@@ -198,7 +198,7 @@ void Restore::past()
 
 void Restore::previous()
 {
-	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2}=(SELECT MAX({2}) FROM {1});", g_kSchemaID, g_kTableName, g_kSchemaExecution)) };
+	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2}=(SELECT MAX({2}) FROM {1});", DTO::Meta::kSchemaID, DTO::Meta::kTableName, DTO::Meta::kSchemaExecution)) };
 	Restore::file(vList);
 }
 

@@ -4,8 +4,14 @@
 #include <string>
 
 namespace rcb{
+	
+/* Env is only called once early as part of init. */
+/* For a library separation, each command class will have it's own env object in its parameters. Like execve(2) */
 
-/*Env is only called once early as part of init.*/
+inline constexpr const char* g_kEnvFile {"file"};
+inline constexpr const char* g_kEnvData {"data"};
+inline constexpr const char* g_kEnvWipe {"wipe"};
+inline constexpr const char* g_kEnvSign {"sign"};
 
 class Env
 {

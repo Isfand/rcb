@@ -35,7 +35,7 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 	// TODO: WIll also need a way to convert size of bytes to other units.
 	// Can pair this problem with --no-format to work with regular queries.
 	if(m_lOpt.humanReadableOption) { m_defaultSQLQuery = std::format("SELECT {0}, {1}, {2}, datetime({3}, 'unixepoch') AS {3}, {4}, {5}, {6}, {7} FROM {8}",
-		g_kSchemaID, g_kSchemaFile, g_kSchemaPath, g_kSchemaTimestamp, g_kSchemaSize, g_kSchemaFiletype, g_kSchemaUser, g_kSchemaExecution, g_kTableName); }
+		DTO::Meta::kSchemaID, DTO::Meta::kSchemaFile, DTO::Meta::kSchemaPath, DTO::Meta::kSchemaTimestamp, DTO::Meta::kSchemaSize, DTO::Meta::kSchemaFiletype, DTO::Meta::kSchemaUser, DTO::Meta::kSchemaExecution, DTO::Meta::kTableName); }
 
 	if(m_lOpt.defaultOption)   List::allFile();
 	if(m_lOpt.totalSizeOption) List::size();
@@ -64,7 +64,7 @@ void List::file(const std::vector<std::string>& args)
 
 	for(auto& arg : args)
 		std::print("{}", m_db.selectDataA(std::format("{0} WHERE {1}='{2}';", 
-			m_defaultSQLQuery, g_kSchemaID, arg)));
+			m_defaultSQLQuery, DTO::Meta::kSchemaID, arg)));
 }
 
 // TODO: past() is the same across erase, list, restore. Reduce to one.
@@ -79,7 +79,7 @@ void List::past()
 		if (return_code == 0)
 		{
 			std::vector<std::string> vList = m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} >= {3};", 
-				g_kSchemaID, g_kTableName, g_kSchemaTimestamp, timestamp));
+				DTO::Meta::kSchemaID, DTO::Meta::kTableName, DTO::Meta::kSchemaTimestamp, timestamp));
 			List::file(vList);
 		}
 		else if(return_code == 1) std::cerr << "error: units not found\n";
@@ -91,7 +91,7 @@ void List::past()
 void List::previous()
 {
 	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {2} WHERE {1}=(SELECT MAX({1}) FROM {2});", 
-		g_kSchemaID, g_kSchemaExecution, g_kTableName)) };
+		DTO::Meta::kSchemaID, DTO::Meta::kSchemaExecution, DTO::Meta::kTableName)) };
 	List::file(vList);
 }
 
@@ -118,7 +118,7 @@ void List::count()
 		{
 			std::string stagedFile = entry.path().filename().string();
 			std::string dbProgFileRecord = m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", 
-				g_kSchemaFile, g_kTableName, stagedFile));
+				DTO::Meta::kSchemaFile, DTO::Meta::kTableName, stagedFile));
 
 			if(stagedFile == dbProgFileRecord)
 				m_validFiles.push_back(stagedFile);
@@ -144,7 +144,7 @@ void List::size()
 		{
 			std::string stagedFile { entry.path().filename().string() };
 			std::string dbProgFileRecord { m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", 
-				g_kSchemaFile, g_kTableName, stagedFile)) };
+				DTO::Meta::kSchemaFile, DTO::Meta::kTableName, stagedFile)) };
 
 			if(stagedFile == dbProgFileRecord)
 				m_validFiles.push_back(stagedFile);
@@ -178,7 +178,7 @@ void List::size()
 	for (const auto& de : deduped)
 	{
 		std::string query { m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {2}='{3}';", 
-			g_kSchemaSize, g_kTableName, g_kSchemaFile, std::get<0>(de))) };
+			DTO::Meta::kSchemaSize, DTO::Meta::kTableName, DTO::Meta::kSchemaFile, std::get<0>(de))) };
 		std::string byte = (query == "NULL") ? "0" : query;
 		size += std::stoull(byte);
 		// WARNING. Be wary of NULL values in size.

@@ -35,7 +35,7 @@ private:
 	const ListOptions& m_lOpt;
 	Database m_db;
 	std::vector<std::string> m_validFiles{};
-	std::string m_defaultSQLQuery{std::format("SELECT * FROM {0}", g_kTableName)};
+	std::string m_defaultSQLQuery{std::format("SELECT * FROM {0}", DTO::Meta::kTableName)};
 
 	void allFile();
 	void file(const std::vector<std::string>& args);
