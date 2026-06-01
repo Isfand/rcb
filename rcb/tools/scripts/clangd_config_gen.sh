@@ -1,12 +1,12 @@
 #!/bin/sh
 
-SCRIPT_PATH="$(cd "$(dirname "$0")" && pwd)"
-SOURCE_PATH="$(cd "$SCRIPT_PATH" && b info | awk '/^src_root:/ {print $2}')"
-OUTPUT_PATH="$(cd "$SCRIPT_PATH" && bdep config list | awk '/default/{print $2}')"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SOURCE_DIR="$(cd "$SCRIPT_DIR" && b info | awk '/^src_root:/ {print $2}')"
+OUTPUT_DIR="$(cd "$SCRIPT_DIR" && bdep config list | awk '/default/{print $2}')"
 
-cat > "${SOURCE_PATH}/.clangd" <<EOF
+cat > "${SOURCE_DIR}/.clangd" <<EOF
 CompileFlags:
-  CompilationDatabase: ${OUTPUT_PATH}
+  CompilationDatabase: ${OUTPUT_DIR}
 EOF
  
-echo "Created ${SOURCE_PATH}/.clangd pointing to ${OUTPUT_PATH}"
+echo "Created ${SOURCE_DIR}/.clangd pointing to ${OUTPUT_DIR}"
