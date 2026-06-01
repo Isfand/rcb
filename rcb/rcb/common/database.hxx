@@ -31,13 +31,13 @@ struct DTO
 	};
 
 	std::optional<unsigned long long int> id;
-	std::optional<std::string> file;
-	std::optional<std::filesystem::path> path;
-	std::optional<long long int> timestamp;
+	std::optional<std::string>            file;
+	std::optional<std::filesystem::path>  path;
+	std::optional<long long int>          timestamp;
 	std::optional<unsigned long long int> size;
-	std::optional<std::string> string;
+	std::optional<std::string>            string;
 	std::optional<unsigned long long int> depth;
-	std::optional<std::string> user;
+	std::optional<std::string>            user;
 	std::optional<unsigned long long int> execution;
 };
 
