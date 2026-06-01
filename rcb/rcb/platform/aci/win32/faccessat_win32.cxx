@@ -181,7 +181,8 @@ check_access(const std::filesystem::path& path, int mode, bool follow_symlinks)
 				hReparse.get(), SE_FILE_OBJECT,
 				OWNER_SECURITY_INFORMATION |
 				GROUP_SECURITY_INFORMATION |
-				DACL_SECURITY_INFORMATION,
+				DACL_SECURITY_INFORMATION  |
+				LABEL_SECURITY_INFORMATION,
 				nullptr, nullptr, nullptr, nullptr, &pRawSD);
 			rc != ERROR_SUCCESS)
 			return std::unexpected{win_error_to_errno(rc)};
@@ -190,7 +191,8 @@ check_access(const std::filesystem::path& path, int mode, bool follow_symlinks)
 				wpath.data(), SE_FILE_OBJECT,
 				OWNER_SECURITY_INFORMATION |
 				GROUP_SECURITY_INFORMATION |
-				DACL_SECURITY_INFORMATION,
+				DACL_SECURITY_INFORMATION  |
+				LABEL_SECURITY_INFORMATION,
 				nullptr, nullptr, nullptr, nullptr, &pRawSD);
 			rc != ERROR_SUCCESS)
 			return std::unexpected{win_error_to_errno(rc)};
