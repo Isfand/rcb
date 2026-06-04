@@ -4,7 +4,6 @@
 #include <vector>
 #include <format>
 
-#include "common/globals.hxx"
 #include "common/database.hxx"
 
 namespace rcb{

@@ -55,7 +55,38 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 // Prints all contents of rcb/data/*.sqlite3 database 
 void List::allFile()
 {
-	std::print("results:\n{}", m_db.selectDataA(m_defaultSQLQuery + ";"));
+	auto data = m_db.selectDataAll("SELECT * FROM rcb");
+	
+	for (const auto& row : data)
+	{
+		std::println("id:{} | file:{} | path:{} | timestamp:{} | size:{} | filetype:{} | depth:{} | user:{} | execution:{}",
+			nullableInt (row.id),
+			nullableStr (row.file),
+			nullablePath(row.path),
+			nullableInt (row.timestamp),
+			nullableInt (row.size),
+			nullableStr (row.filetype),
+			nullableInt (row.depth),
+			nullableStr (row.user),
+			nullableInt (row.execution));
+	}
+
+	//for (const auto& row : data)
+	//{
+	//	std::println("id:{} | file:{} | path:{} | timestamp:{} | size:{} | filetype:{} | //depth:{} | user:{} | execution:{}",
+	//		row.id       .value_or(0),
+	//		row.file     .value_or(""),
+	//		row.path     ? row.path->string() : "",
+	//		row.timestamp.value_or(0),
+	//		row.size     .value_or(0),
+	//		row.filetype .value_or(""),
+	//		row.depth    .value_or(0),
+	//		row.user     .value_or(""),
+	//		row.execution.value_or(0));
+	//}
+
+	//OLD
+	//std::print("results:\n{}", m_db.selectDataFast(m_defaultSQLQuery));
 }
 
 void List::file(const std::vector<std::string>& args)
@@ -63,7 +94,7 @@ void List::file(const std::vector<std::string>& args)
 	std::println("results:");
 
 	for(auto& arg : args)
-		std::print("{}", m_db.selectDataA(std::format("{0} WHERE {1}='{2}';", 
+		std::print("{}", m_db.selectDataFast(std::format("{0} WHERE {1}='{2}';", 
 			m_defaultSQLQuery, DTO::Meta::kSchemaID, arg)));
 }
 
@@ -100,7 +131,7 @@ void List::sqlInjection()
 	std::println("results:");
 	for(auto i { 0UL }; i < m_lOpt.sqlVec.size(); ++i)
 	{
-		std::print("{}", m_db.selectDataA(m_lOpt.sqlVec.at(i)));
+		std::print("{}", m_db.selectDataFast(m_lOpt.sqlVec.at(i)));
 		if(!(i + 1 >= m_lOpt.sqlVec.size()))
 			std::print("---\n");
 	}
