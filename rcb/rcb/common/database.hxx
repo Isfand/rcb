@@ -35,11 +35,15 @@ struct DTO
 	std::optional<std::filesystem::path>  path;
 	std::optional<long long int>          timestamp;
 	std::optional<unsigned long long int> size;
-	std::optional<std::string>            string;
+	std::optional<std::string>            filetype;
 	std::optional<unsigned long long int> depth;
 	std::optional<std::string>            user;
 	std::optional<unsigned long long int> execution;
 };
+
+inline std::string nullableInt(const auto& opt){return opt ? std::to_string(*opt) : "NULL";}
+inline std::string nullableStr(const std::optional<std::string>& opt){return opt.value_or("NULL");}
+inline std::string nullablePath(const std::optional<std::filesystem::path>& opt){return opt ? opt->string() : "NULL";}
 
 class Database
 {
@@ -49,9 +53,13 @@ public:
 	void createTable();
 	void insertData(const std::array<std::string, 8>& fileDetails);
 	std::string selectData(const std::string& sql);
-	std::string selectDataA(const std::string& sql);
+	std::string selectDataFast(const std::string& sql);
 	std::vector<std::string> selectDataB(const std::string& sql);
 	int executeSQL(const std::string &sql);
+	
+	//replacements
+	void insertDataB(const DTO& fileDetails);
+	std::vector<DTO> selectDataAll(const std::string& sql);
 private:
 	sqlite3* m_db; // Shared sqlite3 instance
 };

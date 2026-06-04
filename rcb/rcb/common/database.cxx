@@ -2,6 +2,7 @@
 #include <format>
 #include <print>
 #include <stdexcept>
+#include <unordered_map>
 
 #include <sqlite3.h>
 
@@ -195,8 +196,7 @@ std::string Database::selectData(const std::string& sql)
 }
 
 // For list.cxx
-// TODO: Would be better to have this function return a type of std::vector<std::vector<std::string>> or custom struct instead of a plain string.
-std::string Database::selectDataA(const std::string& sql)
+std::string Database::selectDataFast(const std::string& sql)
 {
 	sqlite3_stmt *stmt;
 
@@ -309,6 +309,158 @@ int Database::executeSQL(const std::string &sql)
 	sqlite3_close(m_db);
 
 	return SQLITE_OK;
+}
+
+void Database::insertDataB(const DTO& fileDetails)
+{
+	sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
+
+	char* queryStr = sqlite3_mprintf(
+	"INSERT INTO %w (%w, %w, %w, %w, %w, %w, %w, %w) VALUES(?, ?, ?, ?, ?, ?, ?, ?);",
+	DTO::Meta::kTableName,
+	DTO::Meta::kSchemaFile,
+	DTO::Meta::kSchemaPath,
+	DTO::Meta::kSchemaTimestamp,
+	DTO::Meta::kSchemaSize,
+	DTO::Meta::kSchemaFiletype,
+	DTO::Meta::kSchemaPathDepth,
+	DTO::Meta::kSchemaUser,
+	DTO::Meta::kSchemaExecution);
+
+	sqlite3_stmt* stmt{};
+	int rc = sqlite3_prepare_v2(m_db, queryStr, -1, &stmt, nullptr);
+	if (rc != SQLITE_OK)
+	{
+#ifndef NDEBUG
+		std::println("Failed to prepare statement. sqlite3_prepare_v2() returned error code: {} with error: {}", rc, sqlite3_errmsg(m_db));
+#endif
+		sqlite3_close(m_db);
+		throw std::invalid_argument("insertData() Failed: could not prepare statement");
+	}
+
+	// Helper to bind a string or NULL if the optional is empty
+	const auto bindText = [&](int col, const std::optional<std::string>& val) {
+		if (val)
+			return sqlite3_bind_text(stmt, col, val->c_str(), -1, SQLITE_TRANSIENT);
+		return sqlite3_bind_null(stmt, col);
+	};
+
+	const std::string pathStr = fileDetails.path ? fileDetails.path->string() : "";
+
+	bindText(1, fileDetails.file);
+	fileDetails.path
+		? sqlite3_bind_text(stmt, 2, pathStr.c_str(), -1, SQLITE_TRANSIENT)
+		: sqlite3_bind_null(stmt, 2);
+	fileDetails.timestamp
+		? sqlite3_bind_int64(stmt, 3, *fileDetails.timestamp)
+		: sqlite3_bind_null(stmt, 3);
+	fileDetails.size
+		? sqlite3_bind_int64(stmt, 4, static_cast<sqlite3_int64>(*fileDetails.size))
+		: sqlite3_bind_null(stmt, 4);
+	bindText(5, fileDetails.filetype);
+	fileDetails.depth
+		? sqlite3_bind_int64(stmt, 6, static_cast<sqlite3_int64>(*fileDetails.depth))
+		: sqlite3_bind_null(stmt, 6);
+	bindText(7, fileDetails.user);
+	fileDetails.execution
+		? sqlite3_bind_int64(stmt, 8, static_cast<sqlite3_int64>(*fileDetails.execution))
+		: sqlite3_bind_null(stmt, 8);
+
+	rc = sqlite3_step(stmt);
+	if (rc != SQLITE_DONE)
+	{
+#ifndef NDEBUG
+		std::println("Failed to add record. sqlite3_step() returned error code: {} with error: {}", rc, sqlite3_errmsg(m_db));
+#endif
+		sqlite3_finalize(stmt);
+		sqlite3_close(m_db);
+		throw std::invalid_argument("insertData() Failed");
+	}
+
+#ifndef NDEBUG
+	std::println("Success from default SQL table data insert");
+#endif
+
+	sqlite3_finalize(stmt);
+	sqlite3_close(m_db);
+}
+
+std::vector<DTO> Database::selectDataAll(const std::string& sql)
+{
+	sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
+
+	sqlite3_stmt* stmt{};
+	int rc = sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, nullptr);
+
+	if (rc != SQLITE_OK)
+	{
+#ifndef NDEBUG
+		std::println("Failed to prepare statement. sqlite3_prepare_v2() returned error code: {} with error: {}", rc, sqlite3_errmsg(m_db));
+#endif
+		sqlite3_close(m_db);
+		throw std::invalid_argument("selectDataAll() Failed: could not prepare statement");
+	}
+
+	// Build a name -> column index map from the result set
+	const int colCount = sqlite3_column_count(stmt);
+	std::unordered_map<std::string, int> colIndex;
+	for (int i = 0; i < colCount; ++i)
+		colIndex.emplace(sqlite3_column_name(stmt, i), i);
+
+	const auto getInt64 = [&](const char* name) -> std::optional<long long int>
+	{
+		auto it = colIndex.find(name);
+		if (it == colIndex.end()) return std::nullopt;
+		if (sqlite3_column_type(stmt, it->second) == SQLITE_NULL) return std::nullopt;
+		return sqlite3_column_int64(stmt, it->second);
+	};
+
+	const auto getUInt64 = [&](const char* name) -> std::optional<unsigned long long int>
+	{
+		auto it = colIndex.find(name);
+		if (it == colIndex.end()) return std::nullopt;
+		if (sqlite3_column_type(stmt, it->second) == SQLITE_NULL) return std::nullopt;
+		return static_cast<unsigned long long int>(sqlite3_column_int64(stmt, it->second));
+	};
+
+	const auto getText = [&](const char* name) -> std::optional<std::string>
+	{
+		auto it = colIndex.find(name);
+		if (it == colIndex.end()) return std::nullopt;
+		if (sqlite3_column_type(stmt, it->second) == SQLITE_NULL) return std::nullopt;
+		return reinterpret_cast<const char*>(sqlite3_column_text(stmt, it->second));
+	};
+
+	std::vector<DTO> results;
+	while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
+	{
+		results.push_back(DTO
+		{
+			.id        = getUInt64(DTO::Meta::kSchemaID),
+			.file      = getText  (DTO::Meta::kSchemaFile),
+			.path      = getText  (DTO::Meta::kSchemaPath).transform([](const std::string& s) { return std::filesystem::path{s}; }),
+			.timestamp = getInt64 (DTO::Meta::kSchemaTimestamp),
+			.size      = getUInt64(DTO::Meta::kSchemaSize),
+			.filetype  = getText  (DTO::Meta::kSchemaFiletype),
+			.depth     = getUInt64(DTO::Meta::kSchemaPathDepth),
+			.user      = getText  (DTO::Meta::kSchemaUser),
+			.execution = getUInt64(DTO::Meta::kSchemaExecution)
+		});
+	}
+
+	if (rc != SQLITE_DONE)
+	{
+#ifndef NDEBUG
+		std::println("selectDataAll() sqlite3_step() returned error code: {} with error: {}", rc, sqlite3_errmsg(m_db));
+#endif
+		sqlite3_finalize(stmt);
+		sqlite3_close(m_db);
+		throw std::invalid_argument("selectDataAll() Failed");
+	}
+
+	sqlite3_finalize(stmt);
+	sqlite3_close(m_db);
+	return results;
 }
 
 } // namespace rcb
