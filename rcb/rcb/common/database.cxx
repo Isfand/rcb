@@ -270,7 +270,7 @@ std::vector<std::string> Database::selectDataB(const std::string& sql)
 			// const char* col_name = sqlite3_column_name(stmt, col);
 			const char* col_text = (const char*)sqlite3_column_text(stmt, col);
 			// printf("%s: %s\n", col_name, col_text ? col_text : "NULL");
-			vlist.push_back(col_text);
+			vlist.push_back(col_text ? col_text : "");
 		}
 	}
 
