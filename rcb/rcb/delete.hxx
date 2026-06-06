@@ -24,12 +24,13 @@ public:
 private:
 	const DeleteOptions& m_dOpt;
 	Database m_db;
-	std::string m_currentExecutionID;
+	unsigned long long m_currentExecutionID;
 	
 	void file(const std::vector<std::string>& args);
-	const std::array<std::string, 8> saveFileData(const std::string& stageFilename, const std::filesystem::path& originalDir);
+	const std::array<std::string, 8> saveFileData_DEPRECATED(const std::string& stageFilename, const std::filesystem::path& originalDir);
+	const DTO saveFileData(const std::string& stageFilename, const std::filesystem::path& originalDir);
 	unsigned long long fileSize(const std::filesystem::directory_entry& file);
-	std::string incrementExecutionID();
+	unsigned long long incrementExecutionID();
 
 	bool hasTrailingSlash(const std::filesystem::path& path);
 	std::filesystem::path removeTrailingSlash(const std::filesystem::path& path);

@@ -179,7 +179,7 @@ std::string Database::selectData(const std::string& sql)
 		{
 			// const char* col_name = sqlite3_column_name(stmt, col);
 			const char* col_text = (const char*)sqlite3_column_text(stmt, col);
-			st.append(col_text);
+			if (col_text) st.append(col_text);
 		}
 	}
 

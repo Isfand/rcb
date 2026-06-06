@@ -73,7 +73,7 @@ void Delete::file(const std::vector<std::string>& args)
 				}
 				auto fileDetails = Delete::saveFileData(mutFilename, systemFilePath);
 				if(!m_dOpt.dryRunOption)
-					m_db.insertData(fileDetails); // Could make InsertData Return bool for error checking instead of using try/catch
+					m_db.insertDataB(fileDetails); // Could make InsertData Return bool for error checking instead of using try/catch
 			}
 			catch(const std::filesystem::filesystem_error& e)
 			{
@@ -131,7 +131,7 @@ void Delete::file(const std::vector<std::string>& args)
 	}
 }
 
-const std::array<std::string, 8> Delete::saveFileData(const std::string& stageFilename, const std::filesystem::path& originalPath)
+const std::array<std::string, 8> Delete::saveFileData_DEPRECATED(const std::string& stageFilename, const std::filesystem::path& originalPath)
 {
 	auto currentTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 	
@@ -153,9 +153,36 @@ const std::array<std::string, 8> Delete::saveFileData(const std::string& stageFi
 	std::string fileType{fileTypeToString(Verity(std::filesystem::directory_entry(originalPath)).type)};
 	std::string originalPathDepth{std::to_string(pathDepth(originalPath))};
 	std::string workingUsername{g_singleton->getWorkingUsername()};
-	std::string executionID{m_currentExecutionID};
+	std::string executionID{std::to_string(m_currentExecutionID)};
 
 	return std::array<std::string, 8>{fileName, filePath, timestamp, fileByteSize, fileType, originalPathDepth, workingUsername, executionID};
+}
+
+const DTO Delete::saveFileData(const std::string& stageFilename, const std::filesystem::path& originalPath)
+{
+	DTO file;
+	auto currentTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	
+	file.file = stageFilename;
+	file.path = originalPath;
+	file.timestamp = currentTime;
+
+	file.size = 
+		(m_dOpt.noDirSizeOption && 
+		Verity(std::filesystem::directory_entry(originalPath)).type == 
+		std::filesystem::file_type::directory) || 
+		(!canReadDirRec(std::filesystem::directory_entry(originalPath)) && 
+		m_dOpt.forceOption &&
+		Verity(std::filesystem::directory_entry(originalPath)).type == 
+		std::filesystem::file_type::directory) ? 
+		std::optional<unsigned long long>(std::nullopt) : Delete::fileSize(std::filesystem::directory_entry(originalPath));
+
+	file.filetype = fileTypeToString(Verity(std::filesystem::directory_entry(originalPath)).type);
+	file.depth = pathDepth(originalPath);
+	file.user = g_singleton->getWorkingUsername();
+	file.execution = m_currentExecutionID;
+
+	return file;
 }
 
 // TODO: Move into utils and use in DirectorySize() to reduce duplicate code.
@@ -214,15 +241,10 @@ long long unsigned Delete::fileSize(const std::filesystem::directory_entry& file
 	return size;
 }
 
-std::string Delete::incrementExecutionID()
+unsigned long long Delete::incrementExecutionID()
 {
-	std::string highestExecution{};
 	std::string selectedExecution = m_db.selectData(std::format("SELECT max({}) FROM {};", DTO::Meta::kSchemaExecution, DTO::Meta::kTableName));
-
-	if (selectedExecution != "") highestExecution = std::to_string(std::stoll(selectedExecution) + 1);
-	else if (selectedExecution == "") highestExecution = "1";
-
-	return highestExecution;
+	return selectedExecution.empty() ? 1ULL : std::stoull(selectedExecution) + 1;
 }
 
 bool Delete::hasTrailingSlash(const std::filesystem::path& path)
@@ -246,7 +268,7 @@ int Delete::pathDepth(const std::filesystem::path& path)
 {
 	// has_root_path() checks if a path starts with root. / itself starts as /. So does /some/file/dir.
 	int depth = std::distance(path.begin(), path.end());
-    return path.has_root_path() ? depth - 1 : depth;
+	return path.has_root_path() ? depth - 1 : depth;
 }
 		
 }// namespace rcb

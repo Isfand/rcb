@@ -55,20 +55,20 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 // Prints all contents of rcb/data/*.sqlite3 database 
 void List::allFile()
 {
-	auto data = m_db.selectDataAll("SELECT * FROM rcb");
+	auto data = m_db.selectDataAll(m_defaultSQLQuery);
 	
 	for (const auto& row : data)
 	{
-		std::println("id:{} | file:{} | path:{} | timestamp:{} | size:{} | filetype:{} | depth:{} | user:{} | execution:{}",
-			nullableInt (row.id),
-			nullableStr (row.file),
-			nullablePath(row.path),
-			nullableInt (row.timestamp),
-			nullableInt (row.size),
-			nullableStr (row.filetype),
-			nullableInt (row.depth),
-			nullableStr (row.user),
-			nullableInt (row.execution));
+		std::println("{}:{} | {}:{} | {}:{} | {}:{} | {}:{} | {}:{} | {}:{} | {}:{} | {}:{}",
+		DTO::Meta::kSchemaID,        nullableInt(row.id),
+		DTO::Meta::kSchemaFile,      nullableStr(row.file),
+		DTO::Meta::kSchemaPath,      nullablePath(row.path),
+		DTO::Meta::kSchemaTimestamp, nullableInt(row.timestamp),
+		DTO::Meta::kSchemaSize,      nullableInt(row.size),
+		DTO::Meta::kSchemaFiletype,  nullableStr(row.filetype),
+		DTO::Meta::kSchemaPathDepth, nullableInt(row.depth),
+		DTO::Meta::kSchemaUser,      nullableStr(row.user),
+		DTO::Meta::kSchemaExecution, nullableInt(row.execution));
 	}
 
 	//for (const auto& row : data)
@@ -91,8 +91,6 @@ void List::allFile()
 
 void List::file(const std::vector<std::string>& args)
 {
-	std::println("results:");
-
 	for(auto& arg : args)
 		std::print("{}", m_db.selectDataFast(std::format("{0} WHERE {1}='{2}';", 
 			m_defaultSQLQuery, DTO::Meta::kSchemaID, arg)));
@@ -210,7 +208,7 @@ void List::size()
 	{
 		std::string query { m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {2}='{3}';", 
 			DTO::Meta::kSchemaSize, DTO::Meta::kTableName, DTO::Meta::kSchemaFile, std::get<0>(de))) };
-		std::string byte = (query == "NULL") ? "0" : query;
+		std::string byte = (query.empty()) ? "0" : query;
 		size += std::stoull(byte);
 		// WARNING. Be wary of NULL values in size.
 		// Could also continue instead of assigning NULL to 0.

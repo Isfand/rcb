@@ -133,7 +133,12 @@ void Validate::data()
 		if(!m_vOpt.dryRunOption && (confirmFlag || m_vOpt.yesOption))
 		{
 			for (const auto& danglingRecord : danglingRecords)
-				m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", DTO::Meta::kTableName, DTO::Meta::kSchemaFile, danglingRecord));
+			{
+				if (danglingRecord.empty())
+	   		 		m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1} IS NULL;", DTO::Meta::kTableName, DTO::Meta::kSchemaFile));
+				else
+					m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", DTO::Meta::kTableName, DTO::Meta::kSchemaFile, danglingRecord));
+			}
 		}
 	}
 
@@ -198,7 +203,7 @@ void Validate::fillDirectorySize()
 	// Update the directory size in the database using executeSQL().
 
 	// REVISE: This should be vector of type std::filesystem::path
-	std::vector<std::string> nullDirectoriesQuery { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2}='{3}' AND {4}='NULL';", 
+	std::vector<std::string> nullDirectoriesQuery { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2}='{3}' AND {4} IS NULL;", 
 		DTO::Meta::kSchemaFile, DTO::Meta::kTableName, DTO::Meta::kSchemaFiletype, fileTypeToString(std::filesystem::file_type::directory), DTO::Meta::kSchemaSize)) };
 	
 	// prepend file/ path to each filename
@@ -206,7 +211,7 @@ void Validate::fillDirectorySize()
 				   nullDirectoriesQuery.end(), 
 				   nullDirectoriesQuery.begin(), 
 				   [](std::string& f) 
-				   { return g_singleton->getWorkingProgFileDir().string() + f; });
+				   { return (g_singleton->getWorkingProgFileDir() / f).string(); });
 
 	for(auto& directoryPathString : nullDirectoriesQuery)
 	{
@@ -223,7 +228,7 @@ void Validate::fillDirectorySize()
 		auto directory_entry = std::filesystem::directory_entry(directoryPathString);
 		unsigned long long size { directorySize(directory_entry) };
 		if(!m_vOpt.dryRunOption)
-			m_db.executeSQL(std::format("UPDATE {0} SET {1}='{2}' WHERE {3}='{4}';", DTO::Meta::kTableName, DTO::Meta::kSchemaSize, size, DTO::Meta::kSchemaFile, directory_entry.path().filename().string()));
+			m_db.executeSQL(std::format("UPDATE {0} SET {1}={2} WHERE {3}='{4}';", DTO::Meta::kTableName, DTO::Meta::kSchemaSize, size, DTO::Meta::kSchemaFile, directory_entry.path().filename().string()));
 	}
 }
 
