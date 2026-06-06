@@ -21,6 +21,7 @@ void Database::createDB()
 }
 
 // Resets counter if no records exist.
+// Note: can be replaced with executeSQL() internally
 void Database::resetCounter()
 {
 	sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
@@ -49,6 +50,7 @@ void Database::resetCounter()
 	sqlite3_close(m_db);
 }
 
+// Note: can be replaced with executeSQL() internally
 void Database::createTable()
 {
 	sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
@@ -98,7 +100,7 @@ void Database::createTable()
 
 } 
 
-void Database::insertData(const std::array<std::string, 8>& fileDetails)
+void Database::insertData_DEPRECATED(const std::array<std::string, 8>& fileDetails)
 {
 	char* errorMsg{};
 
@@ -151,7 +153,8 @@ void Database::insertData(const std::array<std::string, 8>& fileDetails)
 }
 
 // For delete.cxx & wipe.cxx
-std::string Database::selectData(const std::string& sql)
+// Scalar
+std::string Database::selectValue(const std::string& sql)
 {
 	sqlite3_stmt *stmt;
 	int rc;
@@ -196,7 +199,8 @@ std::string Database::selectData(const std::string& sql)
 }
 
 // For list.cxx
-std::string Database::selectDataFast(const std::string& sql)
+// Formatted string for printing 
+std::string Database::selectDisplay(const std::string& sql)
 {
 	sqlite3_stmt *stmt;
 
@@ -242,8 +246,8 @@ std::string Database::selectDataFast(const std::string& sql)
 }
 
 // For Restore.cxx & Wipe.cxx(allFile())
-// Can be overloaded instead of having a unique function name using discriminatory tokens (enums)
-std::vector<std::string> Database::selectDataB(const std::string& sql)
+// Vector of single-column values
+std::vector<std::string> Database::selectColumn(const std::string& sql)
 {
 	std::vector<std::string> vlist{};
 	sqlite3_stmt *stmt;
@@ -285,6 +289,7 @@ std::vector<std::string> Database::selectDataB(const std::string& sql)
 	return vlist;
 }
 
+// Fire-and-forget (INSERT, UPDATE, DELETE, CREATE)
 int Database::executeSQL(const std::string &sql)
 {
 	char *errMsg = nullptr;
@@ -311,7 +316,7 @@ int Database::executeSQL(const std::string &sql)
 	return SQLITE_OK;
 }
 
-void Database::insertDataB(const DTO& fileDetails)
+void Database::insertDTO(const DTO& fileDetails)
 {
 	sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
 
@@ -385,7 +390,7 @@ void Database::insertDataB(const DTO& fileDetails)
 	sqlite3_close(m_db);
 }
 
-std::vector<DTO> Database::selectDataAll(const std::string& sql)
+std::vector<DTO> Database::selectDTO(const std::string& sql)
 {
 	sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
 
@@ -398,7 +403,7 @@ std::vector<DTO> Database::selectDataAll(const std::string& sql)
 		std::println("Failed to prepare statement. sqlite3_prepare_v2() returned error code: {} with error: {}", rc, sqlite3_errmsg(m_db));
 #endif
 		sqlite3_close(m_db);
-		throw std::invalid_argument("selectDataAll() Failed: could not prepare statement");
+		throw std::invalid_argument("selectDTO() Failed: could not prepare statement");
 	}
 
 	// Build a name -> column index map from the result set
@@ -451,11 +456,11 @@ std::vector<DTO> Database::selectDataAll(const std::string& sql)
 	if (rc != SQLITE_DONE)
 	{
 #ifndef NDEBUG
-		std::println("selectDataAll() sqlite3_step() returned error code: {} with error: {}", rc, sqlite3_errmsg(m_db));
+		std::println("selectDTO() sqlite3_step() returned error code: {} with error: {}", rc, sqlite3_errmsg(m_db));
 #endif
 		sqlite3_finalize(stmt);
 		sqlite3_close(m_db);
-		throw std::invalid_argument("selectDataAll() Failed");
+		throw std::invalid_argument("selectDTO() Failed");
 	}
 
 	sqlite3_finalize(stmt);

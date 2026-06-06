@@ -51,15 +51,14 @@ public:
 	void createDB();
 	void resetCounter();
 	void createTable();
-	void insertData(const std::array<std::string, 8>& fileDetails);
-	std::string selectData(const std::string& sql);
-	std::string selectDataFast(const std::string& sql);
-	std::vector<std::string> selectDataB(const std::string& sql);
+	void insertData_DEPRECATED(const std::array<std::string, 8>& fileDetails);
+	std::string selectValue(const std::string& sql);
+	std::string selectDisplay(const std::string& sql);
+	std::vector<std::string> selectColumn(const std::string& sql);
 	int executeSQL(const std::string &sql);
 	
-	//replacements
-	void insertDataB(const DTO& fileDetails);
-	std::vector<DTO> selectDataAll(const std::string& sql);
+	void insertDTO(const DTO& fileDetails);
+	std::vector<DTO> selectDTO(const std::string& sql);
 private:
 	sqlite3* m_db; // Shared sqlite3 instance
 };

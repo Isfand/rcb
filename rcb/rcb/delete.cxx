@@ -73,7 +73,7 @@ void Delete::file(const std::vector<std::string>& args)
 				}
 				auto fileDetails = Delete::saveFileData(mutFilename, systemFilePath);
 				if(!m_dOpt.dryRunOption)
-					m_db.insertDataB(fileDetails); // Could make InsertData Return bool for error checking instead of using try/catch
+					m_db.insertDTO(fileDetails); // Could make InsertData Return bool for error checking instead of using try/catch
 			}
 			catch(const std::filesystem::filesystem_error& e)
 			{
@@ -243,7 +243,8 @@ long long unsigned Delete::fileSize(const std::filesystem::directory_entry& file
 
 unsigned long long Delete::incrementExecutionID()
 {
-	std::string selectedExecution = m_db.selectData(std::format("SELECT max({}) FROM {};", DTO::Meta::kSchemaExecution, DTO::Meta::kTableName));
+	std::string selectedExecution = m_db.selectValue(std::format("SELECT max({}) FROM {};", 
+		DTO::Meta::kSchemaExecution, DTO::Meta::kTableName));
 	return selectedExecution.empty() ? 1ULL : std::stoull(selectedExecution) + 1;
 }
 

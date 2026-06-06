@@ -34,7 +34,7 @@ void Erase::file(const std::vector<std::string>& args)
 	for(const std::string& arg : args)
 	{
 		// TODO, Add a check for "" empty. Then continue the loop.
-		std::string stagedFile = m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {2}='{3}';", 
+		std::string stagedFile = m_db.selectValue(std::format("SELECT {0} FROM {1} WHERE {2}='{3}';", 
 			DTO::Meta::kSchemaFile, DTO::Meta::kTableName, DTO::Meta::kSchemaID, arg));
 
 		try 
@@ -57,7 +57,7 @@ void Erase::file(const std::vector<std::string>& args)
 
 void Erase::allFile()
 {
-	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1};", 
+	std::vector<std::string> vList { m_db.selectColumn(std::format("SELECT {0} FROM {1};", 
 		DTO::Meta::kSchemaID, DTO::Meta::kTableName)) };
 
 #ifndef NDEBUG
@@ -81,7 +81,7 @@ void Erase::past()
 		
 		if (return_code == 0)
 		{
-			std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} >= {3};", 
+			std::vector<std::string> vList { m_db.selectColumn(std::format("SELECT {0} FROM {1} WHERE {2} >= {3};", 
 				DTO::Meta::kSchemaID, DTO::Meta::kTableName, DTO::Meta::kSchemaTimestamp, timestamp)) };
 			Erase::file(vList);
 		}
@@ -93,7 +93,7 @@ void Erase::past()
 
 void Erase::previous()
 {
-	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {2} WHERE {1}=(SELECT MAX({1}) FROM {2});", 
+	std::vector<std::string> vList { m_db.selectColumn(std::format("SELECT {0} FROM {2} WHERE {1}=(SELECT MAX({1}) FROM {2});", 
 		DTO::Meta::kSchemaID, DTO::Meta::kSchemaExecution, DTO::Meta::kTableName)) };
 	Erase::file(vList);
 }
@@ -106,7 +106,7 @@ void Erase::sqlInjection()
 #ifndef NDEBUG
 		std::println("SQL Statement is: {}", sql);
 #endif
-		std::vector<std::string> vList { m_db.selectDataB(sql) };
+		std::vector<std::string> vList { m_db.selectColumn(sql) };
 		Erase::file(vList);
 	}
 }

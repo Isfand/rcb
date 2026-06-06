@@ -34,8 +34,20 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 
 	// TODO: WIll also need a way to convert size of bytes to other units.
 	// Can pair this problem with --no-format to work with regular queries.
-	if(m_lOpt.humanReadableOption) { m_defaultSQLQuery = std::format("SELECT {0}, {1}, {2}, datetime({3}, 'unixepoch') AS {3}, {4}, {5}, {6}, {7} FROM {8}",
-		DTO::Meta::kSchemaID, DTO::Meta::kSchemaFile, DTO::Meta::kSchemaPath, DTO::Meta::kSchemaTimestamp, DTO::Meta::kSchemaSize, DTO::Meta::kSchemaFiletype, DTO::Meta::kSchemaUser, DTO::Meta::kSchemaExecution, DTO::Meta::kTableName); }
+	if(m_lOpt.humanReadableOption) {
+	m_defaultSQLQuery = std::format(
+		"SELECT {0}, {1}, {2}, datetime({3}, 'unixepoch') AS {3}, {4}, {5}, {6}, {7}, {8} FROM {9}",
+		DTO::Meta::kSchemaID,        // {0} id
+		DTO::Meta::kSchemaFile,      // {1} file
+		DTO::Meta::kSchemaPath,      // {2} path
+		DTO::Meta::kSchemaTimestamp, // {3} timestamp
+		DTO::Meta::kSchemaSize,      // {4} size
+		DTO::Meta::kSchemaFiletype,  // {5} filetype
+		DTO::Meta::kSchemaPathDepth, // {6} depth
+		DTO::Meta::kSchemaUser,      // {7} user
+		DTO::Meta::kSchemaExecution, // {8} execution
+		DTO::Meta::kTableName);      // {9} rcb
+}
 
 	if(m_lOpt.defaultOption)   List::allFile();
 	if(m_lOpt.totalSizeOption) List::size();
@@ -55,44 +67,29 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 // Prints all contents of rcb/data/*.sqlite3 database 
 void List::allFile()
 {
-	auto data = m_db.selectDataAll(m_defaultSQLQuery);
+	//auto data = m_db.selectDTO(m_defaultSQLQuery);
 	
-	for (const auto& row : data)
-	{
-		std::println("{}:{} | {}:{} | {}:{} | {}:{} | {}:{} | {}:{} | {}:{} | {}:{} | {}:{}",
-		DTO::Meta::kSchemaID,        nullableInt(row.id),
-		DTO::Meta::kSchemaFile,      nullableStr(row.file),
-		DTO::Meta::kSchemaPath,      nullablePath(row.path),
-		DTO::Meta::kSchemaTimestamp, nullableInt(row.timestamp),
-		DTO::Meta::kSchemaSize,      nullableInt(row.size),
-		DTO::Meta::kSchemaFiletype,  nullableStr(row.filetype),
-		DTO::Meta::kSchemaPathDepth, nullableInt(row.depth),
-		DTO::Meta::kSchemaUser,      nullableStr(row.user),
-		DTO::Meta::kSchemaExecution, nullableInt(row.execution));
-	}
-
 	//for (const auto& row : data)
 	//{
-	//	std::println("id:{} | file:{} | path:{} | timestamp:{} | size:{} | filetype:{} | //depth:{} | user:{} | execution:{}",
-	//		row.id       .value_or(0),
-	//		row.file     .value_or(""),
-	//		row.path     ? row.path->string() : "",
-	//		row.timestamp.value_or(0),
-	//		row.size     .value_or(0),
-	//		row.filetype .value_or(""),
-	//		row.depth    .value_or(0),
-	//		row.user     .value_or(""),
-	//		row.execution.value_or(0));
+	//	std::println("{}:{} | {}:{} | {}:{} | {}:{} | {}:{} | {}:{} | {}:{} | {}:{} | {}:{}",
+	//	DTO::Meta::kSchemaID,        nullableInt(row.id),
+	//	DTO::Meta::kSchemaFile,      nullableStr(row.file),
+	//	DTO::Meta::kSchemaPath,      nullablePath(row.path),
+	//	DTO::Meta::kSchemaTimestamp, nullableInt(row.timestamp),
+	//	DTO::Meta::kSchemaSize,      nullableInt(row.size),
+	//	DTO::Meta::kSchemaFiletype,  nullableStr(row.filetype),
+	//	DTO::Meta::kSchemaPathDepth, nullableInt(row.depth),
+	//	DTO::Meta::kSchemaUser,      nullableStr(row.user),
+	//	DTO::Meta::kSchemaExecution, nullableInt(row.execution));
 	//}
 
-	//OLD
-	//std::print("results:\n{}", m_db.selectDataFast(m_defaultSQLQuery));
+	std::print("{}", m_db.selectDisplay(m_defaultSQLQuery));
 }
 
 void List::file(const std::vector<std::string>& args)
 {
 	for(auto& arg : args)
-		std::print("{}", m_db.selectDataFast(std::format("{0} WHERE {1}='{2}';", 
+		std::print("{}", m_db.selectDisplay(std::format("{0} WHERE {1}='{2}';", 
 			m_defaultSQLQuery, DTO::Meta::kSchemaID, arg)));
 }
 
@@ -107,7 +104,7 @@ void List::past()
 
 		if (return_code == 0)
 		{
-			std::vector<std::string> vList = m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2} >= {3};", 
+			std::vector<std::string> vList = m_db.selectColumn(std::format("SELECT {0} FROM {1} WHERE {2} >= {3};", 
 				DTO::Meta::kSchemaID, DTO::Meta::kTableName, DTO::Meta::kSchemaTimestamp, timestamp));
 			List::file(vList);
 		}
@@ -119,17 +116,17 @@ void List::past()
 
 void List::previous()
 {
-	std::vector<std::string> vList { m_db.selectDataB(std::format("SELECT {0} FROM {2} WHERE {1}=(SELECT MAX({1}) FROM {2});", 
+	std::vector<std::string> vList { m_db.selectColumn(std::format("SELECT {0} FROM {2} WHERE {1}=(SELECT MAX({1}) FROM {2});", 
 		DTO::Meta::kSchemaID, DTO::Meta::kSchemaExecution, DTO::Meta::kTableName)) };
 	List::file(vList);
 }
 
 void List::sqlInjection()
 {
-	std::println("results:");
+	//std::println("results:");
 	for(auto i { 0UL }; i < m_lOpt.sqlVec.size(); ++i)
 	{
-		std::print("{}", m_db.selectDataFast(m_lOpt.sqlVec.at(i)));
+		std::print("{}", m_db.selectDisplay(m_lOpt.sqlVec.at(i)));
 		if(!(i + 1 >= m_lOpt.sqlVec.size()))
 			std::print("---\n");
 	}
@@ -146,7 +143,7 @@ void List::count()
 		for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
 		{
 			std::string stagedFile = entry.path().filename().string();
-			std::string dbProgFileRecord = m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", 
+			std::string dbProgFileRecord = m_db.selectValue(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", 
 				DTO::Meta::kSchemaFile, DTO::Meta::kTableName, stagedFile));
 
 			if(stagedFile == dbProgFileRecord)
@@ -172,7 +169,7 @@ void List::size()
 		for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
 		{
 			std::string stagedFile { entry.path().filename().string() };
-			std::string dbProgFileRecord { m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", 
+			std::string dbProgFileRecord { m_db.selectValue(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", 
 				DTO::Meta::kSchemaFile, DTO::Meta::kTableName, stagedFile)) };
 
 			if(stagedFile == dbProgFileRecord)
@@ -206,7 +203,7 @@ void List::size()
 
 	for (const auto& de : deduped)
 	{
-		std::string query { m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {2}='{3}';", 
+		std::string query { m_db.selectValue(std::format("SELECT {0} FROM {1} WHERE {2}='{3}';", 
 			DTO::Meta::kSchemaSize, DTO::Meta::kTableName, DTO::Meta::kSchemaFile, std::get<0>(de))) };
 		std::string byte = (query.empty()) ? "0" : query;
 		size += std::stoull(byte);

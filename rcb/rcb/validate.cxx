@@ -49,7 +49,7 @@ void Validate::file()
 	for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
 	{    
 		std::string stagedFile = entry.path().filename().string();
-		std::string dbProgFileRecord = m_db.selectData(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", DTO::Meta::kSchemaFile, DTO::Meta::kTableName, stagedFile));
+		std::string dbProgFileRecord = m_db.selectValue(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", DTO::Meta::kSchemaFile, DTO::Meta::kTableName, stagedFile));
 
 		if(stagedFile != dbProgFileRecord)
 			danglingFiles.push_back(stagedFile);
@@ -83,7 +83,7 @@ void Validate::file()
 			for(const auto& file : danglingFiles)
 			{
 				// WARNING: If a file with the same name exists in wipe/ it will be overwritten. file/ only contains unique names but files in wipe/ are not checked.
-				std::filesystem::rename(g_singleton->getWorkingProgFileDir() / file, g_singleton->getWorkingProgWipeDir() / file);          
+				std::filesystem::rename(g_singleton->getWorkingProgFileDir() / file, g_singleton->getWorkingProgWipeDir() / file);
 				sanitizeRemoveAll(g_singleton->getWorkingProgWipeDir() / file);
 			}
 		}  
@@ -97,7 +97,7 @@ void Validate::data()
 	// records points to a stagedFile in /file
 	// Then delete
 
-	std::vector<std::string> danglingRecords { m_db.selectDataB(std::format("SELECT {0} from {1};", DTO::Meta::kSchemaFile, DTO::Meta::kTableName)) };
+	std::vector<std::string> danglingRecords { m_db.selectColumn(std::format("SELECT {0} from {1};", DTO::Meta::kSchemaFile, DTO::Meta::kTableName)) };
 
 	std::vector<std::string> stagedFiles{};
 	for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
@@ -203,7 +203,7 @@ void Validate::fillDirectorySize()
 	// Update the directory size in the database using executeSQL().
 
 	// REVISE: This should be vector of type std::filesystem::path
-	std::vector<std::string> nullDirectoriesQuery { m_db.selectDataB(std::format("SELECT {0} FROM {1} WHERE {2}='{3}' AND {4} IS NULL;", 
+	std::vector<std::string> nullDirectoriesQuery { m_db.selectColumn(std::format("SELECT {0} FROM {1} WHERE {2}='{3}' AND {4} IS NULL;", 
 		DTO::Meta::kSchemaFile, DTO::Meta::kTableName, DTO::Meta::kSchemaFiletype, fileTypeToString(std::filesystem::file_type::directory), DTO::Meta::kSchemaSize)) };
 	
 	// prepend file/ path to each filename
