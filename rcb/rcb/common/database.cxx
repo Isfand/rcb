@@ -100,58 +100,6 @@ void Database::createTable()
 
 } 
 
-void Database::insertData_DEPRECATED(const std::array<std::string, 8>& fileDetails)
-{
-	char* errorMsg{};
-
-	sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
-
-	// XXX: Use prepared statements (sqlite3_prepare_v2 + sqlite3_bind_text).
-	std::string recordData = std::format("INSERT INTO {} ("
-										 "{}, {}, {}, {}, {}, {}, {}, {}) "
-										 "VALUES("
-										 "'{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}');",
-										 DTO::Meta::kTableName, 
-										 DTO::Meta::kSchemaFile,
-										 DTO::Meta::kSchemaPath,
-										 DTO::Meta::kSchemaTimestamp,
-										 DTO::Meta::kSchemaSize,
-										 DTO::Meta::kSchemaFiletype,
-										 DTO::Meta::kSchemaPathDepth,
-										 DTO::Meta::kSchemaUser,
-										 DTO::Meta::kSchemaBatch,
-										 fileDetails.at(0),
-										 fileDetails.at(1),
-										 fileDetails.at(2),
-										 fileDetails.at(3),
-										 fileDetails.at(4),
-										 fileDetails.at(5),
-										 fileDetails.at(6),
-										 fileDetails.at(7));
-	
-	// WARNING: Windows backslashes are interpreted as special characters which is why the failure for windows might happen.
-	// for (unsigned char c : fileDetails.at(6))
-	//	std::println("{:02X}", c);
-	
-	int exit = {sqlite3_exec(m_db, recordData.c_str(), NULL, 0, &errorMsg)};
-	if (exit != SQLITE_OK)
-	{		
-#ifndef NDEBUG
-		std::println("Failed to add record. sqlite3_exec() returned error code: {} with errorMsg: {}", exit, errorMsg);
-#endif
-		sqlite3_free(errorMsg);
-		throw std::invalid_argument("insertData() Failed");
-	}
-	else 
-	{
-#ifndef NDEBUG
-		std::println("Success from default SQL table data insert"); // WILL always return even if exists
-#endif
-	}
-	
-	sqlite3_close(m_db);
-}
-
 // For delete.cxx & wipe.cxx
 // Scalar
 std::string Database::selectValue(const std::string& sql)

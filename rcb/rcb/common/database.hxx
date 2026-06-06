@@ -51,7 +51,6 @@ public:
 	void createDB();
 	void resetCounter();
 	void createTable();
-	void insertData_DEPRECATED(const std::array<std::string, 8>& fileDetails);
 	std::string selectValue(const std::string& sql);
 	std::string selectDisplay(const std::string& sql);
 	std::vector<std::string> selectColumn(const std::string& sql);

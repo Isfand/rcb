@@ -131,33 +131,6 @@ void Delete::file(const std::vector<std::string>& args)
 	}
 }
 
-const std::array<std::string, 8> Delete::saveFileData_DEPRECATED(const std::string& stageFilename, const std::filesystem::path& originalPath)
-{
-	auto currentTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-	
-	std::string fileName{stageFilename};
-	std::string filePath{originalPath.string()};
-	std::string timestamp{std::to_string(currentTime)};
-	
-	// WARNING: "NULL" is being stored as a literal string and not an actual sqlite NULL.
-	std::string fileByteSize = 
-		(m_dOpt.noDirSizeOption && 
-		Verity(std::filesystem::directory_entry(originalPath)).type == 
-		std::filesystem::file_type::directory) || 
-		(!canReadDirRec(std::filesystem::directory_entry(originalPath)) && 
-		m_dOpt.forceOption &&
-		Verity(std::filesystem::directory_entry(originalPath)).type == 
-		std::filesystem::file_type::directory) ? 
-		"NULL" : std::to_string(Delete::fileSize(std::filesystem::directory_entry(originalPath)));
-
-	std::string fileType{fileTypeToString(Verity(std::filesystem::directory_entry(originalPath)).type)};
-	std::string originalPathDepth{std::to_string(pathDepth(originalPath))};
-	std::string workingUsername{g_singleton->getWorkingUsername()};
-	std::string batchID{std::to_string(m_currentExecutionID)};
-
-	return std::array<std::string, 8>{fileName, filePath, timestamp, fileByteSize, fileType, originalPathDepth, workingUsername, batchID};
-}
-
 const DTO Delete::saveFileData(const std::string& stageFilename, const std::filesystem::path& originalPath)
 {
 	DTO file;
