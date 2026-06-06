@@ -16,7 +16,7 @@ Restore::Restore(const std::vector<std::string>& args, const RestoreOptions& rOp
 #ifndef NDEBUG
 	std::println("allOption is:              {}", m_rOpt.allOption);
 	std::println("presentOption is:          {}", m_rOpt.pastOption);
-	std::println("previousOption is:         {}", m_rOpt.previousOption);
+	std::println("lastOption is:             {}", m_rOpt.lastOption);
 	std::println("verboseOption is:          {}", m_rOpt.verboseOption);
 	std::println("forceOption is:            {}", m_rOpt.forceOption); 
 	std::println("forceReplaceOption is:     {}", m_rOpt.forceReplaceOption);
@@ -26,10 +26,10 @@ Restore::Restore(const std::vector<std::string>& args, const RestoreOptions& rOp
 	std::println("sqlOption is:              {}", m_rOpt.sqlOption);
 #endif
 	Restore::file(args);
-	if(m_rOpt.allOption)     Restore::allFile();
-	if(m_rOpt.pastOption)    Restore::past();
-	if(m_rOpt.previousOption)Restore::last();
-	if(m_rOpt.sqlOption)     Restore::sqlInjection();
+	if(m_rOpt.allOption) Restore::allFile();
+	if(m_rOpt.pastOption)Restore::past();
+	if(m_rOpt.lastOption)Restore::last();
+	if(m_rOpt.sqlOption) Restore::sqlInjection();
 }
 
 // TODO: Reading the order is convoluted. Refactor where possible.

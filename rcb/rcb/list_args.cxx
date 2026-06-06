@@ -77,7 +77,7 @@ void ListArgs::run(std::vector<std::string>& args)
 			}
 			else if (args.at(i) == "--last")
 			{
-				m_lOpt.previousOption = true;
+				m_lOpt.lastOption = true;
 				m_erasePositions.push_back(i);
 			}
 			else if (args.at(i) == "--verbose" || args.at(i) == "-v")

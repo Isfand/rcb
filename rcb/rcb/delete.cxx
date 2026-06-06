@@ -153,9 +153,9 @@ const std::array<std::string, 8> Delete::saveFileData_DEPRECATED(const std::stri
 	std::string fileType{fileTypeToString(Verity(std::filesystem::directory_entry(originalPath)).type)};
 	std::string originalPathDepth{std::to_string(pathDepth(originalPath))};
 	std::string workingUsername{g_singleton->getWorkingUsername()};
-	std::string executionID{std::to_string(m_currentExecutionID)};
+	std::string batchID{std::to_string(m_currentExecutionID)};
 
-	return std::array<std::string, 8>{fileName, filePath, timestamp, fileByteSize, fileType, originalPathDepth, workingUsername, executionID};
+	return std::array<std::string, 8>{fileName, filePath, timestamp, fileByteSize, fileType, originalPathDepth, workingUsername, batchID};
 }
 
 const DTO Delete::saveFileData(const std::string& stageFilename, const std::filesystem::path& originalPath)

@@ -84,7 +84,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 			}
 			else if (args.at(i) == "--last")
 			{
-				m_rOpt.previousOption = true;
+				m_rOpt.lastOption = true;
 				m_erasePositions.push_back(i);
 			}
 			else if(args.at(i) == "--dry-run")

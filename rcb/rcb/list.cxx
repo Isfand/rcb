@@ -26,7 +26,7 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 	std::println("verboseOption is:       {}", m_lOpt.verboseOption); // Unused
 	std::println("noFormatOption is:      {}", m_lOpt.noFormatOption);
 	std::println("pastOption is:          {}", m_lOpt.pastOption);
-	std::println("previousOption is:      {}", m_lOpt.previousOption);
+	std::println("lastOption is:          {}", m_lOpt.lastOption);
 	std::println("sqlOption is:           {}", m_lOpt.sqlOption);
 #endif
 
@@ -53,13 +53,13 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 	if(m_lOpt.totalSizeOption) List::size();
 	if(m_lOpt.totalCountOption)List::count();
 	if(m_lOpt.pastOption)      List::past();
-	if(m_lOpt.previousOption)  List::last();
+	if(m_lOpt.lastOption)      List::last();
 	if(m_lOpt.sqlOption)       List::sqlInjection();
 
 	if(!(m_lOpt.totalSizeOption || 
 		m_lOpt.totalCountOption || 
 		m_lOpt.pastOption       || 
-		m_lOpt.previousOption   || 
+		m_lOpt.lastOption   || 
 		m_lOpt.sqlOption))
 		List::allFile();
 }

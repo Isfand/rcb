@@ -17,7 +17,7 @@ struct ListOptions
 	bool humanReadableOption{};
 	bool noFormatOption{};
 	bool verboseOption{};
-	bool previousOption{};
+	bool lastOption{};
 
 	bool pastOption{};
 	std::vector<std::string> timeVec{};
