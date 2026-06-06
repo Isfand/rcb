@@ -27,7 +27,7 @@ struct DTO
 		static constexpr const char* kSchemaFiletype  {"filetype"};    // Filesystem file type
 		static constexpr const char* kSchemaPathDepth {"depth"};       // Path depth
 		static constexpr const char* kSchemaUser      {"user"};        // The user who executed the command
-		static constexpr const char* kSchemaExecution {"execution"};   // Execution id of all files deleted in the same run	
+		static constexpr const char* kSchemaBatch     {"batch"};       // Execution id of all files deleted in the same run	
 	};
 
 	std::optional<unsigned long long int> id;
@@ -38,7 +38,7 @@ struct DTO
 	std::optional<std::string>            filetype;
 	std::optional<unsigned long long int> depth;
 	std::optional<std::string>            user;
-	std::optional<unsigned long long int> execution;
+	std::optional<unsigned long long int> batch;
 };
 
 inline std::string nullableInt(const auto& opt){return opt ? std::to_string(*opt) : "NULL";}
@@ -56,7 +56,7 @@ public:
 	std::string selectDisplay(const std::string& sql);
 	std::vector<std::string> selectColumn(const std::string& sql);
 	int executeSQL(const std::string &sql);
-	
+
 	void insertDTO(const DTO& fileDetails);
 	std::vector<DTO> selectDTO(const std::string& sql);
 private:

@@ -82,7 +82,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 					return;
 				}
 			}
-			else if (args.at(i) == "--previous")
+			else if (args.at(i) == "--last")
 			{
 				m_rOpt.previousOption = true;
 				m_erasePositions.push_back(i);

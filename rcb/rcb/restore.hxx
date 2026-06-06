@@ -49,7 +49,7 @@ private:
 	bool progFileExists(const std::string& stagedFile);
 	PathStatus originalPathStatus(const std::filesystem::path& progDir);
 	void past();
-	void previous();
+	void last();
 	void sqlInjection();
 };
 

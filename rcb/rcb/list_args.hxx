@@ -21,7 +21,7 @@ private:
 		"list      |  l, lists all records by default.\n"
 		"--help    | -h \n"
 		"--past <n>(unit), t,s,m,h,d,w,mo,y,dec,c,k\n"
-		"--previous\n"
+		"--last\n"
 		"--total-count, list total count of all files\n"
 		"--total-size, list total size of all files\n"
 		"--no-format, remove formatting\n"

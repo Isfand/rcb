@@ -45,7 +45,7 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 		DTO::Meta::kSchemaFiletype,  // {5} filetype
 		DTO::Meta::kSchemaPathDepth, // {6} depth
 		DTO::Meta::kSchemaUser,      // {7} user
-		DTO::Meta::kSchemaExecution, // {8} execution
+		DTO::Meta::kSchemaBatch,     // {8} batch
 		DTO::Meta::kTableName);      // {9} rcb
 }
 
@@ -53,7 +53,7 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 	if(m_lOpt.totalSizeOption) List::size();
 	if(m_lOpt.totalCountOption)List::count();
 	if(m_lOpt.pastOption)      List::past();
-	if(m_lOpt.previousOption)  List::previous();
+	if(m_lOpt.previousOption)  List::last();
 	if(m_lOpt.sqlOption)       List::sqlInjection();
 
 	if(!(m_lOpt.totalSizeOption || 
@@ -80,7 +80,7 @@ void List::allFile()
 	//	DTO::Meta::kSchemaFiletype,  nullableStr(row.filetype),
 	//	DTO::Meta::kSchemaPathDepth, nullableInt(row.depth),
 	//	DTO::Meta::kSchemaUser,      nullableStr(row.user),
-	//	DTO::Meta::kSchemaExecution, nullableInt(row.execution));
+	//	DTO::Meta::kSchemaBatch,     nullableInt(row.batch));
 	//}
 
 	std::print("{}", m_db.selectDisplay(m_defaultSQLQuery));
@@ -114,10 +114,10 @@ void List::past()
 	}
 }
 
-void List::previous()
+void List::last()
 {
 	std::vector<std::string> vList { m_db.selectColumn(std::format("SELECT {0} FROM {2} WHERE {1}=(SELECT MAX({1}) FROM {2});", 
-		DTO::Meta::kSchemaID, DTO::Meta::kSchemaExecution, DTO::Meta::kTableName)) };
+		DTO::Meta::kSchemaID, DTO::Meta::kSchemaBatch, DTO::Meta::kTableName)) };
 	List::file(vList);
 }
 

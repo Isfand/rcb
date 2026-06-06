@@ -8,7 +8,7 @@ assignees: ''
 
 ## Problem Statement
 What limitation or gap prompted this request?
-e.g. *"When restoring files deleted across multiple executions, there is no way to preview which execution group I'm targeting before committing with `--previous`."*
+e.g. *"When restoring files deleted across multiple executions, there is no way to preview which batch group I'm targeting before committing with `--last`."*
 
 ## Affected Command(s)
 Which sub-command(s) would this involve?
@@ -24,7 +24,7 @@ Describe the feature and how you'd invoke it.
 
 ```bash
 # Example of what the command might look like
-rcb list --previous --dry-run
+rcb list --last --dry-run
 ```
 
 ## Schema or State Impact

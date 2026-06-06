@@ -28,7 +28,7 @@ Restore::Restore(const std::vector<std::string>& args, const RestoreOptions& rOp
 	Restore::file(args);
 	if(m_rOpt.allOption)     Restore::allFile();
 	if(m_rOpt.pastOption)    Restore::past();
-	if(m_rOpt.previousOption)Restore::previous();
+	if(m_rOpt.previousOption)Restore::last();
 	if(m_rOpt.sqlOption)     Restore::sqlInjection();
 }
 
@@ -100,7 +100,7 @@ void Restore::file(const std::vector<std::string>& args)
 			// Check for permissions on the original path
 			if(!canMvFileChk(std::filesystem::directory_entry(originalPath)))
 			{
-				std::println("process execution user {} is missing write/execute permissions for parent directory of {} ", g_singleton->getWorkingUsername(), originalPath.string());
+				std::println("process calling user {} is missing write/execute permissions for parent directory of {} ", g_singleton->getWorkingUsername(), originalPath.string());
 				continue;
 			}
 
@@ -196,9 +196,9 @@ void Restore::past()
 	}
 }
 
-void Restore::previous()
+void Restore::last()
 {
-	std::vector<std::string> vList { m_db.selectColumn(std::format("SELECT {0} FROM {1} WHERE {2}=(SELECT MAX({2}) FROM {1});", DTO::Meta::kSchemaID, DTO::Meta::kTableName, DTO::Meta::kSchemaExecution)) };
+	std::vector<std::string> vList { m_db.selectColumn(std::format("SELECT {0} FROM {1} WHERE {2}=(SELECT MAX({2}) FROM {1});", DTO::Meta::kSchemaID, DTO::Meta::kTableName, DTO::Meta::kSchemaBatch)) };
 	Restore::file(vList);
 }
 

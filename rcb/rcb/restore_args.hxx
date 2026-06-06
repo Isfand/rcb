@@ -26,7 +26,7 @@ private:
 		"--force-rename\n"
 		"--force-recreate-directory\n"
 		"--past <n>(unit), t,s,m,h,d,w,mo,y,dec,c,k\n"
-		"--previous\n"
+		"--last\n"
 		"--dry-run\n"
 		"--sql <s>, UNSAFE: Insert sql statement directly for restore. Must return ID.\n"
 		;

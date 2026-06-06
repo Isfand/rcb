@@ -220,7 +220,7 @@ void Validate::fillDirectorySize()
 			Verity(std::filesystem::directory_entry(directoryPathString)).type == 
 			std::filesystem::file_type::directory) 
 		{
-			std::println("cannot save directory size, process execution user {} is missing read permissions for directory {}", 
+			std::println("cannot save directory size, process calling user {} is missing read permissions for directory {}", 
 				g_singleton->getWorkingUsername(), directoryPathString);
 			continue;
 		}

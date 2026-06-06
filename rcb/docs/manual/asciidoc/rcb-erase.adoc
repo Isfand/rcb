@@ -51,9 +51,9 @@ Will erase all files that were deleted 10 minutes ago. +
 |Millennium(s)  |k
 |===
  
-*--previous* +
+*--last* +
 [.indent]
-Erase file(s) by highest execution. Execution is the order in which files were deleted together under the same process.
+Erase file(s) by highest batch. Batch is the order in which files were deleted together under the same process.
 
 *--dry-run* +
 [.indent]

@@ -41,7 +41,7 @@ private:
 	void count();
 	void size();
 	void past();
-	void previous();
+	void last();
 	void sqlInjection();
 };
 	

@@ -74,7 +74,7 @@ void Database::createTable()
 											  DTO::Meta::kSchemaFiletype,
 											  DTO::Meta::kSchemaPathDepth,
 											  DTO::Meta::kSchemaUser,
-											  DTO::Meta::kSchemaExecution);
+											  DTO::Meta::kSchemaBatch);
 											  // sqlite3 does not support UNSIGNED. It is simply ignored. Keep it here for a workaround.
 
 	char* errorMsg{};
@@ -119,7 +119,7 @@ void Database::insertData_DEPRECATED(const std::array<std::string, 8>& fileDetai
 										 DTO::Meta::kSchemaFiletype,
 										 DTO::Meta::kSchemaPathDepth,
 										 DTO::Meta::kSchemaUser,
-										 DTO::Meta::kSchemaExecution,
+										 DTO::Meta::kSchemaBatch,
 										 fileDetails.at(0),
 										 fileDetails.at(1),
 										 fileDetails.at(2),
@@ -330,7 +330,7 @@ void Database::insertDTO(const DTO& fileDetails)
 	DTO::Meta::kSchemaFiletype,
 	DTO::Meta::kSchemaPathDepth,
 	DTO::Meta::kSchemaUser,
-	DTO::Meta::kSchemaExecution);
+	DTO::Meta::kSchemaBatch);
 
 	sqlite3_stmt* stmt{};
 	int rc = sqlite3_prepare_v2(m_db, queryStr, -1, &stmt, nullptr);
@@ -367,8 +367,8 @@ void Database::insertDTO(const DTO& fileDetails)
 		? sqlite3_bind_int64(stmt, 6, static_cast<sqlite3_int64>(*fileDetails.depth))
 		: sqlite3_bind_null(stmt, 6);
 	bindText(7, fileDetails.user);
-	fileDetails.execution
-		? sqlite3_bind_int64(stmt, 8, static_cast<sqlite3_int64>(*fileDetails.execution))
+	fileDetails.batch
+		? sqlite3_bind_int64(stmt, 8, static_cast<sqlite3_int64>(*fileDetails.batch))
 		: sqlite3_bind_null(stmt, 8);
 
 	rc = sqlite3_step(stmt);
@@ -449,7 +449,7 @@ std::vector<DTO> Database::selectDTO(const std::string& sql)
 			.filetype  = getText  (DTO::Meta::kSchemaFiletype),
 			.depth     = getUInt64(DTO::Meta::kSchemaPathDepth),
 			.user      = getText  (DTO::Meta::kSchemaUser),
-			.execution = getUInt64(DTO::Meta::kSchemaExecution)
+			.batch = getUInt64(DTO::Meta::kSchemaBatch)
 		});
 	}
 

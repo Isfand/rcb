@@ -19,7 +19,7 @@ Delete::Delete(const std::vector<std::string>& args, const DeleteOptions& dOpt) 
 	std::println("noDirSizeOption is: {}", m_dOpt.noDirSizeOption);
 	std::println("dryRunOption is:    {}", m_dOpt.dryRunOption);
 #endif
-	m_currentExecutionID = incrementExecutionID();
+	m_currentExecutionID = incrementBatchID();
 	Delete::file(args);
 }
 
@@ -39,7 +39,7 @@ void Delete::file(const std::vector<std::string>& args)
 			// Need to use systemFilePath for the full path. Relativity creates issues.
 			if (!canMvFileChk(std::filesystem::directory_entry(systemFilePath)))
 			{
-				std::println("process execution user {} is missing write/execute permissions for parent directory of {} ", g_singleton->getWorkingUsername(), systemFilePath.string());
+				std::println("process calling user {} is missing write/execute permissions for parent directory of {} ", g_singleton->getWorkingUsername(), systemFilePath.string());
 				continue;
 			}
 
@@ -66,9 +66,9 @@ void Delete::file(const std::vector<std::string>& args)
 					Verity(std::filesystem::directory_entry(systemFilePath)).type ==
 					std::filesystem::file_type::directory) 
 				{
-					// TODO: Can create something that force adds read permissions for the execution user. This can be used to create a --force-save-directorysize.
+					// TODO: Can create something that force adds read permissions for the calling user. This can be used to create a --force-save-directorysize.
 					if(!m_dOpt.forceOption)
-						std::println("cannot save directory size, process execution user {} is missing read permissions for directory {}\nUse --force or explicitly --no-directorysize",
+						std::println("cannot save directory size, process calling user {} is missing read permissions for directory {}\nUse --force or explicitly --no-directorysize",
 						g_singleton->getWorkingUsername(), systemFilePath.string());
 				}
 				auto fileDetails = Delete::saveFileData(mutFilename, systemFilePath);
@@ -180,7 +180,7 @@ const DTO Delete::saveFileData(const std::string& stageFilename, const std::file
 	file.filetype = fileTypeToString(Verity(std::filesystem::directory_entry(originalPath)).type);
 	file.depth = pathDepth(originalPath);
 	file.user = g_singleton->getWorkingUsername();
-	file.execution = m_currentExecutionID;
+	file.batch = m_currentExecutionID;
 
 	return file;
 }
@@ -241,10 +241,10 @@ long long unsigned Delete::fileSize(const std::filesystem::directory_entry& file
 	return size;
 }
 
-unsigned long long Delete::incrementExecutionID()
+unsigned long long Delete::incrementBatchID()
 {
 	std::string selectedExecution = m_db.selectValue(std::format("SELECT max({}) FROM {};", 
-		DTO::Meta::kSchemaExecution, DTO::Meta::kTableName));
+		DTO::Meta::kSchemaBatch, DTO::Meta::kTableName));
 	return selectedExecution.empty() ? 1ULL : std::stoull(selectedExecution) + 1;
 }
 

@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS "rcb" (
         "filetype" varchar(65535),
         "depth" BIGINT UNSIGNED,
         "user" varchar(65535),
-        "execution" BIGINT UNSIGNED);
+        "batch" BIGINT UNSIGNED);
 </pre>
 
 **Explanation:**\
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS "rcb" (
 "filetype" is a type of file which the filesystem supports.\
 "depth" is the directory depth from root.\
 "user" is the one who ran the delete command on the file.\
-"execution" is the relative execution order which the files where deleted in. 
+"batch" is the relative batch order which the files where deleted in. 
 
 ### **file/**
 Contains deleted files that can be restored. The name is modified from end of the first filename found if needed to prevent overwriting existing ones. This is due to the existence of multi-part extensions.
@@ -124,8 +124,8 @@ Restore by replacing any existing file from original path. \
 Restore by renaming any existing file from original path by incrementing filename. \
 **--force-recreate-directory**\
 Restore by recreating any directories leading up-to the original filepath. \
-**--previous** \
-Restores file(s) with record(s) with the highest execution number. \
+**--last** \
+Restores file(s) with record(s) with the highest batch number. \
 **--past \<n>(unit)** \
 Restore file(s) with relative time from system time to epoch. \
 **--dry-run** \
@@ -146,8 +146,8 @@ Prints total count of files recorded in rcb/. \
 Prints records in human readable form. \
 **--no-format** \
 Prints only the values in-line separated with spaces and nothing else as default. Allow custom delimiter. \
-**--previous** \
-Print file(s) with record(s) with the highest execution number. \
+**--last** \
+Print file(s) with record(s) with the highest batch number. \
 **--past \<n>(unit)** \
 Print file(s) with relative time from system time to epoch. \
 **--sql '\<s>'** \
@@ -165,8 +165,8 @@ Remove every file recorded inside data/ by id. Check against 'file' column for m
 Print extra information on program state. \
 **--force** \
 Do not ask the user for input. Perform the action(s) requested. \
-**--previous** \
-Erase file(s) with record(s) with the highest execution number. \
+**--last** \
+Erase file(s) with record(s) with the highest batch number. \
 **--past \<n>(unit)** \
 Erase file(s) with relative time from system time to epoch. \
 **--dry-run** \

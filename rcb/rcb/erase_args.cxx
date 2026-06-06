@@ -58,9 +58,9 @@ void EraseArgs::run(std::vector<std::string>& args)
 					return;
 				}
 			}
-			else if (args.at(i) == "--previous")
+			else if (args.at(i) == "--last")
 			{
-				m_eOpt.previousOption = true;
+				m_eOpt.lastOption = true;
 				m_erasePositions.push_back(i);
 			}
 			else if (args.at(i) == "--verbose" || args.at(i) == "-v")

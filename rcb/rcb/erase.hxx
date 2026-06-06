@@ -10,7 +10,7 @@ namespace rcb{
 struct EraseOptions
 {
 	bool allOption{};
-	bool previousOption{};
+	bool lastOption{};
 	bool verboseOption{};
 	bool dryRunOption{};
 	
@@ -32,7 +32,7 @@ private:
 	void file(const std::vector<std::string>& args);
 	void allFile();
 	void past();
-	void previous();
+	void last();
 	void sqlInjection();
 };
 	

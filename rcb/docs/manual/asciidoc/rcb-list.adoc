@@ -50,9 +50,9 @@ Will list all files that were deleted 10 minutes ago. +
 |Millennium(s)  |k
 |===
  
-*--previous* +
+*--last* +
 [.indent]
-List file(s) by highest execution. Execution is the order in which files were deleted together under the same process.
+List file(s) by highest batch. Batch is the order in which files were deleted together under the same process.
  
 *--total-count* +
 [.indent]

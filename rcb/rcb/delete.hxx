@@ -30,7 +30,7 @@ private:
 	const std::array<std::string, 8> saveFileData_DEPRECATED(const std::string& stageFilename, const std::filesystem::path& originalDir);
 	const DTO saveFileData(const std::string& stageFilename, const std::filesystem::path& originalDir);
 	unsigned long long fileSize(const std::filesystem::directory_entry& file);
-	unsigned long long incrementExecutionID();
+	unsigned long long incrementBatchID();
 
 	bool hasTrailingSlash(const std::filesystem::path& path);
 	std::filesystem::path removeTrailingSlash(const std::filesystem::path& path);

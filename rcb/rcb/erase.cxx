@@ -17,7 +17,7 @@ Erase::Erase(const std::vector<std::string>& args, const EraseOptions& eOpt) : m
 #ifndef NDEBUG
 	std::println("allOption is:      {}", m_eOpt.allOption);
 	std::println("pastOption is:     {}", m_eOpt.pastOption);
-	std::println("previousOption is: {}", m_eOpt.previousOption);
+	std::println("previousOption is: {}", m_eOpt.lastOption);
 	std::println("verboseOption is:  {}", m_eOpt.verboseOption); // Unused
 	std::println("dryRunOption is:   {}", m_eOpt.dryRunOption); // Unused
 	std::println("sqlOption is:      {}", m_eOpt.sqlOption);
@@ -26,7 +26,7 @@ Erase::Erase(const std::vector<std::string>& args, const EraseOptions& eOpt) : m
 	if(m_eOpt.allOption)     Erase::allFile();
 	if(m_eOpt.sqlOption)     Erase::sqlInjection();
 	if(m_eOpt.pastOption)    Erase::past();
-	if(m_eOpt.previousOption)Erase::previous();
+	if(m_eOpt.lastOption)Erase::last();
 }
 
 void Erase::file(const std::vector<std::string>& args)
@@ -91,10 +91,10 @@ void Erase::past()
 	}
 }
 
-void Erase::previous()
+void Erase::last()
 {
 	std::vector<std::string> vList { m_db.selectColumn(std::format("SELECT {0} FROM {2} WHERE {1}=(SELECT MAX({1}) FROM {2});", 
-		DTO::Meta::kSchemaID, DTO::Meta::kSchemaExecution, DTO::Meta::kTableName)) };
+		DTO::Meta::kSchemaID, DTO::Meta::kSchemaBatch, DTO::Meta::kTableName)) };
 	Erase::file(vList);
 }
 
