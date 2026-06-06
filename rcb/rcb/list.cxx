@@ -35,7 +35,7 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 	// TODO: WIll also need a way to convert size of bytes to other units.
 	// Can pair this problem with --no-format to work with regular queries.
 	if(m_lOpt.humanReadableOption) {
-	m_defaultSQLQuery = std::format(
+		m_defaultSQLQuery = std::format(
 		"SELECT {0}, {1}, {2}, datetime({3}, 'unixepoch') AS {3}, {4}, {5}, {6}, {7}, {8} FROM {9}",
 		DTO::Meta::kSchemaID,        // {0} id
 		DTO::Meta::kSchemaFile,      // {1} file
@@ -47,7 +47,7 @@ List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
 		DTO::Meta::kSchemaUser,      // {7} user
 		DTO::Meta::kSchemaBatch,     // {8} batch
 		DTO::Meta::kTableName);      // {9} rcb
-}
+	}
 
 	if(m_lOpt.defaultOption)   List::allFile();
 	if(m_lOpt.totalSizeOption) List::size();
