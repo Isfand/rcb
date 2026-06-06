@@ -29,6 +29,7 @@ What actually happened? Include any error output.
 - Did the file appear in `rcb list`? Yes / No
 - Was the file present in `~/.rcb/file/`? Yes / No
 - Was the database record created in `~/.rcb/data/rcb.sqlite3`? Yes / No
+- was the table schema correct `echo ".schema;" | sqlite3 ~/.rcb/data/rcb.sqlite3`? Yes / No
 - Was the file recoverable via `rcb restore`? Yes / No
 - Were there dangling files or records (`rcb validate --all`)? Yes / No
 
