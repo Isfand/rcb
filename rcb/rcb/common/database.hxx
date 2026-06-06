@@ -27,7 +27,7 @@ struct DTO
 		static constexpr const char* kSchemaFiletype  {"filetype"};    // Filesystem file type
 		static constexpr const char* kSchemaPathDepth {"depth"};       // Path depth
 		static constexpr const char* kSchemaUser      {"user"};        // The user who executed the command
-		static constexpr const char* kSchemaBatch     {"batch"};       // Execution id of all files deleted in the same run	
+		static constexpr const char* kSchemaBatch     {"batch"};       // batch id of all files deleted in the same run	
 	};
 
 	std::optional<unsigned long long int> id;
