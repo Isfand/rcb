@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS "rcb" (
         "id" INTEGER PRIMARY KEY AUTOINCREMENT,
         "file" varchar(65535) UNIQUE,
         "directory" varchar(65535),
-        "timestamp" BIGINT UNSIGNED,
+        "timestamp" BIGINT,
         "size" BIGINT UNSIGNED,
         "filetype" varchar(65535),
         "depth" BIGINT UNSIGNED,

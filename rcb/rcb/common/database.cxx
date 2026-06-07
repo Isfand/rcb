@@ -58,7 +58,7 @@ void Database::createTable()
 											  "\t\"{1}\" INTEGER PRIMARY KEY AUTOINCREMENT,\n"
 											  "\t\"{2}\" varchar(65535) UNIQUE,\n"
 											  "\t\"{3}\" varchar(65535),\n"
-											  "\t\"{4}\" BIGINT UNSIGNED,\n"
+											  "\t\"{4}\" BIGINT,\n"
 											  "\t\"{5}\" BIGINT UNSIGNED,\n" 
 											  "\t\"{6}\" varchar(65535),\n"
 											  "\t\"{7}\" BIGINT UNSIGNED,\n" 
