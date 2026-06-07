@@ -396,7 +396,7 @@ std::vector<DTO> Database::selectDTO(const std::string& sql)
 			.filetype  = getText  (DTO::Meta::kSchemaFiletype),
 			.depth     = getUInt64(DTO::Meta::kSchemaPathDepth),
 			.user      = getText  (DTO::Meta::kSchemaUser),
-			.batch = getUInt64(DTO::Meta::kSchemaBatch)
+			.batch     = getUInt64(DTO::Meta::kSchemaBatch)
 		});
 	}
 
