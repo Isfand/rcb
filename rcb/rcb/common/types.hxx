@@ -26,5 +26,6 @@ constexpr i32 operator""_i32(unsigned long long v) { return static_cast<i32>(v);
 constexpr i64 operator""_i64(unsigned long long v) { return static_cast<i64>(v); }
 
 inline std::ostream& operator<<(std::ostream& os, u8 v) { return os << static_cast<int>(v); }
+inline std::ostream& operator<<(std::ostream& os, i8 v) { return os << static_cast<int>(v); }
 
 } // namespace rcb
