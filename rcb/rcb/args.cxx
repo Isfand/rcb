@@ -1,4 +1,3 @@
-#include <string>
 #include <vector>
 #include <print>
 #include <algorithm>
@@ -201,7 +200,7 @@ void Args::init()
 		{
 			if(m_cmd) continue;
 
-			std::println("Incorrect use of command. Enter --help for usage", g_kProgName);
+			std::println("incorrect use of command. Enter --help for usage", g_kProgName);
 			return;
 		}
 	}

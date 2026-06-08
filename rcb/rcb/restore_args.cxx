@@ -14,59 +14,59 @@ RestoreArgs::RestoreArgs(std::vector<std::string>& args)
 void RestoreArgs::run(std::vector<std::string>& args)
 {
 #ifndef NDEBUG
-	for(auto it : args)
+	for(const auto& it : args)
 	{
 		std::println("{}", it);
 	}
 #endif
 
-	if(args.size() <= 0)
+	if(args.empty())
 	{
 		std::println("{0} restore: missing operand\ntry \'{0} --help\' for more information", g_kProgName);
 		return;
 	}
 	
-	for(auto i { 0UL }; i < args.size(); i++)
+	for(auto i { 0UZ }; i < args.size(); i++)
 	{
-		if (args.at(i).substr(0, 2) == "--" || args.at(i).substr(0, 1) == "-")
+		if(args[i].starts_with("--") ||  args[i].starts_with("-"))
 		{
-			if(args.at(i) == "--help" || args.at(i) == "-h")
+			if(args[i] == "--help" || args[i] == "-h")
 			{
 				std::print("{}", m_restoreHelpMsg);
 					
 				return;
 			} 
-			else if (args.at(i) == "--all" || args.at(i) == "-a")
+			else if (args[i] == "--all" || args[i] == "-a")
 			{
 				m_rOpt.allOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--verbose" || args.at(i) == "-v")
+			else if (args[i] == "--verbose" || args[i] == "-v")
 			{
 				m_rOpt.verboseOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--force" || args.at(i) == "-f")
+			else if (args[i] == "--force" || args[i] == "-f")
 			{
 				m_rOpt.forceOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--force-replace")
+			else if (args[i] == "--force-replace")
 			{
 				m_rOpt.forceReplaceOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--force-rename")
+			else if (args[i] == "--force-rename")
 			{
 				m_rOpt.forceRenameOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--force-recreate-directory")
+			else if (args[i] == "--force-recreate-directory")
 			{
 				m_rOpt.forceRecreateDirectoryOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--past")
+			else if (args[i] == "--past")
 			{
 				if (i + 1 < args.size())
 				{
@@ -82,17 +82,17 @@ void RestoreArgs::run(std::vector<std::string>& args)
 					return;
 				}
 			}
-			else if (args.at(i) == "--last")
+			else if (args[i] == "--last")
 			{
 				m_rOpt.lastOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if(args.at(i) == "--dry-run")
+			else if(args[i] == "--dry-run")
 			{
 				m_rOpt.dryRunOption = true;
 				m_erasePositions.push_back(i);
 			} 
-			else if (args.at(i) == "--sql")
+			else if (args[i] == "--sql")
 			{
 				if (i + 1 < args.size())
 				{
@@ -110,7 +110,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 			}
 			else
 			{
-				std::println("unknown option: {0}", args.at(i));
+				std::println("unknown option: {0}", args[i]);
 				return; // Prevent continuation
 			}
 		}

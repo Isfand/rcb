@@ -124,7 +124,7 @@ void List::last()
 void List::sqlInjection()
 {
 	//std::println("results:");
-	for(auto i { 0UL }; i < m_lOpt.sqlVec.size(); ++i)
+	for(auto i { 0UZ }; i < m_lOpt.sqlVec.size(); ++i)
 	{
 		std::print("{}", m_db.selectDisplay(m_lOpt.sqlVec.at(i)));
 		if(!(i + 1 >= m_lOpt.sqlVec.size()))

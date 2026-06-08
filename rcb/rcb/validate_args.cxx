@@ -16,65 +16,65 @@ ValidateArgs::ValidateArgs(std::vector<std::string>& args)
 void ValidateArgs::run(std::vector<std::string>& args)
 {
 #ifndef NDEBUG
-	for(auto it : args)
+	for(const auto& it : args)
 	{
 		std::println("{}", it);
 	}
 #endif
 
-	if(args.size() <= 0)
+	if(args.empty())
 	{
 		std::println("{0} validate: missing operand\ntry \'{0} validate --help\' for more information", g_kProgName);
 		return;
 	}
 
-	for(auto i { 0UL }; i < args.size(); i++)
+	for(auto i { 0UZ }; i < args.size(); i++)
 	{
-		if (args.at(i).substr(0, 2) == "--" || args.at(i).substr(0, 1) == "-")
+		if (args[i].starts_with("--") || args[i].starts_with("-"))
 		{
-			if(args.at(i) == "--help" || args.at(i) == "-h")
+			if(args[i] == "--help" || args[i] == "-h")
 			{
 				std::print("{}", m_validateHelpMsg);
 				return;
 			}
-			else if (args.at(i) == "--all" || args.at(i) == "-a")
+			else if (args[i] == "--all" || args[i] == "-a")
 			{
 				m_vOpt.fileOption = true;
 				m_vOpt.dataOption = true;
 				m_vOpt.wipeOption = true;
 				m_vOpt.fillDirSizeOption = true;
 			}
-			else if (args.at(i) == "--verbose" || args.at(i) == "-v")
+			else if (args[i] == "--verbose" || args[i] == "-v")
 			{
 				m_vOpt.verboseOption = true;
 			}
-			else if (args.at(i) == "--yes" || args.at(i) == "-y")
+			else if (args[i] == "--yes" || args[i] == "-y")
 			{
 				m_vOpt.yesOption = true;
 			}
-			else if (args.at(i) == "--file" || args.at(i) == "-F")
+			else if (args[i] == "--file" || args[i] == "-F")
 			{
 				m_vOpt.fileOption = true;
 			}
-			else if (args.at(i) == "--data" || args.at(i) == "-D")
+			else if (args[i] == "--data" || args[i] == "-D")
 			{
 				m_vOpt.dataOption = true;
 			}
-			else if (args.at(i) == "--wipe" || args.at(i) == "-W")
+			else if (args[i] == "--wipe" || args[i] == "-W")
 			{
 				m_vOpt.wipeOption = true;
 			}
-			else if (args.at(i) == "--fill-directorysize")
+			else if (args[i] == "--fill-directorysize")
 			{
 				m_vOpt.fillDirSizeOption = true;
 			}
-			else if(args.at(i) == "--dry-run")
+			else if(args[i] == "--dry-run")
 			{
 				m_vOpt.dryRunOption = true;
 			} 
 			else
 			{
-				std::println("unknown option: {0}", args.at(i));
+				std::println("unknown option: {0}", args[i]);
 				return; // Prevent continuation
 			}
 		}

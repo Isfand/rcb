@@ -14,37 +14,37 @@ EraseArgs::EraseArgs(std::vector<std::string>& args)
 void EraseArgs::run(std::vector<std::string>& args)
 {
 #ifndef NDEBUG
-	for(auto it : args)
+	for(const auto& it : args)
 	{
 		std::println("{}", it);
 	}
 #endif
 
-	if(args.size() <= 0)
+	if(args.empty())
 	{
 		std::print("{0} erase: missing operand\ntry \'{0} --help\' for more information", g_kProgName);
 		return;
 	}
 
 
-	for(auto i { 0UL }; i < args.size(); i++)
+	for(auto i { 0UZ }; i < args.size(); i++)
 	{
 	
-		if (args.at(i).substr(0, 2) == "--" || args.at(i).substr(0, 1) == "-")
+		if(args[i].starts_with("--") ||  args[i].starts_with("-"))
 		{
-			if(args.at(i) == "--help" || args.at(i) == "-h")
+			if(args[i] == "--help" || args[i] == "-h")
 			{
 				std::print("{}", m_eraseHelpMsg);
 				return;
 			} 
-			else if (args.at(i) == "--all" || args.at(i) == "-a")
+			else if (args[i] == "--all" || args[i] == "-a")
 			{
 				m_eOpt.allOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--past")
+			else if (args[i] == "--past")
 			{
-				if (i + 1UL < args.size())
+				if (i + 1UZ < args.size())
 				{
 					m_eOpt.pastOption = true;
 					m_eOpt.timeVec.push_back(args.at(i + 1));
@@ -58,24 +58,24 @@ void EraseArgs::run(std::vector<std::string>& args)
 					return;
 				}
 			}
-			else if (args.at(i) == "--last")
+			else if (args[i] == "--last")
 			{
 				m_eOpt.lastOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--verbose" || args.at(i) == "-v")
+			else if (args[i] == "--verbose" || args[i] == "-v")
 			{
 				m_eOpt.verboseOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if(args.at(i) == "--dry-run")
+			else if(args[i] == "--dry-run")
 			{
 				m_eOpt.dryRunOption = true;
 				m_erasePositions.push_back(i);
 			} 
-			else if (args.at(i) == "--sql")
+			else if (args[i] == "--sql")
 			{
-				if (i + 1UL < args.size())
+				if (i + 1UZ < args.size())
 				{
 					m_eOpt.sqlOption = true;
 					m_eOpt.sqlVec.push_back(args.at(i + 1));
@@ -91,7 +91,7 @@ void EraseArgs::run(std::vector<std::string>& args)
 			}
 			else
 			{
-				std::println("unknown option: {0}", args.at(i));
+				std::println("unknown option: {0}", args[i]);
 				return; // Prevent continuation
 			}
 		}

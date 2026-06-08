@@ -15,23 +15,23 @@ void ListArgs::run(std::vector<std::string>& args)
 {
 #ifndef NDEBUG
 	std::println("Inside List Args:");
-	for(auto it : args)
+	for(const auto& it : args)
 	{
 		std::println("{}", it);
 	}
 #endif
 
-	for(auto i { 0UL }; i < args.size(); i++)
+	for(auto i { 0UZ }; i < args.size(); i++)
 	{
-		if (args.at(i).substr(0, 2) == "--" || args.at(i).substr(0, 1) == "-")
+		if(args[i].starts_with("--") ||  args[i].starts_with("-"))
 		{
-			if(args.at(i) == "--help" || args.at(i) == "-h")
+			if(args[i] == "--help" || args[i] == "-h")
 			{
 				std::print("{}", m_listHelpMsg);
 					
 				return;
 			} 
-			else if (args.at(i) == "--all" || args.at(i) == "-a")
+			else if (args[i] == "--all" || args[i] == "-a")
 			{
 				m_lOpt.allOption = true;
 				m_lOpt.totalSizeOption = true;
@@ -39,29 +39,29 @@ void ListArgs::run(std::vector<std::string>& args)
 				m_lOpt.defaultOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--total-size")
+			else if (args[i] == "--total-size")
 			{
 				m_lOpt.totalSizeOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--total-count")
+			else if (args[i] == "--total-count")
 			{
 				m_lOpt.totalCountOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--human-readable")
+			else if (args[i] == "--human-readable")
 			{
 				m_lOpt.humanReadableOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--no-format")
+			else if (args[i] == "--no-format")
 			{
 				m_lOpt.noFormatOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--past")
+			else if (args[i] == "--past")
 			{
-				if (i + 1UL < args.size())
+				if (i + 1UZ < args.size())
 				{
 					m_lOpt.pastOption = true;
 					m_lOpt.timeVec.push_back(args.at(i + 1));
@@ -75,17 +75,17 @@ void ListArgs::run(std::vector<std::string>& args)
 					return;
 				}
 			}
-			else if (args.at(i) == "--last")
+			else if (args[i] == "--last")
 			{
 				m_lOpt.lastOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--verbose" || args.at(i) == "-v")
+			else if (args[i] == "--verbose" || args[i] == "-v")
 			{
 				m_lOpt.verboseOption = true;
 				m_erasePositions.push_back(i);
 			}
-			else if (args.at(i) == "--sql")
+			else if (args[i] == "--sql")
 			{
 				if (i + 1 < args.size())
 				{
@@ -103,7 +103,7 @@ void ListArgs::run(std::vector<std::string>& args)
 			}
 			else
 			{
-				std::println("unknown option: {0}", args.at(i));
+				std::println("unknown option: {0}", args[i]);
 				return; // Prevent continuation
 			}
 		}
