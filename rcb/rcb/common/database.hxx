@@ -2,6 +2,7 @@
 
 // TODO: Use the PIMPL design pattern or a forward declaration of struct sqlite3 to hide this header to prevent C pollution. sqlite3* m_db uses it.
 // Or just wait for C++ Modules to be fully implemented.
+#include <cstddef>
 #include <sqlite3.h>
 
 #include <string>
@@ -30,24 +31,30 @@ struct DTO
 		static constexpr const char* kSchemaBatch     {"batch"};       // batch id of all files deleted in the same run	
 	};
 
-	std::optional<unsigned long long int> id;
-	std::optional<std::string>            file;
-	std::optional<std::filesystem::path>  path;
-	std::optional<long long int>          timestamp;
-	std::optional<unsigned long long int> size;
-	std::optional<std::string>            filetype;
-	std::optional<unsigned long long int> depth;
-	std::optional<std::string>            user;
-	std::optional<unsigned long long int> batch;
+	std::optional<unsigned long long>    id;
+	std::optional<std::string>           file;
+	std::optional<std::filesystem::path> path;
+	std::optional<long long>             timestamp;
+	std::optional<unsigned long long>    size;
+	std::optional<std::string>           filetype;
+	std::optional<unsigned long long>    depth;
+	std::optional<std::string>           user;
+	std::optional<unsigned long long>    batch;
 };
 
-inline std::string nullableInt(const auto& opt){return opt ? std::to_string(*opt) : "NULL";}
-inline std::string nullableStr(const std::optional<std::string>& opt){return opt.value_or("NULL");}
+inline std::string nullableInt (const auto& opt){return opt ? std::to_string(*opt) : "NULL";}
+inline std::string nullableStr (const std::optional<std::string>& opt){return opt.value_or("NULL");}
 inline std::string nullablePath(const std::optional<std::filesystem::path>& opt){return opt ? opt->string() : "NULL";}
 
 class Database
 {
 public:
+	Database(const std::filesystem::path& location);
+	~Database();
+
+	Database(const Database&) = delete; // delete copy
+	Database& operator=(const Database&) = delete; // delete copy
+
 	void createDB();
 	void resetCounter();
 	void createTable();
@@ -59,7 +66,7 @@ public:
 	void insertDTO(const DTO& fileDetails);
 	std::vector<DTO> selectDTO(const std::string& sql);
 private:
-	sqlite3* m_db; // Shared sqlite3 instance
+	sqlite3* m_db = nullptr; // Shared sqlite3 instance
 };
 
 } // namespace rcb

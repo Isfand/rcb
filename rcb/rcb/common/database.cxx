@@ -6,25 +6,24 @@
 #include <sqlite3.h>
 
 #include "database.hxx"
-#include "globals.hxx"
 
 namespace rcb{
 
-// TODO: Create a constructor to open DB and a destructor to close it instead of repeating it explicitly.
-
-// Unused
-void Database::createDB()
+Database::Database(const std::filesystem::path& location)
 {
-	sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
-	sqlite3_close(m_db);
+	int rc = sqlite3_open(location.string().c_str(), &m_db);
+	if (rc != SQLITE_OK)
+		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));
+}
+Database::~Database()
+{
+	if (m_db) sqlite3_close(m_db);
 }
 
 // Resets counter if no records exist.
 // Note: can be replaced with executeSQL() internally
 void Database::resetCounter()
 {
-	sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
-
 	std::string query = std::format("DELETE FROM sqlite_sequence WHERE name = '{0}' AND NOT EXISTS ( SELECT 1 FROM {0} LIMIT 1);", DTO::Meta::kTableName);
 
 	char* errorMsg{};
@@ -45,15 +44,11 @@ void Database::resetCounter()
 		std::println("Success from resetCounter()");
 #endif
 	}
-		
-	sqlite3_close(m_db);
 }
 
 // Note: can be replaced with executeSQL() internally
 void Database::createTable()
 {
-	sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
-
 	std::string defaultSQLTable = std::format("CREATE TABLE IF NOT EXISTS \"{0}\" (\n"
 											  "\t\"{1}\" INTEGER PRIMARY KEY AUTOINCREMENT,\n"
 											  "\t\"{2}\" varchar(65535) UNIQUE,\n"
@@ -94,9 +89,6 @@ void Database::createTable()
 		std::println("Success from default SQL database table creation"); // WILL always return even if exists
 #endif
 	}
-		
-	sqlite3_close(m_db);
-
 } 
 
 // For delete.cxx & wipe.cxx
@@ -108,16 +100,9 @@ std::string Database::selectValue(const std::string& sql)
 	
 	std::string st{};
 
-	rc = sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
-	if (rc != SQLITE_OK) 
-	{
-		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));
-	}
-
 	rc = sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, NULL);
 	if (rc != SQLITE_OK) 
 	{
-		sqlite3_close(m_db);
 		throw std::runtime_error(std::format("Failed to prepare statement: {}\n", sqlite3_errmsg(m_db)));
 	}
 
@@ -139,8 +124,6 @@ std::string Database::selectValue(const std::string& sql)
 	}
 
 	sqlite3_finalize(stmt);
-	sqlite3_close(m_db);
-
 	return st;
  
 }
@@ -153,12 +136,6 @@ std::string Database::selectDisplay(const std::string& sql)
 
 	int rc;
 	std::string st{};
-
-	rc = sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
-	if (rc != SQLITE_OK) 
-	{
-		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));
-	}
 
 	rc = sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, NULL);
 	if (rc != SQLITE_OK) 
@@ -188,7 +165,6 @@ std::string Database::selectDisplay(const std::string& sql)
 	}
 
 	sqlite3_finalize(stmt);
-	sqlite3_close(m_db);
 	return st;
 }
 
@@ -200,16 +176,9 @@ std::vector<std::string> Database::selectColumn(const std::string& sql)
 	sqlite3_stmt *stmt;
 	int rc;
 
-	rc = sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
-	if (rc != SQLITE_OK) 
-	{
-		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));
-	}
-
 	rc = sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, NULL);
 	if (rc != SQLITE_OK) 
 	{
-		sqlite3_close(m_db);
 		throw std::runtime_error(std::format("Failed to prepare statement: {}\n", sqlite3_errmsg(m_db)));
 	}
 
@@ -231,8 +200,6 @@ std::vector<std::string> Database::selectColumn(const std::string& sql)
 	}
 
 	sqlite3_finalize(stmt);
-	sqlite3_close(m_db);
-
 	return vlist;
 }
 
@@ -242,31 +209,19 @@ int Database::executeSQL(const std::string &sql)
 	char *errMsg = nullptr;
 	int rc;
 
-	rc = sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
-	if (rc != SQLITE_OK) 
-	{
-		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));
-	}
-
 	rc = sqlite3_exec(m_db, sql.c_str(), nullptr, nullptr, &errMsg);
 	if (rc != SQLITE_OK) 
 	{
 		std::string sqliteErrorMsg = errMsg;
 		sqlite3_free(errMsg); // Free the error message memory
-		sqlite3_close(m_db);  // Close the database connection
-
 		throw std::runtime_error(std::format("SQL error: {}\n", sqliteErrorMsg));
 	}
-
-	sqlite3_close(m_db);
 
 	return SQLITE_OK;
 }
 
 void Database::insertDTO(const DTO& fileDetails)
 {
-	sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
-
 	char* queryStr = sqlite3_mprintf(
 	"INSERT INTO %w (%w, %w, %w, %w, %w, %w, %w, %w) VALUES(?, ?, ?, ?, ?, ?, ?, ?);",
 	DTO::Meta::kTableName,
@@ -286,7 +241,6 @@ void Database::insertDTO(const DTO& fileDetails)
 #ifndef NDEBUG
 		std::println("Failed to prepare statement. sqlite3_prepare_v2() returned error code: {} with error: {}", rc, sqlite3_errmsg(m_db));
 #endif
-		sqlite3_close(m_db);
 		throw std::invalid_argument("insertData() Failed: could not prepare statement");
 	}
 
@@ -325,7 +279,6 @@ void Database::insertDTO(const DTO& fileDetails)
 		std::println("Failed to add record. sqlite3_step() returned error code: {} with error: {}", rc, sqlite3_errmsg(m_db));
 #endif
 		sqlite3_finalize(stmt);
-		sqlite3_close(m_db);
 		throw std::invalid_argument("insertData() Failed");
 	}
 
@@ -334,13 +287,10 @@ void Database::insertDTO(const DTO& fileDetails)
 #endif
 
 	sqlite3_finalize(stmt);
-	sqlite3_close(m_db);
 }
 
 std::vector<DTO> Database::selectDTO(const std::string& sql)
 {
-	sqlite3_open((g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).string().c_str(), &m_db);
-
 	sqlite3_stmt* stmt{};
 	int rc = sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, nullptr);
 
@@ -349,7 +299,6 @@ std::vector<DTO> Database::selectDTO(const std::string& sql)
 #ifndef NDEBUG
 		std::println("Failed to prepare statement. sqlite3_prepare_v2() returned error code: {} with error: {}", rc, sqlite3_errmsg(m_db));
 #endif
-		sqlite3_close(m_db);
 		throw std::invalid_argument("selectDTO() Failed: could not prepare statement");
 	}
 
@@ -359,7 +308,7 @@ std::vector<DTO> Database::selectDTO(const std::string& sql)
 	for (int i = 0; i < colCount; ++i)
 		colIndex.emplace(sqlite3_column_name(stmt, i), i);
 
-	const auto getInt64 = [&](const char* name) -> std::optional<long long int>
+	const auto getInt64 = [&](const char* name) -> std::optional<long long>
 	{
 		auto it = colIndex.find(name);
 		if (it == colIndex.end()) return std::nullopt;
@@ -367,12 +316,12 @@ std::vector<DTO> Database::selectDTO(const std::string& sql)
 		return sqlite3_column_int64(stmt, it->second);
 	};
 
-	const auto getUInt64 = [&](const char* name) -> std::optional<unsigned long long int>
+	const auto getUInt64 = [&](const char* name) -> std::optional<unsigned long long>
 	{
 		auto it = colIndex.find(name);
 		if (it == colIndex.end()) return std::nullopt;
 		if (sqlite3_column_type(stmt, it->second) == SQLITE_NULL) return std::nullopt;
-		return static_cast<unsigned long long int>(sqlite3_column_int64(stmt, it->second));
+		return static_cast<unsigned long long>(sqlite3_column_int64(stmt, it->second));
 	};
 
 	const auto getText = [&](const char* name) -> std::optional<std::string>
@@ -406,12 +355,10 @@ std::vector<DTO> Database::selectDTO(const std::string& sql)
 		std::println("selectDTO() sqlite3_step() returned error code: {} with error: {}", rc, sqlite3_errmsg(m_db));
 #endif
 		sqlite3_finalize(stmt);
-		sqlite3_close(m_db);
 		throw std::invalid_argument("selectDTO() Failed");
 	}
 
 	sqlite3_finalize(stmt);
-	sqlite3_close(m_db);
 	return results;
 }
 

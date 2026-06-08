@@ -235,7 +235,7 @@ void Args::run()
 	Args::init();
 	// Args::setSharedOptions();
 	Env _; // Get/Set environment variables
-	Database().createTable(); // Create default table
+	Database(g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).createTable(); // Create default table
 
 	/* EXECUTION */
 	if(m_cmd)
@@ -248,7 +248,7 @@ void Args::run()
 
 		Args::runCmd();
 	}
-	Database().resetCounter();
+	Database(g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).resetCounter();
 }
 
 } // namespace rcb 

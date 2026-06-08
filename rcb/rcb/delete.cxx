@@ -11,7 +11,7 @@
 
 namespace rcb{
 
-Delete::Delete(const std::vector<std::string>& args, const DeleteOptions& dOpt) : m_dOpt{dOpt}
+Delete::Delete(const std::vector<std::string>& args, const DeleteOptions& dOpt) : m_dOpt{dOpt}, m_db(g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName)
 {
 #ifndef NDEBUG
 	std::println("verboseOption is:   {}", m_dOpt.verboseOption);

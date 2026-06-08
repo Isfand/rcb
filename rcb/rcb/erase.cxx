@@ -12,7 +12,7 @@
 
 namespace rcb{
 
-Erase::Erase(const std::vector<std::string>& args, const EraseOptions& eOpt) : m_eOpt{eOpt}
+Erase::Erase(const std::vector<std::string>& args, const EraseOptions& eOpt) : m_eOpt{eOpt}, m_db(g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName)
 {
 #ifndef NDEBUG
 	std::println("allOption is:      {}", m_eOpt.allOption);

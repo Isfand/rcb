@@ -14,7 +14,7 @@
 
 namespace rcb{
 
-List::List(const ListOptions& lOpt) : m_lOpt{lOpt}
+List::List(const ListOptions& lOpt) : m_lOpt{lOpt}, m_db(g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName)
 {
 #ifndef NDEBUG
 	std::println("Inside List:");

@@ -11,7 +11,7 @@
 
 namespace rcb{
 
-Restore::Restore(const std::vector<std::string>& args, const RestoreOptions& rOpt) : m_rOpt{rOpt}
+Restore::Restore(const std::vector<std::string>& args, const RestoreOptions& rOpt) : m_rOpt{rOpt}, m_db(g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName)
 {
 #ifndef NDEBUG
 	std::println("allOption is:              {}", m_rOpt.allOption);
