@@ -1,14 +1,11 @@
 #pragma once
 
-// TODO: Use the PIMPL design pattern or a forward declaration of struct sqlite3 to hide this header to prevent C pollution. sqlite3* m_db uses it.
-// Or just wait for C++ Modules to be fully implemented.
-#include <cstddef>
-#include <sqlite3.h>
-
 #include <string>
 #include <vector>
 #include <optional>
 #include <filesystem>
+
+#include <sqlite3.h>
 
 namespace rcb{
 
@@ -63,6 +60,7 @@ public:
 	std::vector<std::string> selectColumn(const std::string& sql);
 	int executeSQL(const std::string &sql);
 
+	//NOTE: DTO datatypes are being narrowed/expanded or converted when being inserted/retrieved
 	void insertDTO(const DTO& fileDetails);
 	std::vector<DTO> selectDTO(const std::string& sql);
 private:
