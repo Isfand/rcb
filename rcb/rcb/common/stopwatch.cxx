@@ -13,7 +13,7 @@ Stopwatch::Stopwatch(): m_running(false)
 Stopwatch::~Stopwatch()
 {
 	stop();
-	std::println("{} microseconds",elapsedMilliseconds());
+	std::println("{} microseconds", elapsedMicroseconds());
 };
 
 // Starts the stopwatch
@@ -42,8 +42,8 @@ void Stopwatch::reset()
 	m_running = false;
 }
 
-// Returns the elapsed time in milliseconds
-long long Stopwatch::elapsedMilliseconds() 
+// Returns the elapsed time in microseconds
+long long Stopwatch::elapsedMicroseconds() 
 {
 	if (m_running) 
 	{

@@ -15,7 +15,7 @@ public:
 	void start();
 	void stop();
 	void reset();
-	long long elapsedMilliseconds();
+	long long elapsedMicroseconds();
 private:
 	std::chrono::time_point<std::chrono::high_resolution_clock> m_start_time, m_end_time;
 	bool m_running;  
