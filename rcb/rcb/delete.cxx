@@ -158,7 +158,7 @@ const DTO Delete::saveFileData(const std::string& stageFilename, const std::file
 	return file;
 }
 
-// TODO: Move into utils and use in DirectorySize() to reduce duplicate code.
+// NOTE: fileSize() & directorySize() share most of the switch code.
 long long unsigned Delete::fileSize(const std::filesystem::directory_entry& file)
 {
 	unsigned long long size{}; // TODO: does not prevent integer overflow. cap to MAX.
