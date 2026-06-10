@@ -14,9 +14,12 @@ Database::Database(const std::filesystem::path& location)
 	int rc = sqlite3_open(location.string().c_str(), &m_db);
 	if (rc != SQLITE_OK)
 		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));
+
+	createTable();
 }
 Database::~Database()
 {
+	resetCounter();
 	if (m_db) sqlite3_close(m_db);
 }
 

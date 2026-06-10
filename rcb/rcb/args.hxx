@@ -23,9 +23,6 @@ public:
 	void run();
 		
 private:
-	int m_argc;
-	char** m_argv;
-
 	// Globals to be set in setGlobals();
 	// Always pushback globals in Args to m_argsToRemove
 	bool m_verboseOption  {}; // Incomplete

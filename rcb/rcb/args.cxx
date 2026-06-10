@@ -9,14 +9,13 @@
 #include "list_args.hxx"
 #include "validate_args.hxx"
 #include "common/env.hxx"
-#include "common/database.hxx"
 #include "common/globals.hxx"
 
 namespace rcb{
 
-Args::Args(int argc, char** argv) : m_argc{argc}, m_argv{argv}
+Args::Args(int argc, char** argv)
 {
-	for(int i { 1 }; i < m_argc; i++) m_args.push_back(m_argv[i]);
+	for(int i { 1 }; i < argc; i++) m_args.push_back(argv[i]);
 }
 
 void Args::runCmd()
@@ -234,7 +233,6 @@ void Args::run()
 	Args::init();
 	// Args::setSharedOptions();
 	Env _; // Get/Set environment variables
-	Database(g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).createTable(); // Create default table
 
 	/* EXECUTION */
 	if(m_cmd)
@@ -243,11 +241,10 @@ void Args::run()
 		
 		// Only erase if the args count isn't 0. As deGlob can clear all global args. Doing so causes a segfault
 		// erase first element, which should only be a Primary Command at this stage.
-		if(m_args.size() > 0) m_args.erase(m_args.begin());
+		if(!m_args.empty()) m_args.erase(m_args.begin());
 
 		Args::runCmd();
 	}
-	Database(g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName).resetCounter();
 }
 
 } // namespace rcb 
