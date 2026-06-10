@@ -96,21 +96,22 @@ void List::file(const std::vector<std::string>& args)
 // TODO: past() is the same across erase, list, restore. Reduce to one.
 void List::past()
 {
-	// TODO. add silence to guard the return cerr text
-	for(auto format : m_lOpt.timeVec)
+	for (auto format : m_lOpt.timeVec)
 	{
-		long long timestamp{};
-		int return_code = formatToTimestamp(format, timestamp);
-
-		if (return_code == 0)
+		auto result = formatToTimestamp(format);
+		if (!result)
 		{
-			std::vector<std::string> vList = m_db.selectColumn(std::format("SELECT {0} FROM {1} WHERE {2} >= {3};", 
-				DTO::Meta::kSchemaID, DTO::Meta::kTableName, DTO::Meta::kSchemaTimestamp, timestamp));
-			List::file(vList);
+			switch (result.error())
+			{
+				case TimeError::InvalidUnit:   std::cerr << "error: units not found\n"; break;
+				case TimeError::InvalidFormat: std::cerr << "error: invalid format " << format << "\n"; break;
+			}
+			continue;
 		}
-		else if(return_code == 1) std::cerr << "error: units not found\n";
-		else if(return_code == 2) std::cerr << "error: invalid format " << format << "\n";
-		else if(return_code == 3) std::cerr << "unexpected failure\n";
+
+		std::vector<std::string> vList { m_db.selectColumn(std::format("SELECT {0} FROM {1} WHERE {2} >= {3};",
+			DTO::Meta::kSchemaID, DTO::Meta::kTableName, DTO::Meta::kSchemaTimestamp, *result)) };
+		List::file(vList);
 	}
 }
 

@@ -1,12 +1,12 @@
 #include <algorithm>
 #include <array>
+#include <charconv>
 #include <chrono>
 #include <ctime>
+#include <expected>
 #include <filesystem>
 #include <format>
-#include <map>
 #include <print>
-#include <regex>
 #include <set>
 #include <string>
 
@@ -308,63 +308,60 @@ unsigned long long directorySize(const std::filesystem::directory_entry& directo
 	return size;
 }
 
-int formatToTimestamp(const std::string& format, long long& timestamp)
+std::expected<long long, TimeError> formatToTimestamp(std::string_view format)
 {
+	struct TimeUnit { std::string_view unit; long long seconds; };
+
 	// TODO. allow negative posix timestamps using '-' for before 1970. Need to account for time travelers. Can utilize '--'
 	auto currentTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
 	// May run into Y:292,277,026,596 problem. I.E integer overflow.
 	// Using year as: 365.2425
-	std::map<std::string, long long> timeMap = 
-	{ 
-		{"t"  , 1LL             },
-		{"s"  , 1LL             },
-		{"m"  , 60LL            },
-		{"h"  , 3'600LL         },
-		{"d"  , 86'400LL        },
-		{"w"  , 604'800LL       },
-		{"mo" , 2'629'746LL     },
-		{"y"  , 31'556'952LL    },
-		{"dec", 315'569'520LL   },
-		{"c"  , 3'155'695'200LL },
-		{"k"  , 31'556'952'000LL},
-	};
+	static constexpr auto timeMap = std::to_array<TimeUnit>
+	({
+		{"t"  , 1LL              },
+		{"s"  , 1LL              },
+		{"m"  , 60LL             },
+		{"h"  , 3'600LL          },
+		{"d"  , 86'400LL         },
+		{"w"  , 604'800LL        },
+		{"mo" , 2'629'746LL      },
+		{"y"  , 31'556'952LL     },
+		{"dec", 315'569'520LL    },
+		{"c"  , 3'155'695'200LL  },
+		{"k"  , 31'556'952'000LL },
+	});
 
-	std::regex pattern(R"(^(\d+)([^\d].*)$)");
-	std::smatch m;
+	auto splitPos = std::ranges::find_if_not(format, ::isdigit);
+	if (splitPos == format.begin() || splitPos == format.end())
+		return std::unexpected(TimeError::InvalidFormat);
 
-	if (std::regex_search(format, m, pattern)) 
-	{
-		std::string digits { m[1].str() }; //^(\d+)
-		std::string units  { m[2].str() }; //([^\d].*)$
+	std::string_view digits { format.begin(), splitPos };
+	std::string_view units  { splitPos, format.end()   };
 
 #ifndef NDEBUG
-		std::println("digits:        {}", digits);
-		std::println("letters:       {}", units);
+	std::println("digits:  {}", digits);
+	std::println("units:   {}", units);
 #endif
-		if (auto it = timeMap.find(units); it != timeMap.end()) 
-		{
-			timestamp = (units == "t") ? std::stoll(digits) : currentTime - (std::stoll(digits) * timeMap.at(units));
-#ifndef NDEBUG
-			std::println("found:         {}", it->second);
-			std::println("total seconds: {}", std::stoll(digits) * timeMap.at(units));
-			std::println("timestamp:     {}", timestamp);
-#endif
-			return 0;
-		} 
-		else 
-		{
-			// std::cerr << "error: unit " << units << " not found\n";
-			return 1;
-		}
-	} 
-	else 
-	{
-		// std::cerr << "error: invalid format " << format;
-		return 2;
-	}
 
-	return 3;
+	auto it = std::ranges::find(timeMap, units, &TimeUnit::unit);
+	if (it == timeMap.end())
+		return std::unexpected(TimeError::InvalidUnit);
+
+	long long value{};
+	std::from_chars(digits.data(), digits.data() + digits.size(), value);
+
+	
+	//return (units == "t") ? value : currentTime - (value * it->seconds);
+	long long timestamp = (units == "t") ? value : currentTime - (value * it->seconds);
+
+#ifndef NDEBUG
+	std::println("seconds: {}", it->seconds);
+	std::println("total:   {}", value * it->seconds);
+	std::println("result:  {}", timestamp);
+#endif
+
+	return timestamp;
 }
 
 // Unused

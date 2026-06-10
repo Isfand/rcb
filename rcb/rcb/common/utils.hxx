@@ -1,5 +1,6 @@
 #pragma once
 
+#include <expected>
 #include <filesystem>
 #include <string>
 
@@ -24,7 +25,10 @@ bool canReadDir(const std::filesystem::directory_entry& entry);
 bool canReadDirRec(const std::filesystem::directory_entry& entry);
 std::array<std::array<bool, 3>, 3> getFilePerms(const std::filesystem::path& file);
 unsigned long long directorySize(const std::filesystem::directory_entry& directory);
-int formatToTimestamp(const std::string& format, long long& timestamp);
+
+
+enum class TimeError { InvalidUnit, InvalidFormat};
+std::expected<long long, TimeError> formatToTimestamp(std::string_view format);
 
 // Unused
 std::string posixTimeToDateTime(std::chrono::seconds timestamp);
