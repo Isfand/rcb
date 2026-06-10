@@ -32,7 +32,7 @@ private:
 
 	bool hasTrailingSlash(const std::filesystem::path& path);
 	std::filesystem::path removeTrailingSlash(const std::filesystem::path& path);
-	int pathDepth(const std::filesystem::path& path);
+	unsigned long long pathDepth(const std::filesystem::path& path);
 };
 	
 }// namespace rcb

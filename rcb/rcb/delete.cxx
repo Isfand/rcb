@@ -238,10 +238,10 @@ std::filesystem::path Delete::removeTrailingSlash(const std::filesystem::path& p
 	return path;  // No trailing slash found, return the path as-is
 }
 
-int Delete::pathDepth(const std::filesystem::path& path)
+unsigned long long Delete::pathDepth(const std::filesystem::path& path)
 {
 	// has_root_path() checks if a path starts with root. / itself starts as /. So does /some/file/dir.
-	int depth = std::distance(path.begin(), path.end());
+	unsigned long long depth = std::distance(path.begin(), path.end());
 	return path.has_root_path() ? depth - 1 : depth;
 }
 		
