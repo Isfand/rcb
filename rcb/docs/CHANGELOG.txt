@@ -13,10 +13,11 @@ Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v?.?
 - BREAKING: execution is now renamed to batch.
 - BREAKING: --previous is now renamed to --last.
 - FEATURE: --dry-run added into delete, erase, restore and validate.
-- CHANGE: docs have now removed residual 'ae' time unit & added missing unit 'dec'.
+- CHANGE: docs/ have now removed residual 'ae' time unit & added missing unit 'dec'.
 - BUGFIX: validate --file was not changing file permissions when removing files.
 - BUGFIX: validate --all was not filling directory sizes.
 - BUGFIX: incrementBatchID() SQL query logic was not correctly querying the max batch.
+- BUGFIX: Fixed database rollback on rename failure deleting incorrect record when using MAX(id). Now deletes by exact inserted row ID.
 
 ----------------------------------------------------------------------
  VERSION 0.14.0 (22-05-2026)
@@ -169,4 +170,4 @@ Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v0.9
 
 Decorated log and release notes: https://github.com/Isfand/rcb/releases/tag/v0.9.0
 
-- Initial release.
+- Initial pre-release.
