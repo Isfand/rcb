@@ -416,7 +416,7 @@ void renameFile(std::string& file)
 
 			if (all_digits)
 			{
-				int n = std::stoi(std::string(num_str)) + 1;
+				long long n = std::stoll(std::string(num_str)) + 1;
 				base  = base.substr(0, open + 1) + std::to_string(n) + ")";
 				file  = std::string(leading) + base + std::string(ext);
 				return;
