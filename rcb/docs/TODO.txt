@@ -5,9 +5,6 @@ Known issues:
 5. --human-readable is only implemented for timestamp.
 
 ToDo:
--FIX: the database is not using the correct sqlite statements like prepare and bind.
--FIX: The database is using a literal string for NULL.
--Refactor the rcb project to create a clear separation between args parsing and command logic so a library can be made. 
 -In delete_args add --force-save-directorysize for Delete::file(). There is also a comment.
 -ADD an option to recreate .rcb/ folder. Helpful for incompatible versions.
 -ADD a built in option to elevate privileges using an elevation command. E.G sudo/doas. Must enter name of command followed by password.
