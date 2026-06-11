@@ -56,6 +56,7 @@ void Delete::file(const std::vector<std::string>& args)
 #endif
 			// The reason to always write the file data first is because the program could be terminated.
 			// Its better to have dangling records than have some file moved which is not on record.
+			long long insertedID{};
 			try
 			{
 				// Checks for read perms on directory, which is needed in order to iterate through it to save its size.
@@ -73,7 +74,7 @@ void Delete::file(const std::vector<std::string>& args)
 				}
 				auto fileDetails = Delete::saveFileData(mutFilename, systemFilePath);
 				if(!m_dOpt.dryRunOption)
-					m_db.insertDTO(fileDetails); // Could make InsertData Return bool for error checking instead of using try/catch
+					insertedID = m_db.insertDTO(fileDetails);
 			}
 			catch(const std::filesystem::filesystem_error& e)
 			{
@@ -81,7 +82,7 @@ void Delete::file(const std::vector<std::string>& args)
 				// Using continue to allow the other args to be processed.
 				continue;
 			}
-			
+
 			if(aci::Stat(systemFilePath.string().c_str()).st_dev() == aci::Stat(m_env.rootDir.string().c_str()).st_dev())
 			{
 				if(m_dOpt.verboseOption)
@@ -94,10 +95,8 @@ void Delete::file(const std::vector<std::string>& args)
 				}
 				catch(const std::filesystem::filesystem_error& e)
 				{
-					// Insert data failed
-					// TODO: Instead of just deleting the highest value, check against every detail held in memory with the database record. *Added 2nd try catch above to prevent removing existing data if insertData fails.
 					if(!m_dOpt.dryRunOption)
-						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}=(SELECT MAX({1}) FROM {0});", DTO::Meta::kTableName, DTO::Meta::kSchemaID));
+						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}={2};", DTO::Meta::kTableName, DTO::Meta::kSchemaID, insertedID));
 					std::println("cannot move file. insufficient permissions");
 					continue;
 				}
@@ -109,16 +108,14 @@ void Delete::file(const std::vector<std::string>& args)
 				
 				try
 				{
-					// Get device ID of getWorkingProgDir and compare it to the file argument. If it's not the same. Then you are accessing an external device.
+					// Get device ID of m_env.fileDir and compare it to the file argument. If it's not the same. Then you are accessing an external device.
 					if(!m_dOpt.dryRunOption)
 						externRename(systemFilePath, (m_env.fileDir / mutFilename));
 				}
 				catch(const std::filesystem::filesystem_error& e)
 				{
-					// Insert data failed
-					// TODO: Instead of just deleting the highest value, check against every detail held in memory with the database record. *Added 2nd try catch above to prevent removing existing data if insertData fails.
 					if(!m_dOpt.dryRunOption)
-						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}=(SELECT MAX({1}) FROM {0});", DTO::Meta::kTableName, DTO::Meta::kSchemaID));
+						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}={2};", DTO::Meta::kTableName, DTO::Meta::kSchemaID, insertedID));
 					std::println("cannot move file. insufficient permissions");
 					continue;
 				}
@@ -245,4 +242,4 @@ unsigned long long Delete::pathDepth(const std::filesystem::path& path)
 	return path.has_root_path() ? depth - 1 : depth;
 }
 		
-}// namespace rcb
+} // namespace rcb

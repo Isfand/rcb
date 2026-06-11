@@ -14,7 +14,13 @@ Database::Database(const std::filesystem::path& location)
 	int rc = sqlite3_open(location.string().c_str(), &m_db);
 	if (rc != SQLITE_OK)
 		throw std::runtime_error(std::format("Cannot open database: {}\n", sqlite3_errmsg(m_db)));
-
+	//Note: sqlite3_busy_handler and sqlite3_busy_timeout together is undefined - Pick one 
+	//sqlite3_busy_timeout(m_db, 5000);
+	//sqlite3_busy_handler(m_db, [](void*, int retryCount) -> int 
+	//{
+	//	std::this_thread::sleep_for(std::chrono::milliseconds(100)); // time interval
+	//	return retryCount < 10 ? 1 : 0; // 1 = retry, 0 = give up
+	//}, nullptr);
 	createTable();
 }
 Database::~Database()
@@ -223,7 +229,7 @@ int Database::executeSQL(const std::string &sql)
 	return SQLITE_OK;
 }
 
-void Database::insertDTO(const DTO& fileDetails)
+long long Database::insertDTO(const DTO& fileDetails)
 {
 	char* queryStr = sqlite3_mprintf(
 	"INSERT INTO %w (%w, %w, %w, %w, %w, %w, %w, %w) VALUES(?, ?, ?, ?, ?, ?, ?, ?);",
@@ -282,14 +288,17 @@ void Database::insertDTO(const DTO& fileDetails)
 		std::println("Failed to add record. sqlite3_step() returned error code: {} with error: {}", rc, sqlite3_errmsg(m_db));
 #endif
 		sqlite3_finalize(stmt);
-		throw std::invalid_argument("insertData() Failed");
+		throw std::invalid_argument("insertDTO() Failed");
 	}
+
+	const long long insertedId = sqlite3_last_insert_rowid(m_db); // ← capture ID Here
 
 #ifndef NDEBUG
 	std::println("Success from default SQL table data insert");
 #endif
 
 	sqlite3_finalize(stmt);
+	return insertedId;
 }
 
 std::vector<DTO> Database::selectDTO(const std::string& sql)

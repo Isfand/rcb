@@ -61,7 +61,7 @@ public:
 	int executeSQL(const std::string &sql);
 
 	//NOTE: DTO datatypes are being narrowed/expanded or converted when being inserted/retrieved
-	void insertDTO(const DTO& fileDetails);
+	long long insertDTO(const DTO& fileDetails);
 	std::vector<DTO> selectDTO(const std::string& sql);
 private:
 	sqlite3* m_db = nullptr; // Shared sqlite3 instance
