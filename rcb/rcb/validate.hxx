@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/database.hxx"
+#include "common/env.hxx"
 
 namespace rcb{
 
@@ -18,10 +19,11 @@ struct ValidateOptions
 class Validate
 {
 public:
-	Validate(const ValidateOptions& vOpt);
+	Validate(const ValidateOptions& vOpt, const Env& env);
 
 private:
 	const ValidateOptions& m_vOpt;
+	const Env& m_env;
 	Database m_db;
 	
 	// Unused

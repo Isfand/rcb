@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "common/database.hxx"
+#include "common/env.hxx"
 
 namespace rcb{
 
@@ -19,9 +20,10 @@ struct DeleteOptions
 class Delete
 {
 public:
-	Delete(const std::vector<std::string>& args, const DeleteOptions& dOpt);
+	Delete(const std::vector<std::string>& args, const DeleteOptions& dOpt, const Env& env);
 private:
 	const DeleteOptions& m_dOpt;
+	const Env& m_env;
 	Database m_db;
 	unsigned long long m_currentExecutionID;
 	

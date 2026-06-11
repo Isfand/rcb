@@ -9,12 +9,12 @@
 #include "list.hxx"
 #include "platform/aci/aci.hxx"
 #include "common/database.hxx"
-#include "common/globals.hxx"
 #include "common/utils.hxx"
+#include "common/env.hxx"
 
 namespace rcb{
 
-List::List(const ListOptions& lOpt) : m_lOpt{lOpt}, m_db(g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName)
+List::List(const ListOptions& lOpt, const Env& env) : m_lOpt{lOpt}, m_env{env}, m_db(env.dataDir / DTO::Meta::kDatabaseName)
 {
 #ifndef NDEBUG
 	std::println("Inside List:");
@@ -141,7 +141,7 @@ void List::count()
 
 	// Repeated in size();
 	if(m_validFiles.empty())
-		for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
+		for (const auto& entry : std::filesystem::directory_iterator(m_env.fileDir))
 		{
 			std::string stagedFile = entry.path().filename().string();
 			std::string dbProgFileRecord = m_db.selectValue(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", 
@@ -167,7 +167,7 @@ void List::size()
 	// Repeated in count();
 	// Makes sure the filename exists inside file/
 	if(m_validFiles.empty())
-		for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
+		for (const auto& entry : std::filesystem::directory_iterator(m_env.fileDir))
 		{
 			std::string stagedFile { entry.path().filename().string() };
 			std::string dbProgFileRecord { m_db.selectValue(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", 
@@ -179,7 +179,7 @@ void List::size()
 
 	for(auto& validFile : m_validFiles)
 	{
-		aci::Stat stat { (g_singleton->getWorkingProgFileDir() / validFile).string().c_str() };
+		aci::Stat stat { (m_env.fileDir / validFile).string().c_str() };
 		entries.push_back(std::make_tuple(validFile, stat.st_ino(), stat.st_dev()));
 	}
 

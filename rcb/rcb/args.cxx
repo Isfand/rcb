@@ -8,7 +8,6 @@
 #include "erase_args.hxx"
 #include "list_args.hxx"
 #include "validate_args.hxx"
-#include "common/env.hxx"
 #include "common/globals.hxx"
 
 namespace rcb{
@@ -228,14 +227,9 @@ void Args::setSharedOptions()
 void Args::run()
 {
 	/* SETUP */
-	// Order of execution matters
-
-	Args::init();
-	// Args::setSharedOptions();
-	Env _; // Get/Set environment variables
-
+	
 	/* EXECUTION */
-	if(m_cmd)
+	if(init(); m_cmd)
 	{
 		// Args::deGlob();
 		
@@ -243,7 +237,7 @@ void Args::run()
 		// erase first element, which should only be a Primary Command at this stage.
 		if(!m_args.empty()) m_args.erase(m_args.begin());
 
-		Args::runCmd();
+		runCmd();
 	}
 }
 

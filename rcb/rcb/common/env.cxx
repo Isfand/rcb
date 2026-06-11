@@ -9,7 +9,7 @@
 
 namespace rcb{
 	
-Env::Env()
+EnvResolver::EnvResolver()
 {
 	var();
 	dir();
@@ -17,7 +17,7 @@ Env::Env()
 	setSharedEnv();
 }
 
-void Env::var()
+void EnvResolver::var()
 {
 	const std::string home = aci::Pwuid().pw_dir();
 	const std::string user = aci::Pwuid().pw_name();
@@ -35,21 +35,21 @@ void Env::var()
 
 	m_workingUsername = user;
 		
-	if(std::getenv("RCB_DIR") == NULL) // Prevent segmentation fault
-		m_workingProgDir = (std::filesystem::path(home) / (std::string(".") + g_kProgName)).string();
+	if(std::getenv(Env::kEVar) == NULL) // Prevent segmentation fault
+		m_workingProgDir = (std::filesystem::path(home) / Env::kRoot).string();
 	else
-		m_workingProgDir = (std::string(std::getenv("RCB_DIR")));
+		m_workingProgDir = (std::string(std::getenv(Env::kEVar)));
 }
 
-void Env::dir()
+void EnvResolver::dir()
 {
-	m_workingProgFileDir = m_workingProgDir / g_kEnvFile;
-	m_workingProgDataDir = m_workingProgDir / g_kEnvData;
-	m_workingProgWipeDir = m_workingProgDir / g_kEnvWipe;
-	m_workingProgSignDir = m_workingProgDir / g_kEnvSign;
+	m_workingProgFileDir = m_workingProgDir / Env::kFile;
+	m_workingProgDataDir = m_workingProgDir / Env::kData;
+	m_workingProgWipeDir = m_workingProgDir / Env::kWipe;
+	m_workingProgSignDir = m_workingProgDir / Env::kSign;
 
 #ifndef NDEBUG
-	std::println("{0} working directory is: {1}", g_kProgName, m_workingProgDir.string());
+	std::println("{0} working directory is: {1}", Env::kRoot, m_workingProgDir.string());
 #endif
 
 	// Check if active dir exists. If not then execute the below.
@@ -65,17 +65,17 @@ void Env::dir()
 								std::filesystem::create_directories(dir);
 		
 #ifndef NDEBUG
-		std::println("Directories {0},{1},{2},{3} Created in: {4}", g_kEnvFile, g_kEnvData, g_kEnvWipe, g_kEnvSign, m_workingProgDir.string());
+		std::println("Directories {0},{1},{2},{3} Created in: {4}", Env::kFile, Env::kData, Env::kWipe, Env::kSign, m_workingProgDir.string());
 #endif
 	}
 }
 
-void Env::conf()
+void EnvResolver::conf()
 {
 	// Implement when needed
 }
 
-void Env::setSharedEnv()
+void EnvResolver::setSharedEnv()
 {
 	g_singleton->setWorkingProgDir    (m_workingProgDir);
 	g_singleton->setWorkingProgFileDir(m_workingProgFileDir);
@@ -84,6 +84,19 @@ void Env::setSharedEnv()
 	g_singleton->setWorkingProgSignDir(m_workingProgSignDir);
 	g_singleton->setWorkingUsername   (m_workingUsername);
 	// Add conf env
+}
+
+Env EnvResolver::resolve()
+{
+	return Env
+	{ 
+		.rootDir = m_workingProgDir,
+		.fileDir = m_workingProgFileDir,
+		.dataDir = m_workingProgDataDir,
+		.wipeDir = m_workingProgWipeDir,
+		.signDir = m_workingProgSignDir,
+		.ownerID = m_workingUsername
+	};
 }
 
 } // namespace rcb

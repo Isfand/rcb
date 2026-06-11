@@ -3,6 +3,7 @@
 #include "restore.hxx"
 #include "restore_args.hxx"
 #include "common/globals.hxx"
+#include "common/env.hxx"
 
 namespace rcb{
 
@@ -126,7 +127,7 @@ void RestoreArgs::run(std::vector<std::string>& args)
 		args.erase(args.begin() + *it);
 	}
 
-	Restore{args, m_rOpt};
+	Restore{args, m_rOpt, EnvResolver{}.resolve()};
 }
 	
 } // namespace rcb

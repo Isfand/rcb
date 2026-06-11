@@ -7,12 +7,12 @@
 
 #include "erase.hxx"
 #include "common/database.hxx"
-#include "common/globals.hxx"
 #include "common/utils.hxx"
+#include "common/env.hxx"
 
 namespace rcb{
 
-Erase::Erase(const std::vector<std::string>& args, const EraseOptions& eOpt) : m_eOpt{eOpt}, m_db(g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName)
+Erase::Erase(const std::vector<std::string>& args, const EraseOptions& eOpt, const Env& env) : m_eOpt{eOpt}, m_env{env}, m_db(env.dataDir / DTO::Meta::kDatabaseName)
 {
 #ifndef NDEBUG
 	std::println("allOption is:      {}", m_eOpt.allOption);
@@ -41,8 +41,8 @@ void Erase::file(const std::vector<std::string>& args)
 		{
 			if(!m_eOpt.dryRunOption)
 			{
-				std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, g_singleton->getWorkingProgWipeDir() / stagedFile);
-				sanitizeRemoveAll(g_singleton->getWorkingProgWipeDir() / stagedFile);
+				std::filesystem::rename(m_env.fileDir / stagedFile, m_env.wipeDir / stagedFile);
+				sanitizeRemoveAll(m_env.wipeDir / stagedFile);
 				m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", DTO::Meta::kTableName, DTO::Meta::kSchemaID, arg)); // Once removed then delete from database
 			}
 		}

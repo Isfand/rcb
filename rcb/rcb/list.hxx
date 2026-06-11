@@ -5,6 +5,7 @@
 #include <format>
 
 #include "common/database.hxx"
+#include "common/env.hxx"
 
 namespace rcb{
 
@@ -29,9 +30,10 @@ struct ListOptions
 class List
 {
 public:
-	List(const ListOptions& lOpt);
+	List(const ListOptions& lOpt, const Env& env);
 private:
 	const ListOptions& m_lOpt;
+	const Env& m_env;
 	Database m_db;
 	std::vector<std::string> m_validFiles{};
 	std::string m_defaultSQLQuery{std::format("SELECT * FROM {0}", DTO::Meta::kTableName)};

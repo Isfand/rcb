@@ -3,6 +3,7 @@
 #include "erase.hxx"
 #include "erase_args.hxx"
 #include "common/globals.hxx"
+#include "common/env.hxx"
 
 namespace rcb{
 
@@ -107,7 +108,7 @@ void EraseArgs::run(std::vector<std::string>& args)
 		args.erase(args.begin() + *it);
 	}
 
-	Erase{args, m_eOpt};
+	Erase{args, m_eOpt, EnvResolver{}.resolve()};
 }
 
 } // namespace rcb

@@ -8,12 +8,12 @@
 
 #include "validate.hxx"
 #include "common/database.hxx"
-#include "common/globals.hxx"
 #include "common/utils.hxx"
+#include "common/env.hxx"
 
 namespace rcb{
 
-Validate::Validate(const ValidateOptions& vOpt) : m_vOpt{vOpt}, m_db(g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName)
+Validate::Validate(const ValidateOptions& vOpt, const Env& env) : m_vOpt{vOpt}, m_env{env}, m_db(env.dataDir / DTO::Meta::kDatabaseName)
 {
 #ifndef NDEBUG
 	std::println("verboseOption is:     {}", m_vOpt.verboseOption);
@@ -46,7 +46,7 @@ void Validate::file()
 
 	std::vector<std::string> danglingFiles{};
 
-	for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
+	for (const auto& entry : std::filesystem::directory_iterator(m_env.fileDir))
 	{    
 		std::string stagedFile = entry.path().filename().string();
 		std::string dbProgFileRecord = m_db.selectValue(std::format("SELECT {0} FROM {1} WHERE {0}='{2}';", DTO::Meta::kSchemaFile, DTO::Meta::kTableName, stagedFile));
@@ -58,7 +58,7 @@ void Validate::file()
 	if(danglingFiles.size() == 0)
 	{
 		if(m_vOpt.verboseOption)
-			std::println("no dangling file(s) found inside {}/", g_singleton->getWorkingProgFileDir().filename().string());
+			std::println("no dangling file(s) found inside {}/", m_env.fileDir.filename().string());
 	}
 	else if(danglingFiles.size() > 0)
 	{
@@ -66,7 +66,7 @@ void Validate::file()
 		
 		if(m_vOpt.verboseOption)
 		{
-			std::println("dangling file(s) found in {}/:", g_singleton->getWorkingProgFileDir().filename().string());
+			std::println("dangling file(s) found in {}/:", m_env.fileDir.filename().string());
 			for(const auto& file : danglingFiles)
 				std::println("{}", file);
 		}
@@ -83,8 +83,8 @@ void Validate::file()
 			for(const auto& file : danglingFiles)
 			{
 				// WARNING: If a file with the same name exists in wipe/ it will be overwritten. file/ only contains unique names but files in wipe/ are not checked.
-				std::filesystem::rename(g_singleton->getWorkingProgFileDir() / file, g_singleton->getWorkingProgWipeDir() / file);
-				sanitizeRemoveAll(g_singleton->getWorkingProgWipeDir() / file);
+				std::filesystem::rename(m_env.fileDir / file, m_env.wipeDir / file);
+				sanitizeRemoveAll(m_env.wipeDir / file);
 			}
 		}  
 	}
@@ -100,7 +100,7 @@ void Validate::data()
 	std::vector<std::string> danglingRecords { m_db.selectColumn(std::format("SELECT {0} from {1};", DTO::Meta::kSchemaFile, DTO::Meta::kTableName)) };
 
 	std::vector<std::string> stagedFiles{};
-	for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgFileDir()))
+	for (const auto& entry : std::filesystem::directory_iterator(m_env.fileDir))
 		stagedFiles.push_back(entry.path().filename().string());
 
 	// pop back dbProgFiles with whatever is inside program's file/.
@@ -110,7 +110,7 @@ void Validate::data()
 	if(danglingRecords.size() == 0)
 	{
 		if(m_vOpt.verboseOption)
-			std::println("no dangling record(s) found inside {}/", g_singleton->getWorkingProgDataDir().filename().string());
+			std::println("no dangling record(s) found inside {}/", m_env.dataDir.filename().string());
 	}
 	else if(danglingRecords.size() > 0)
 	{
@@ -149,13 +149,13 @@ void Validate::wipe()
 	// Check for existence of files first. Display them. Then remove...
 	std::vector<std::filesystem::path> danglingFiles{};
 
-	for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgWipeDir()))
+	for (const auto& entry : std::filesystem::directory_iterator(m_env.wipeDir))
 		danglingFiles.push_back(entry.path());
 
 	if (danglingFiles.size() == 0)
 	{
 		if(m_vOpt.verboseOption)
-			std::println("no dangling file(s) found inside {}/", g_singleton->getWorkingProgWipeDir().filename().string());
+			std::println("no dangling file(s) found inside {}/", m_env.wipeDir.filename().string());
 	}
 	else if(danglingFiles.size() > 0)
 	{   
@@ -163,7 +163,7 @@ void Validate::wipe()
 		
 		if(m_vOpt.verboseOption)
 		{
-			std::println("dangling file(s) found in {}/:", g_singleton->getWorkingProgWipeDir().filename().string());
+			std::println("dangling file(s) found in {}/:", m_env.wipeDir.filename().string());
 			for(const auto& entry : danglingFiles)
 				std::println("{}", entry.filename().string());
 		}
@@ -177,7 +177,7 @@ void Validate::wipe()
 		}
 		if(!m_vOpt.dryRunOption && (confirmFlag || m_vOpt.yesOption))
 		{
-			for (const auto& entry : std::filesystem::directory_iterator(g_singleton->getWorkingProgWipeDir()))
+			for (const auto& entry : std::filesystem::directory_iterator(m_env.wipeDir))
 			{
 				try
 				{
@@ -210,8 +210,8 @@ void Validate::fillDirectorySize()
 	std::transform(nullDirectoriesQuery.begin(), 
 				   nullDirectoriesQuery.end(), 
 				   nullDirectoriesQuery.begin(), 
-				   [](std::string& f) 
-				   { return (g_singleton->getWorkingProgFileDir() / f).string(); });
+				   [this](std::string& f) 
+				   { return (m_env.fileDir / f).string(); });
 
 	for(auto& directoryPathString : nullDirectoriesQuery)
 	{
@@ -221,7 +221,7 @@ void Validate::fillDirectorySize()
 			std::filesystem::file_type::directory) 
 		{
 			std::println("cannot save directory size, process calling user {} is missing read permissions for directory {}", 
-				g_singleton->getWorkingUsername(), directoryPathString);
+				m_env.ownerID, directoryPathString);
 			continue;
 		}
 

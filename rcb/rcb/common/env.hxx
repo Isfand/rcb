@@ -8,15 +8,29 @@ namespace rcb{
 /* Env is only called once early as part of init. */
 /* For a library separation, each command class will have it's own env object in its parameters. Like execve(2) */
 
-inline constexpr const char* g_kEnvFile {"file"};
-inline constexpr const char* g_kEnvData {"data"};
-inline constexpr const char* g_kEnvWipe {"wipe"};
-inline constexpr const char* g_kEnvSign {"sign"};
+struct Env
+{
+	static constexpr const char* kEVar {"RCB_DIR"};
 
-class Env
+	static constexpr const char* kRoot {".rcb"};
+	static constexpr const char* kFile {"file"};
+	static constexpr const char* kData {"data"};
+	static constexpr const char* kWipe {"wipe"};
+	static constexpr const char* kSign {"sign"};
+
+	std::filesystem::path rootDir{};
+	std::filesystem::path fileDir{};
+	std::filesystem::path dataDir{};
+	std::filesystem::path wipeDir{};
+	std::filesystem::path signDir{};
+	std::string_view      ownerID{};
+};
+
+class EnvResolver
 {
 public:
-	Env();
+	EnvResolver();
+	Env resolve();
 	
 private:
 	std::filesystem::path m_workingProgDir{};

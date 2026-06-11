@@ -317,6 +317,8 @@ std::expected<long long, TimeError> formatToTimestamp(std::string_view format)
 
 	// May run into Y:292,277,026,596 problem. I.E integer overflow.
 	// Using year as: 365.2425
+
+	// Class Template Argument Deduction - CTAD
 	static constexpr auto timeMap = std::to_array<TimeUnit>
 	({
 		{"t"  , 1LL              },

@@ -3,6 +3,7 @@
 
 #include "list_args.hxx"
 #include "list.hxx"
+#include "common/env.hxx"
 
 namespace rcb{
 
@@ -126,7 +127,7 @@ void ListArgs::run(std::vector<std::string>& args)
 		args.erase(args.begin() + *it);
 	}
 
-	List{m_lOpt};
+	List{m_lOpt, EnvResolver{}.resolve()};
 }
 
 } // namespace rcb

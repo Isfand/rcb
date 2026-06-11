@@ -6,12 +6,12 @@
 #include "delete.hxx"
 #include "platform/aci/aci.hxx"
 #include "common/database.hxx"
-#include "common/globals.hxx"
 #include "common/utils.hxx"
+#include "common/env.hxx"
 
 namespace rcb{
 
-Delete::Delete(const std::vector<std::string>& args, const DeleteOptions& dOpt) : m_dOpt{dOpt}, m_db(g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName)
+Delete::Delete(const std::vector<std::string>& args, const DeleteOptions& dOpt, const Env& env) : m_dOpt{dOpt}, m_env{env}, m_db(env.dataDir / DTO::Meta::kDatabaseName)
 {
 #ifndef NDEBUG
 	std::println("verboseOption is:   {}", m_dOpt.verboseOption);
@@ -34,19 +34,19 @@ void Delete::file(const std::vector<std::string>& args)
 		if(Verity(std::filesystem::directory_entry(systemFilePath)).exists)
 		{
 			std::string mutFilename { systemFilePath.filename().string() };
-			std::filesystem::directory_entry stageEntry { g_singleton->getWorkingProgFileDir() / systemFilePath.filename() };
+			std::filesystem::directory_entry stageEntry { m_env.fileDir / systemFilePath.filename() };
 
 			// Need to use systemFilePath for the full path. Relativity creates issues.
 			if (!canMvFileChk(std::filesystem::directory_entry(systemFilePath)))
 			{
-				std::println("process calling user {} is missing write/execute permissions for parent directory of {} ", g_singleton->getWorkingUsername(), systemFilePath.string());
+				std::println("process calling user {} is missing write/execute permissions for parent directory of {} ", m_env.ownerID, systemFilePath.string());
 				continue;
 			}
 
 			if(m_dOpt.verboseOption)
 			{
 				std::println("system filepath is: {0}", systemFilePath.string());
-				std::println("searching path: {}", (g_singleton->getWorkingProgFileDir() / systemFilePath.filename()).string());
+				std::println("searching path: {}", (m_env.fileDir / systemFilePath.filename()).string());
 			}
 
 			if(!renameDupe(stageEntry.path().parent_path(), std::filesystem::directory_entry(stageEntry.path()), mutFilename)) continue;
@@ -69,7 +69,7 @@ void Delete::file(const std::vector<std::string>& args)
 					// TODO: Can create something that force adds read permissions for the calling user. This can be used to create a --force-save-directorysize.
 					if(!m_dOpt.forceOption)
 						std::println("cannot save directory size, process calling user {} is missing read permissions for directory {}\nUse --force or explicitly --no-directorysize",
-						g_singleton->getWorkingUsername(), systemFilePath.string());
+						m_env.ownerID, systemFilePath.string());
 				}
 				auto fileDetails = Delete::saveFileData(mutFilename, systemFilePath);
 				if(!m_dOpt.dryRunOption)
@@ -82,7 +82,7 @@ void Delete::file(const std::vector<std::string>& args)
 				continue;
 			}
 			
-			if(aci::Stat(systemFilePath.string().c_str()).st_dev() == aci::Stat(g_singleton->getWorkingProgDir().string().c_str()).st_dev())
+			if(aci::Stat(systemFilePath.string().c_str()).st_dev() == aci::Stat(m_env.rootDir.string().c_str()).st_dev())
 			{
 				if(m_dOpt.verboseOption)
 					std::println("local device detected");
@@ -90,7 +90,7 @@ void Delete::file(const std::vector<std::string>& args)
 				try
 				{
 					if(!m_dOpt.dryRunOption)
-						std::filesystem::rename(systemFilePath, g_singleton->getWorkingProgFileDir() / mutFilename);
+						std::filesystem::rename(systemFilePath, m_env.fileDir / mutFilename);
 				}
 				catch(const std::filesystem::filesystem_error& e)
 				{
@@ -111,7 +111,7 @@ void Delete::file(const std::vector<std::string>& args)
 				{
 					// Get device ID of getWorkingProgDir and compare it to the file argument. If it's not the same. Then you are accessing an external device.
 					if(!m_dOpt.dryRunOption)
-						externRename(systemFilePath, (g_singleton->getWorkingProgFileDir() / mutFilename));
+						externRename(systemFilePath, (m_env.fileDir / mutFilename));
 				}
 				catch(const std::filesystem::filesystem_error& e)
 				{
@@ -152,7 +152,7 @@ const DTO Delete::saveFileData(const std::string& stageFilename, const std::file
 
 	file.filetype = fileTypeToString(Verity(std::filesystem::directory_entry(originalPath)).type);
 	file.depth = pathDepth(originalPath);
-	file.user = g_singleton->getWorkingUsername();
+	file.user = m_env.ownerID;
 	file.batch = m_currentExecutionID;
 
 	return file;

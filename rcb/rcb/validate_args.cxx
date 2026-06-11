@@ -5,6 +5,7 @@
 #include "validate_args.hxx"
 #include "validate.hxx"
 #include "common/globals.hxx"
+#include "common/env.hxx"
 
 namespace rcb{
 
@@ -84,7 +85,7 @@ void ValidateArgs::run(std::vector<std::string>& args)
 			return; // Prevent continuation
 		}
 	} 
-	Validate{m_vOpt};
+	Validate{m_vOpt, EnvResolver{}.resolve()};
 }
 	
 }// namespace rcb

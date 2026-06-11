@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "common/database.hxx"
+#include "common/env.hxx"
 
 namespace rcb{
 
@@ -30,7 +31,7 @@ struct RestoreOptions
 class Restore
 {
 public:
-	Restore(const std::vector<std::string>& args, const RestoreOptions& rOpt);
+	Restore(const std::vector<std::string>& args, const RestoreOptions& rOpt, const Env& env);
 
 private:
 	enum class PathStatus
@@ -41,6 +42,7 @@ private:
 	};
 
 	const RestoreOptions& m_rOpt;
+	const Env& m_env;
 	Database m_db;
 	
 	void file(const std::vector<std::string>& args);

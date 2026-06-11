@@ -84,7 +84,7 @@ void DeleteArgs::run(std::vector<std::string>& args)
 		args.erase(args.begin() + *it);
 	}
 
-	Delete{args, m_dOpt};
+	Delete{args, m_dOpt, EnvResolver{}.resolve()};
 }
 
 } // namespace rcb

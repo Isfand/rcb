@@ -7,11 +7,11 @@
 #include "platform/aci/aci.hxx"
 #include "common/database.hxx"
 #include "common/utils.hxx"
-#include "common/globals.hxx"
+#include "common/env.hxx"
 
 namespace rcb{
 
-Restore::Restore(const std::vector<std::string>& args, const RestoreOptions& rOpt) : m_rOpt{rOpt}, m_db(g_singleton->getWorkingProgDataDir() / DTO::Meta::kDatabaseName)
+Restore::Restore(const std::vector<std::string>& args, const RestoreOptions& rOpt, const Env& env) : m_rOpt{rOpt}, m_env{env}, m_db(env.dataDir / DTO::Meta::kDatabaseName)
 {
 #ifndef NDEBUG
 	std::println("allOption is:              {}", m_rOpt.allOption);
@@ -100,13 +100,13 @@ void Restore::file(const std::vector<std::string>& args)
 			// Check for permissions on the original path
 			if(!canMvFileChk(std::filesystem::directory_entry(originalPath)))
 			{
-				std::println("process calling user {} is missing write/execute permissions for parent directory of {} ", g_singleton->getWorkingUsername(), originalPath.string());
+				std::println("process calling user {} is missing write/execute permissions for parent directory of {} ", m_env.ownerID, originalPath.string());
 				continue;
 			}
 
 			// NOTE: rename() cannot rename directories that are not empty. for that sanitizeRemoveAll() needs to be used before it.
 			// Check if the path is internal or external
-			if(aci::Stat(g_singleton->getWorkingProgDir().string().c_str()).st_dev() == aci::Stat(originalPath.parent_path().string().c_str()).st_dev())
+			if(aci::Stat(m_env.rootDir.string().c_str()).st_dev() == aci::Stat(originalPath.parent_path().string().c_str()).st_dev())
 			{
 				try
 				{
@@ -115,7 +115,7 @@ void Restore::file(const std::vector<std::string>& args)
 					{
 						if(m_rOpt.forceReplaceOption && originalPathType == std::filesystem::file_type::directory && pathStatus == PathStatus::Occupied) 
 							sanitizeRemoveAll(originalPath);
-						std::filesystem::rename(g_singleton->getWorkingProgFileDir() / stagedFile, mutRestorePath);
+						std::filesystem::rename(m_env.fileDir / stagedFile, mutRestorePath);
 						// TODO;
 						// Also check against saveFileData() values to make sure.
 						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", DTO::Meta::kTableName, DTO::Meta::kSchemaID, arg));
@@ -138,7 +138,7 @@ void Restore::file(const std::vector<std::string>& args)
 					{
 						if(m_rOpt.forceReplaceOption && originalPathType == std::filesystem::file_type::directory && pathStatus == PathStatus::Occupied) 
 							sanitizeRemoveAll(originalPath);
-						externRename((g_singleton->getWorkingProgFileDir() / stagedFile), mutRestorePath);
+						externRename((m_env.fileDir / stagedFile), mutRestorePath);
 						// TODO; // Also check against saveFileData() values to make sure.
 						m_db.executeSQL(std::format("DELETE FROM {0} WHERE {1}='{2}';", DTO::Meta::kTableName, DTO::Meta::kSchemaID, arg));
 					}
@@ -224,12 +224,12 @@ bool Restore::progFileExists(const std::string& stagedFile)
 	// Early return check to see if file is empty. This should also be handled from the sql querying function.
 	if(stagedFile.empty()) return false;
 	
-	std::filesystem::path filePath { g_singleton->getWorkingProgFileDir() / stagedFile };
+	std::filesystem::path filePath { m_env.fileDir / stagedFile };
 
 	bool result = Verity(std::filesystem::directory_entry(filePath)).exists; // ? true : false;
 
 	if(!result)
-		std::println("failed to restore file: \"{0}\"\nfile to restore is missing in \"{1}\"", stagedFile, g_singleton->getWorkingProgFileDir().string());
+		std::println("failed to restore file: \"{0}\"\nfile to restore is missing in \"{1}\"", stagedFile, m_env.fileDir.string());
 
 	// TODO; Needs semantic correction
 	return result;
