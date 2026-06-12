@@ -33,18 +33,18 @@ public:
 	Env resolve();
 	
 private:
-	std::filesystem::path m_workingProgDir{};
-	std::filesystem::path m_workingProgFileDir{};
-	std::filesystem::path m_workingProgDataDir{};
-	std::filesystem::path m_workingProgWipeDir{};
-	std::filesystem::path m_workingProgSignDir{}; 
-	std::filesystem::path m_workingConfDir{};
-	std::string           m_workingUsername{};
+	std::filesystem::path m_rootDir{};
+	std::filesystem::path m_fileDir{};
+	std::filesystem::path m_dataDir{};
+	std::filesystem::path m_wipeDir{};
+	std::filesystem::path m_signDir{}; 
+	std::filesystem::path m_confDir{};
+	std::string           m_ownerID{};
 	
 	void var();
 	void dir();
 	void conf();
-	void setSharedEnv();
+	//void setSharedEnv();
 	// void initEnv();
 };
 

@@ -14,12 +14,12 @@ std::once_flag Singleton::s_flag;
 // std::once_flag Singleton::s_setVerboseOptionFlag;
 // std::once_flag Singleton::s_setForceOptionFlag;
 
-std::once_flag Singleton::s_setWorkingProgDirFlag;
-std::once_flag Singleton::s_setWorkingProgFileDirFlag;
-std::once_flag Singleton::s_setWorkingProgDataDirFlag;
-std::once_flag Singleton::s_setWorkingProgWipeDirFlag;
-std::once_flag Singleton::s_setWorkingProgSignDirFlag;
-std::once_flag Singleton::s_setWorkingUsernameFlag;
+std::once_flag Singleton::s_setRootDirFlag;
+std::once_flag Singleton::s_setFileDirFlag;
+std::once_flag Singleton::s_setDataDirFlag;
+std::once_flag Singleton::s_setWipeDirFlag;
+std::once_flag Singleton::s_setSignDirFlag;
+std::once_flag Singleton::s_setOwnerIDFlag;
 
 Singleton* Singleton::instance()
 {
@@ -50,29 +50,29 @@ Singleton::~Singleton()
 //{
 //	return m_forceOption;
 //}
-const std::filesystem::path Singleton::getWorkingProgDir() const
+const std::filesystem::path Singleton::getRootDir() const
 {
-	return m_workingProgDir;
+	return m_rootDir;
 }
-const std::filesystem::path Singleton::getWorkingProgFileDir() const
+const std::filesystem::path Singleton::getFileDir() const
 {
-	return m_workingProgFileDir;
+	return m_fileDir;
 }
-const std::filesystem::path Singleton::getWorkingProgDataDir() const
+const std::filesystem::path Singleton::getDataDir() const
 {
-	return m_workingProgDataDir;
+	return m_dataDir;
 }
-const std::filesystem::path Singleton::getWorkingProgWipeDir() const
+const std::filesystem::path Singleton::getWipeDir() const
 {
-	return m_workingProgWipeDir;
+	return m_wipeDir;
 }
-const std::filesystem::path Singleton::getWorkingProgSignDir() const
+const std::filesystem::path Singleton::getSignDir() const
 {
-	return m_workingProgSignDir;
+	return m_signDir;
 }
-const std::string Singleton::getWorkingUsername() const
+const std::string_view Singleton::getOwnerID() const
 {
-	return m_workingUsername;
+	return m_ownerID;
 }
 
 // Mutators. Set once.
@@ -85,29 +85,29 @@ const std::string Singleton::getWorkingUsername() const
 //{
 //	std::call_once(s_setForceOptionFlag, [&](){ m_forceOption = forceOption;});
 //}
-void Singleton::setWorkingProgDir(std::filesystem::path workingProgDir)
+void Singleton::setRootDir(std::filesystem::path workingProgDir)
 {
-	std::call_once(s_setWorkingProgDirFlag, [&](){ m_workingProgDir = workingProgDir;});
+	std::call_once(s_setRootDirFlag, [&](){ m_rootDir = workingProgDir;});
 }
-void Singleton::setWorkingProgFileDir(std::filesystem::path workingProgFileDir)
+void Singleton::setFileDir(std::filesystem::path workingProgFileDir)
 {
-	std::call_once(s_setWorkingProgFileDirFlag, [&](){ m_workingProgFileDir = workingProgFileDir;});
+	std::call_once(s_setFileDirFlag, [&](){ m_fileDir = workingProgFileDir;});
 }
-void Singleton::setWorkingProgDataDir(std::filesystem::path workingProgDataDir)
+void Singleton::setDataDir(std::filesystem::path workingProgDataDir)
 {
-	std::call_once(s_setWorkingProgDataDirFlag, [&](){ m_workingProgDataDir = workingProgDataDir;});
+	std::call_once(s_setDataDirFlag, [&](){ m_dataDir = workingProgDataDir;});
 }
-void Singleton::setWorkingProgWipeDir(std::filesystem::path workingProgWipeDir)
+void Singleton::setWipeDir(std::filesystem::path workingProgWipeDir)
 {
-	std::call_once(s_setWorkingProgWipeDirFlag, [&](){ m_workingProgWipeDir = workingProgWipeDir;});
+	std::call_once(s_setWipeDirFlag, [&](){ m_wipeDir = workingProgWipeDir;});
 }
-void Singleton::setWorkingProgSignDir(std::filesystem::path workingProgSignDir)
+void Singleton::setSignDir(std::filesystem::path workingProgSignDir)
 {
-	std::call_once(s_setWorkingProgSignDirFlag, [&](){ m_workingProgSignDir = workingProgSignDir;});
+	std::call_once(s_setSignDirFlag, [&](){ m_signDir = workingProgSignDir;});
 }
-void Singleton::setWorkingUsername(std::string workingUsername)
+void Singleton::setOwnerID(std::string_view workingUsername)
 {
-	std::call_once(s_setWorkingUsernameFlag, [&](){ m_workingUsername = workingUsername;});
+	std::call_once(s_setOwnerIDFlag, [&](){ m_ownerID = workingUsername;});
 }
 
 // Singleton* inst;

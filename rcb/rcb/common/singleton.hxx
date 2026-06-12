@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include <string_view>
 #include <mutex>
 #include <filesystem>
 
@@ -24,23 +24,23 @@ public:
 	// const bool        getForceOption()         const;
 
 	// Could make these return std::optional
-	const std::filesystem::path getWorkingProgDir()     const;
-	const std::filesystem::path getWorkingProgFileDir() const;
-	const std::filesystem::path getWorkingProgDataDir() const;
-	const std::filesystem::path getWorkingProgWipeDir() const;
-	const std::filesystem::path getWorkingProgSignDir() const;
-	const std::string           getWorkingUsername()    const;
+	const std::filesystem::path getRootDir() const;
+	const std::filesystem::path getFileDir() const;
+	const std::filesystem::path getDataDir() const;
+	const std::filesystem::path getWipeDir() const;
+	const std::filesystem::path getSignDir() const;
+	const std::string_view      getOwnerID() const;
 
 	// Mutators
 	// void setVerboseOption      (bool verboseOption);
 	// void setForceOption        (bool forceOption);
 
-	void setWorkingProgDir    (std::filesystem::path workingProgDir);
-	void setWorkingProgFileDir(std::filesystem::path workingProgFileDir);
-	void setWorkingProgDataDir(std::filesystem::path workingProgDataDir);
-	void setWorkingProgWipeDir(std::filesystem::path workingProgWipeDir);
-	void setWorkingProgSignDir(std::filesystem::path workingProgSignDir);
-	void setWorkingUsername   (std::string workingProgUsername);
+	void setRootDir(std::filesystem::path rootDir);
+	void setFileDir(std::filesystem::path fileDir);
+	void setDataDir(std::filesystem::path dataDir);
+	void setWipeDir(std::filesystem::path wipeDir);
+	void setSignDir(std::filesystem::path signDir);
+	void setOwnerID(std::string_view      ownerID);
 
 	// Assign
 	// const bool&& g_kVerboseFlag = getVerboseFlag();
@@ -56,22 +56,22 @@ private:
 	// static std::once_flag s_setVerboseOptionFlag;
 	// static std::once_flag s_setForceOptionFlag;
 
-	static std::once_flag s_setWorkingProgDirFlag;
-	static std::once_flag s_setWorkingProgFileDirFlag;
-	static std::once_flag s_setWorkingProgDataDirFlag;
-	static std::once_flag s_setWorkingProgWipeDirFlag;
-	static std::once_flag s_setWorkingProgSignDirFlag;
-	static std::once_flag s_setWorkingUsernameFlag;
+	static std::once_flag s_setRootDirFlag;
+	static std::once_flag s_setFileDirFlag;
+	static std::once_flag s_setDataDirFlag;
+	static std::once_flag s_setWipeDirFlag;
+	static std::once_flag s_setSignDirFlag;
+	static std::once_flag s_setOwnerIDFlag;
 
 	// bool m_verboseOption{};
 	// bool m_forceOption{};
 	
-	std::filesystem::path m_workingProgDir{};
-	std::filesystem::path m_workingProgFileDir{};
-	std::filesystem::path m_workingProgDataDir{};
-	std::filesystem::path m_workingProgWipeDir{};
-	std::filesystem::path m_workingProgSignDir{}; 
-	std::string m_workingUsername{};
+	std::filesystem::path m_rootDir{};
+	std::filesystem::path m_fileDir{};
+	std::filesystem::path m_dataDir{};
+	std::filesystem::path m_wipeDir{};
+	std::filesystem::path m_signDir{}; 
+	std::string_view      m_ownerID{};
 };
 
 // Unused

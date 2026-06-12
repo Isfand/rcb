@@ -3,7 +3,6 @@
 #include <stdexcept>
 
 #include "env.hxx"
-#include "globals.hxx"
 #include "rcb/platform/aci/aci.hxx"
 
 
@@ -14,7 +13,7 @@ EnvResolver::EnvResolver()
 	var();
 	dir();
 	conf();
-	setSharedEnv();
+	//setSharedEnv();
 }
 
 void EnvResolver::var()
@@ -33,39 +32,39 @@ void EnvResolver::var()
 		throw std::runtime_error("USER NOT FOUND");
 	}
 
-	m_workingUsername = user;
+	m_ownerID = user;
 		
 	if(std::getenv(Env::kEVar) == NULL) // Prevent segmentation fault
-		m_workingProgDir = (std::filesystem::path(home) / Env::kRoot).string();
+		m_rootDir = (std::filesystem::path(home) / Env::kRoot).string();
 	else
-		m_workingProgDir = (std::string(std::getenv(Env::kEVar)));
+		m_rootDir = (std::string(std::getenv(Env::kEVar)));
 }
 
 void EnvResolver::dir()
 {
-	m_workingProgFileDir = m_workingProgDir / Env::kFile;
-	m_workingProgDataDir = m_workingProgDir / Env::kData;
-	m_workingProgWipeDir = m_workingProgDir / Env::kWipe;
-	m_workingProgSignDir = m_workingProgDir / Env::kSign;
+	m_fileDir = m_rootDir / Env::kFile;
+	m_dataDir = m_rootDir / Env::kData;
+	m_wipeDir = m_rootDir / Env::kWipe;
+	m_signDir = m_rootDir / Env::kSign;
 
 #ifndef NDEBUG
-	std::println("{0} working directory is: {1}", Env::kRoot, m_workingProgDir.string());
+	std::println("{0} working directory is: {1}", Env::kRoot, m_rootDir.string());
 #endif
 
 	// Check if active dir exists. If not then execute the below.
-	if(!std::filesystem::exists(m_workingProgFileDir) || 
-	   !std::filesystem::exists(m_workingProgDataDir) || 
-	   !std::filesystem::exists(m_workingProgWipeDir) ||
-	   !std::filesystem::exists(m_workingProgSignDir))
+	if(!std::filesystem::exists(m_fileDir) || 
+	   !std::filesystem::exists(m_dataDir) || 
+	   !std::filesystem::exists(m_wipeDir) ||
+	   !std::filesystem::exists(m_signDir))
 	{
-		for (const auto& dir : {m_workingProgFileDir, 
-								m_workingProgDataDir, 
-								m_workingProgWipeDir, 
-								m_workingProgSignDir})
+		for (const auto& dir : {m_fileDir, 
+								m_dataDir, 
+								m_wipeDir, 
+								m_signDir})
 								std::filesystem::create_directories(dir);
 		
 #ifndef NDEBUG
-		std::println("Directories {0},{1},{2},{3} Created in: {4}", Env::kFile, Env::kData, Env::kWipe, Env::kSign, m_workingProgDir.string());
+		std::println("Directories {0},{1},{2},{3} Created in: {4}", Env::kFile, Env::kData, Env::kWipe, Env::kSign, m_rootDir.string());
 #endif
 	}
 }
@@ -75,6 +74,7 @@ void EnvResolver::conf()
 	// Implement when needed
 }
 
+/*
 void EnvResolver::setSharedEnv()
 {
 	g_singleton->setWorkingProgDir    (m_workingProgDir);
@@ -85,17 +85,18 @@ void EnvResolver::setSharedEnv()
 	g_singleton->setWorkingUsername   (m_workingUsername);
 	// Add conf env
 }
+*/
 
 Env EnvResolver::resolve()
 {
 	return Env
 	{ 
-		.rootDir = m_workingProgDir,
-		.fileDir = m_workingProgFileDir,
-		.dataDir = m_workingProgDataDir,
-		.wipeDir = m_workingProgWipeDir,
-		.signDir = m_workingProgSignDir,
-		.ownerID = m_workingUsername
+		.rootDir = m_rootDir,
+		.fileDir = m_fileDir,
+		.dataDir = m_dataDir,
+		.wipeDir = m_wipeDir,
+		.signDir = m_signDir,
+		.ownerID = m_ownerID
 	};
 }
 
