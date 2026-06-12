@@ -250,7 +250,7 @@ long long Database::insertDTO(const DTO& fileDetails)
 #ifndef NDEBUG
 		std::println("Failed to prepare statement. sqlite3_prepare_v2() returned error code: {} with error: {}", rc, sqlite3_errmsg(m_db));
 #endif
-		throw std::invalid_argument("insertData() Failed: could not prepare statement");
+		throw std::invalid_argument("insertDTO() Failed: could not prepare statement");
 	}
 
 	// Helper to bind a string or NULL if the optional is empty
