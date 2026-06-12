@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string_view>
+#include <string>
 #include <mutex>
 #include <filesystem>
 
@@ -29,7 +29,7 @@ public:
 	const std::filesystem::path getDataDir() const;
 	const std::filesystem::path getWipeDir() const;
 	const std::filesystem::path getSignDir() const;
-	const std::string_view      getOwnerID() const;
+	const std::string           getOwnerID() const;
 
 	// Mutators
 	// void setVerboseOption      (bool verboseOption);
@@ -40,7 +40,7 @@ public:
 	void setDataDir(std::filesystem::path dataDir);
 	void setWipeDir(std::filesystem::path wipeDir);
 	void setSignDir(std::filesystem::path signDir);
-	void setOwnerID(std::string_view      ownerID);
+	void setOwnerID(std::string           ownerID);
 
 	// Assign
 	// const bool&& g_kVerboseFlag = getVerboseFlag();
@@ -71,7 +71,7 @@ private:
 	std::filesystem::path m_dataDir{};
 	std::filesystem::path m_wipeDir{};
 	std::filesystem::path m_signDir{}; 
-	std::string_view      m_ownerID{};
+	std::string           m_ownerID{};
 };
 
 // Unused

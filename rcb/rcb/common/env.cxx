@@ -77,12 +77,12 @@ void EnvResolver::conf()
 /*
 void EnvResolver::setSharedEnv()
 {
-	g_singleton->setWorkingProgDir    (m_workingProgDir);
-	g_singleton->setWorkingProgFileDir(m_workingProgFileDir);
-	g_singleton->setWorkingProgDataDir(m_workingProgDataDir);
-	g_singleton->setWorkingProgWipeDir(m_workingProgWipeDir);
-	g_singleton->setWorkingProgSignDir(m_workingProgSignDir);
-	g_singleton->setWorkingUsername   (m_workingUsername);
+	g_singleton->setRootDir(m_rootDir);
+	g_singleton->setFileDir(m_fileDir);
+	g_singleton->setDataDir(m_dataDir);
+	g_singleton->setWipeDir(m_wipeDir);
+	g_singleton->setSignDir(m_signDir);
+	g_singleton->setOwnerID(m_ownerID);
 	// Add conf env
 }
 */

@@ -109,7 +109,7 @@ std::string Database::selectValue(const std::string& sql)
 	
 	std::string st{};
 
-	rc = sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, NULL);
+	rc = sqlite3_prepare_v2(m_db, sql.c_str(), static_cast<int>(sql.size()), &stmt, NULL);
 	if (rc != SQLITE_OK) 
 	{
 		throw std::runtime_error(std::format("Failed to prepare statement: {}\n", sqlite3_errmsg(m_db)));
@@ -146,7 +146,7 @@ std::string Database::selectDisplay(const std::string& sql)
 	int rc;
 	std::string st{};
 
-	rc = sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, NULL);
+	rc = sqlite3_prepare_v2(m_db, sql.c_str(), static_cast<int>(sql.size()), &stmt, NULL);
 	if (rc != SQLITE_OK) 
 	{
 		throw std::runtime_error(std::format("Failed to prepare statement: {}\n", sqlite3_errmsg(m_db)));
@@ -185,7 +185,7 @@ std::vector<std::string> Database::selectColumn(const std::string& sql)
 	sqlite3_stmt *stmt;
 	int rc;
 
-	rc = sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, NULL);
+	rc = sqlite3_prepare_v2(m_db, sql.c_str(), static_cast<int>(sql.size()), &stmt, NULL);
 	if (rc != SQLITE_OK) 
 	{
 		throw std::runtime_error(std::format("Failed to prepare statement: {}\n", sqlite3_errmsg(m_db)));
@@ -213,7 +213,7 @@ std::vector<std::string> Database::selectColumn(const std::string& sql)
 }
 
 // Fire-and-forget (INSERT, UPDATE, DELETE, CREATE)
-int Database::executeSQL(const std::string &sql)
+int Database::executeSQL(const std::string& sql)
 {
 	char *errMsg = nullptr;
 	int rc;
@@ -304,7 +304,7 @@ long long Database::insertDTO(const DTO& fileDetails)
 std::vector<DTO> Database::selectDTO(const std::string& sql)
 {
 	sqlite3_stmt* stmt{};
-	int rc = sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, nullptr);
+	int rc = sqlite3_prepare_v2(m_db, sql.c_str(), static_cast<int>(sql.size()), &stmt, nullptr);
 
 	if (rc != SQLITE_OK)
 	{

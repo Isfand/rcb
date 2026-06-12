@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <string>
 #include <filesystem>
 
 #include "singleton.hxx"
@@ -70,7 +70,7 @@ const std::filesystem::path Singleton::getSignDir() const
 {
 	return m_signDir;
 }
-const std::string_view Singleton::getOwnerID() const
+const std::string Singleton::getOwnerID() const
 {
 	return m_ownerID;
 }
@@ -105,7 +105,7 @@ void Singleton::setSignDir(std::filesystem::path workingProgSignDir)
 {
 	std::call_once(s_setSignDirFlag, [&](){ m_signDir = workingProgSignDir;});
 }
-void Singleton::setOwnerID(std::string_view workingUsername)
+void Singleton::setOwnerID(std::string workingUsername)
 {
 	std::call_once(s_setOwnerIDFlag, [&](){ m_ownerID = workingUsername;});
 }
