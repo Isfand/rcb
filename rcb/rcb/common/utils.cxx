@@ -213,7 +213,8 @@ std::array<std::array<bool, 3>, 3> getFilePerms(const std::filesystem::path& fil
 	return {ownerPerms, groupPerms, othersPerms};
 }
 
-// XXX. You cannot recursive_directory_iterator the directory if you cannot read it. Can fail on dirs with no read access.
+// Warning: You cannot recursive_directory_iterator the directory if you cannot read it. Can fail on dirs with no read access.
+// Suggestion: replace the tuples with structs for readability with named fields: entry, ino, dev. Makes deduplication logic self-documenting
 unsigned long long directorySize(const std::filesystem::directory_entry& directory)
 {
 	unsigned long long size{};
