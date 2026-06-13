@@ -19,7 +19,7 @@ Erase::Erase(const std::vector<std::string>& args, const EraseOptions& eOpt, con
 	std::println("pastOption is:     {}", m_eOpt.pastOption);
 	std::println("lastOption is:     {}", m_eOpt.lastOption);
 	std::println("verboseOption is:  {}", m_eOpt.verboseOption); // Unused
-	std::println("dryRunOption is:   {}", m_eOpt.dryRunOption); // Unused
+	std::println("dryRunOption is:   {}", m_eOpt.dryRunOption);
 	std::println("sqlOption is:      {}", m_eOpt.sqlOption);
 #endif
 	Erase::file(args);

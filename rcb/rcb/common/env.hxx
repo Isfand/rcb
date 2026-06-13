@@ -4,9 +4,6 @@
 #include <string>
 
 namespace rcb{
-	
-/* Env is only called once early as part of init. */
-/* For a library separation, each command class will have it's own env object in its parameters. Like execve(2) */
 
 struct Env
 {
